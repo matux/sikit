@@ -86,6 +86,10 @@
 #   import "TestFlight/TestFlight.h"
 #endif
 
+#if defined(LOGGING_FORWARD_TO_CRASHLYTICS) && LOGGING_FORWARD_TO_CRASHLYTICS
+#   import <Crashlytics/Crashlytics.h>
+#endif
+
 /**
  * Set this switch to  enable or disable logging capabilities.
  * This can be set either here or via the compiler build setting GCC_PREPROCESSOR_DEFINITIONS
@@ -143,11 +147,30 @@
 #   define LOGGING_FORWARD_TO_TEST_FLIGHT	0
 #endif
 
+/**
+ * Set this switch if your application was integrated with Crashlytics and you
+ * want to forward logs to it.
+ */
+#ifndef LOGGING_FORWARD_TO_CRASHLYTICS
+#   define LOGGING_FORWARD_TO_CRASHLYTICS	0
+#endif
+
+/**
+ * Set this switch if your application is forwarding output to Crashlytics or
+ * TestFlight and you don't want any output going to the console or system.
+ * Specially useful for Release and Ad Hoc builds.
+ */
+#ifndef LOGGING_DISABLE_LOCAL_OUTPUT
+#   define LOGGING_DISABLE_LOCAL_OUTPUT     0
+#endif
+
 // *********** END OF USER SETTINGS  - Do not change anything below this line ***********
 
 // Removes Date, Time, Process Name and ID from logging.
 extern void compactLog(NSString *format, ...);
 #define LogQuiet(fmt, ...) compactLog(fmt, ##__VA_ARGS__)
+// Removes Date, Time, Process Name and ID from logging and displays function with an alternate formatting
+void compactLogAltFormat(NSString *namespace, int indentLevel, NSString *functionName, NSString *format, ...);
 
 // Disable Logging entirely if LOGGING_ENABLED is 0
 #if !(defined(LOGGING_ENABLED) && LOGGING_ENABLED)
@@ -158,18 +181,44 @@ extern void compactLog(NSString *format, ...);
 #   undef LOGGING_LEVEL_DEBUG
 #endif
 
+// Disable NSLog if we don't want local output of any kind
+#if defined(LOGGING_DISABLE_LOCAL_OUTPUT) && LOGGING_DISABLE_LOCAL_OUTPUT
+#   undef NSLog
+#   undef NSLogv
+#   define NSLog(...)
+#   define NSLogv(...)
+#endif
+
 // Logging format
 #if defined(LOGGING_USE_COMPACT_LOG) && LOGGING_USE_COMPACT_LOG
 #   define LOG_FORMAT_NO_LOCATION(fmt, lvl, ...) compactLog((@"[%@] " fmt), lvl, ##__VA_ARGS__)
 #   define LOG_FORMAT_WITH_LOCATION(fmt, lvl, ...) compactLog((@"%s:%d [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__)
 #else
 #   if defined(LOGGING_FORWARD_TO_TEST_FLIGHT) && LOGGING_FORWARD_TO_TEST_FLIGHT
+#       if defined(LOGGING_FORWARD_TO_CRASHLYTICS) && LOGGING_FORWARD_TO_CRASHLYTICS
+#           define LOG_FORMAT_NO_LOCATION(fmt, lvl, ...) \
+                NSLog((@"[%@] " fmt), lvl, ##__VA_ARGS__); \
+                TFLog((@"[%@] " fmt), lvl, ##__VA_ARGS__); \
+                CLSLog((@"[%@] " fmt), lvl, ##__VA_ARGS__)
+#           define LOG_FORMAT_WITH_LOCATION(fmt, lvl, ...) \
+                NSLog((@"%s [Line %d] [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__); \
+                TFLog((@"%s [Line %d] [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__); \
+                CLSLog((@"%s [Line %d] [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__)
+#       else
+#           define LOG_FORMAT_NO_LOCATION(fmt, lvl, ...) \
+                NSLog((@"[%@] " fmt), lvl, ##__VA_ARGS__); \
+                TFLog((@"[%@] " fmt), lvl, ##__VA_ARGS__)
+#           define LOG_FORMAT_WITH_LOCATION(fmt, lvl, ...) \
+                NSLog((@"%s [Line %d] [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__); \
+                TFLog((@"%s [Line %d] [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__)
+#       endif
+#   elif defined(LOGGING_FORWARD_TO_CRASHLYTICS) && LOGGING_FORWARD_TO_CRASHLYTICS
 #       define LOG_FORMAT_NO_LOCATION(fmt, lvl, ...) \
             NSLog((@"[%@] " fmt), lvl, ##__VA_ARGS__); \
-            TFLog((@"[%@] " fmt), lvl, ##__VA_ARGS__)
+            CLSLog((@"[%@] " fmt), lvl, ##__VA_ARGS__)
 #       define LOG_FORMAT_WITH_LOCATION(fmt, lvl, ...) \
             NSLog((@"%s [Line %d] [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__); \
-            TFLog((@"%s [Line %d] [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__)
+            CLSLog((@"%s [Line %d] [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__)
 #   else
 #       define LOG_FORMAT_NO_LOCATION(fmt, lvl, ...) NSLog((@"[%@] " fmt), lvl, ##__VA_ARGS__)
 #       define LOG_FORMAT_WITH_LOCATION(fmt, lvl, ...) NSLog((@"%s [Line %d] [%@] " fmt), __PRETTY_FUNCTION__, __LINE__, lvl, ##__VA_ARGS__)

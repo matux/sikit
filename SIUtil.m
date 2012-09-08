@@ -78,20 +78,31 @@ SIDeviceModel SIRetrieveDeviceModel(void)
 		NSString *platform = [NSString stringWithUTF8String:machine];
 		free(machine);
 		
-		if( [platform isEqualToString:@"iPhone1,1"] )		cachedDeviceModel =  SIDM_IPHONE_EDGE;
-		else if( [platform isEqualToString:@"iPhone1,2"] )	cachedDeviceModel =  SIDM_IPHONE_3G;
-		else if( [platform isEqualToString:@"iPhone2,1"] )	cachedDeviceModel =  SIDM_IPHONE_3GS;
-		else if( [platform isEqualToString:@"iPhone3,1"] )	cachedDeviceModel =  SIDM_IPHONE_4;
-		else if( [platform isEqualToString:@"iPhone"] )		cachedDeviceModel =  SIDM_IPHONE_UNKNOWN_NEWER;
-		else if( [platform isEqualToString:@"iPod1,1"] )	cachedDeviceModel =  SIDM_IPOD_1G;
-		else if( [platform isEqualToString:@"iPod2,1"] )	cachedDeviceModel =  SIDM_IPOD_2G;
-		else if( [platform isEqualToString:@"iPod3,1"] )	cachedDeviceModel =  SIDM_IPOD_3G;
-		else if( [platform isEqualToString:@"iPod4,1"] )	cachedDeviceModel =  SIDM_IPOD_4G;
-		else if( [platform isEqualToString:@"iPod"] )		cachedDeviceModel =  SIDM_IPOD_UNKNOWN_NEWER;
-		else if( [platform isEqualToString:@"iPad1,1"] )	cachedDeviceModel =  SIDM_IPAD;
-		else if( [platform isEqualToString:@"iPad"] )		cachedDeviceModel =  SIDM_IPAD_UNKNOWN_NEWER;
-		else if( [platform isEqualToString:@"i386"] )		cachedDeviceModel =  SIDM_SIMULATOR;
-        else if( [platform isEqualToString:@"x86_64"] )		cachedDeviceModel =  SIDM_SIMULATOR;
+		if(      [platform isEqualToString:@"iPhone1,1"] )	cachedDeviceModel = SIDM_IPHONE_EDGE;
+		else if( [platform isEqualToString:@"iPhone1,2"] )	cachedDeviceModel = SIDM_IPHONE_3G;
+		else if( [platform isEqualToString:@"iPhone2,1"] )	cachedDeviceModel = SIDM_IPHONE_3GS;
+		else if( [platform isEqualToString:@"iPhone3,1"] )	cachedDeviceModel = SIDM_IPHONE_4;
+        else if( [platform isEqualToString:@"iPhone3,2"] )	cachedDeviceModel = SIDM_IPHONE_4_VERIZON_CDMA;
+        else if( [platform isEqualToString:@"iPhone3,3"] )  cachedDeviceModel = SIDM_IPHONE_4_VERIZON;
+        else if( [platform isEqualToString:@"iPhone4,1"] )  cachedDeviceModel = SIDM_IPHONE_4S;
+        else if( [platform isEqualToString:@"iPhone5,1"] )  cachedDeviceModel = SIDM_IPHONE_5;
+		else if( [platform containsString:@"iPhone"] )		cachedDeviceModel = SIDM_IPHONE_UNKNOWN_NEWER;
+		else if( [platform isEqualToString:@"iPod1,1"] )	cachedDeviceModel = SIDM_IPOD_1G;
+		else if( [platform isEqualToString:@"iPod2,1"] )	cachedDeviceModel = SIDM_IPOD_2G;
+		else if( [platform isEqualToString:@"iPod3,1"] )	cachedDeviceModel = SIDM_IPOD_3G;
+		else if( [platform isEqualToString:@"iPod4,1"] )	cachedDeviceModel = SIDM_IPOD_4G;
+		else if( [platform containsString:@"iPod"] )		cachedDeviceModel = SIDM_IPOD_UNKNOWN_NEWER;
+		else if( [platform isEqualToString:@"iPad1,1"] )	cachedDeviceModel = SIDM_IPAD;
+        else if( [platform isEqualToString:@"iPad2,1"] )    cachedDeviceModel = SIDM_IPAD_2;
+        else if( [platform isEqualToString:@"iPad2,2"] )    cachedDeviceModel = SIDM_IPAD_2_GSM;
+        else if( [platform isEqualToString:@"iPad2,3"] )    cachedDeviceModel = SIDM_IPAD_2_CDMA;
+        else if( [platform isEqualToString:@"iPad2,4"] )    cachedDeviceModel = SIDM_IPAD_2_R2;
+        else if( [platform isEqualToString:@"iPad3,1"] )    cachedDeviceModel = SIDM_IPAD_3;
+        else if( [platform isEqualToString:@"iPad3,2"] )    cachedDeviceModel = SIDM_IPAD_3_CDMA;
+        else if( [platform isEqualToString:@"iPad3,3"] )    cachedDeviceModel = SIDM_IPAD_3_GSM;
+		else if( [platform containsString:@"iPad"] )		cachedDeviceModel = SIDM_IPAD_UNKNOWN_NEWER;
+		else if( [platform containsString:@"i386"] )		cachedDeviceModel = SIDM_SIMULATOR;
+        else if( [platform containsString:@"x86_64"] )		cachedDeviceModel = SIDM_SIMULATOR;
 		else cachedDeviceModel = SIDM_UNKNOWN;
 	}
 	
@@ -105,6 +116,8 @@ NSString *SIParseDeviceModel(SIDeviceModel model)
 		case SIDM_IPHONE_3G:			return @"iPhone 3G";
 		case SIDM_IPHONE_3GS:			return @"iPhone 3GS";
 		case SIDM_IPHONE_4:				return @"iPhone 4";
+        case SIDM_IPHONE_4S:            return @"iPhone 4S";
+        case SIDM_IPHONE_5:             return @"iPhone 5";
 		case SIDM_IPHONE_UNKNOWN_NEWER: return @"iPhone Unknown newer model";
 		case SIDM_IPOD_1G:				return @"iPod 1st Gen";
 		case SIDM_IPOD_2G:				return @"iPod 2st Gen";
@@ -112,6 +125,8 @@ NSString *SIParseDeviceModel(SIDeviceModel model)
 		case SIDM_IPOD_4G:				return @"iPod 4th Gen";
 		case SIDM_IPOD_UNKNOWN_NEWER:	return @"iPod Unknown newer model";
 		case SIDM_IPAD:					return @"iPad";
+        case SIDM_IPAD_2:               return @"iPad 2";
+        case SIDM_IPAD_3:               return @"iPad 3";
 		case SIDM_IPAD_UNKNOWN_NEWER:	return @"iPad Unknown newer model";
 		case SIDM_SIMULATOR:			return @"Device Simulator";
 		case SIDM_UNKNOWN:				return @"Device Unknown";

@@ -18,7 +18,7 @@
 - (NSString *)truncatedString:(int)characters charsLeftOut:(unsigned int *)charsLeftOut;
 
 - (BOOL)isEmpty;
-- (BOOL)containsString:(NSString *)theString;
+- (BOOL)containsString:(NSString *)string;
 
 - (NSNumber *)toIntegerNumber;
 

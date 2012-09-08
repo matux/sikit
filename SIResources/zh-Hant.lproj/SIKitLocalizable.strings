@@ -1,0 +1,97 @@
+/*
+  Localizable.strings (zh-Hant) (tw/traditional)
+  weheartit
+
+  Created by Matias Pequeno on 7/15/12.
+  Copyright (c) 2012 WHI, Inc. All rights reserved.
+*/
+
+/* Standard usage strings */
+
+// Actions
+"Cancel" = "取消";
+"OK" = "確認";
+"Share" = "分享";
+"Edit" = "編輯";
+"Back" = "返回";
+"Save" = "保存";
+"Follow" = "關注";
+"Unfollow" = "取消關注";
+"Follow_all" = "關注所有";
+"Continue" = "繼續";
+"Add" = "添加";
+"Allow" = "允許";
+"Ignore" = "忽略";
+"Sort_by" = "排序方式";
+"Select" = "選擇";
+"Confirm" = "確認";
+"Rate" = "評價";
+"Pull_Down_To_Refresh" = "請刷新一下...";
+"Release_To_Refresh" = "請刷新一下...";
+
+// Messages
+"Hello" = "你好";
+"Welcome" = "歡迎";
+"Processing" = "正在處理...";
+"Loading" = "正在加載...";
+
+// Sign-in/up
+"Name" = "姓名";
+"Username" = "用戶名";
+"Password" = "密碼";
+"Email" = "電子郵件";
+"Sign_In" = "登錄";
+"Sign_Up" = "Sign up";                                                          // Missing
+"Create_An_Account" = "創建帳戶";
+"Forgot_Password" = "忘記密碼？";
+"Terms_Of_Service" = "服務條款";
+"Invalid_Username" = "用戶名無效。請使用字母、數字和下劃綫。";
+"Invalid_Email" = "電子郵件地址無效。";
+
+// Time
+"Less_Than_A_Minute_Ago" = "幾秒鐘之前...";
+"One_Minute_Ago" = "一分鐘之前";
+"One_Hour_Ago" = "一個小時前";
+"One_Day_Ago" = "一天前";
+"One_Month_Ago" = "一個月之前";
+"One_Year_Ago" = "一年之前";
+"%d_Minutes_Ago" = "%d分鐘之前";
+"%d_Hours_Ago" = "%d個小時之前";
+"%d_Days_Ago" = "%d天之前";
+"%d_Months_Ago" = "%d個月之前";
+"%d_Years_Ago" = "%d年之前";
+"Yesterday" = "昨天";
+
+// Social
+"Facebook" = "Facebook";
+"Tumblr" = "Tumblr";
+"Twitter" = "Twitter";
+"Gmail" = "Gmail";
+"Friend" = "個好友";
+"Friends" = "個好友";
+"Follower" = "粉絲";
+"Followers" = "粉絲";
+"Following" = "好友";
+"Notifications" = "通知";
+"Profile_Picture" = "檔案照片";
+
+// App Store
+"App_Store_Rate" = "請在App Store上評價我們";
+
+// Camera
+"Take_Photo" = "照相";
+"Choose_Existing_Photo" = "選擇當前照片";
+
+// Miscellaneous
+"Address_Book" = "地址薄";
+"None" = "無圖片組";
+"Link" = "鏈接";
+"Version" = "版本";
+
+// Generic errors
+"Error" = "錯誤";
+"Warning" = "警告";
+"Error_Try_Again" = "錯誤！\n請重新嘗試";
+"Connection_Error_Try_Again" = "鏈接錯誤！\n請重新嘗試";
+"No_Internet_Error" = "Internet 連線已斷開";
+"Application_Outdated" = "應用程序已過期。\n請更新";

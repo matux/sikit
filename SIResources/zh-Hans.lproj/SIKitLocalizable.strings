@@ -1,0 +1,97 @@
+/*
+  Localizable.strings (zh-Hans) (cn/simplified)
+  weheartit
+
+  Created by Matias Pequeno on 7/15/12.
+  Copyright (c) 2012 WHI, Inc. All rights reserved.
+*/
+
+/* Standard usage strings */
+
+// Actions
+"Cancel" = "取消";
+"OK" = "确认";
+"Share" = "分享";
+"Edit" = "编辑";
+"Back" = "返回";
+"Save" = "保存";
+"Follow" = "关注";
+"Unfollow" = "取消关注";
+"Follow_all" = "关注所有";
+"Continue" = "继续";
+"Add" = "添加";
+"Allow" = "允许";
+"Ignore" = "忽略";
+"Sort_by" = "排序方式";
+"Select" = "选择";
+"Confirm" = "确认";
+"Rate" = "评价";
+"Pull_Down_To_Refresh" = "请刷新一下...";
+"Release_To_Refresh" = "请刷新一下...";
+
+// Messages
+"Hello" = "你好";
+"Welcome" = "欢迎";
+"Processing" = "正在处理...";
+"Loading" = "正在加载...";
+
+// Sign-in/up
+"Name" = "姓名";
+"Username" = "用户名";
+"Password" = "密码";
+"Email" = "电子邮件";
+"Sign_In" = "登录";
+"Sign_Up" = "Sign up";                                                          // Missing
+"Create_An_Account" = "创建账户";
+"Forgot_Password" = "忘记密码？";
+"Terms_Of_Service" = "服务条款";
+"Invalid_Username" = "用户名无效。请使用字母、數字和下划线。";
+"Invalid_Email" = "电子邮件地址无效。";
+
+// Time
+"Less_Than_A_Minute_Ago" = "几秒钟之前...";
+"One_Minute_Ago" = "一分钟之前";
+"One_Hour_Ago" = "一个小时前";
+"One_Day_Ago" = "一天前";
+"One_Month_Ago" = "一个月之前";
+"One_Year_Ago" = "一年之前";
+"%d_Minutes_Ago" = "%d分钟之前";
+"%d_Hours_Ago" = "%d个小时之前";
+"%d_Days_Ago" = "%d天之前";
+"%d_Months_Ago" = "%d个月之前";
+"%d_Years_Ago" = "%d年之前";
+"Yesterday" = "昨天";
+
+// Social
+"Facebook" = "Facebook";
+"Tumblr" = "Tumblr";
+"Twitter" = "Twitter";
+"Gmail" = "Gmail";
+"Friend" = "个好友";
+"Friends" = "个好友";
+"Follower" = "粉丝";
+"Followers" = "粉丝";
+"Following" = "好友";
+"Notifications" = "通知";
+"Profile_Picture" = "档案照片";
+
+// App Store
+"App_Store_Rate" = "请在App Store上评价我们";
+
+// Camera
+"Take_Photo" = "照相";
+"Choose_Existing_Photo" = "选择当前照片";
+
+// Miscellaneous
+"Address_Book" = "地址薄";
+"None" = "无图片组";
+"Link" = "链接";
+"Version" = "版本";
+
+// Generic errors
+"Error" = "错误";
+"Warning" = "警告";
+"Error_Try_Again" = "错误！\n请重新尝试";
+"Connection_Error_Try_Again" = "链接错误！\n请重新尝试";
+"No_Internet_Error" = "似乎已断开与互联网的连接";
+"Application_Outdated" = "应用程序已过去。\请更新";

@@ -1,0 +1,97 @@
+/*
+  SIKitLocalizable.strings (en)
+  SIKit
+ 
+  Created by Matias Pequeno on 8/9/12.
+  Copyright (c) 2012 Silicon Illusions, Inc. All rights reserved.
+*/
+
+/* Standard usage strings */
+
+// Actions
+"Cancel" = "Cancel";
+"OK" = "OK";
+"Share" = "Share";
+"Edit" = "Edit";
+"Back" = "Back";
+"Save" = "Save";
+"Follow" = "Follow";
+"Unfollow" = "Unfollow";
+"Follow_all" = "Follow all";
+"Continue" = "Continue";
+"Add" = "Add";
+"Allow" = "Allow";
+"Ignore" = "Ignore";
+"Sort_by" = "Sort by";
+"Select" = "Select";
+"Confirm" = "Confirm";
+"Rate" = "Rate";
+"Pull_Down_To_Refresh" = "Pull down to refresh...";
+"Release_To_Refresh" = "Release to refresh...";
+
+// Messages
+"Hello" = "Hello";
+"Welcome" = "Welcome";
+"Processing" = "Processing...";
+"Loading" = "Loading...";
+
+// Sign-in/up
+"Name" = "Name";
+"Username" = "Username";
+"Password" = "Password";
+"Email" = "Email";
+"Sign_In" = "Sign in";
+"Sign_Up" = "Sign up";
+"Create_An_Account" = "Create an account";
+"Forgot_Password" = "Forgot your Password?";
+"Terms_Of_Service" = "Terms of Service";
+"Invalid_Username" = "Your username doesn't seem to be valid. Please use only letters, numbers and underscores.";
+"Invalid_Email" = "Email doesn't seem to be valid.";
+
+// Time
+"Less_Than_A_Minute_Ago" = "less than a minute ago...";
+"One_Minute_Ago" = "1 minute ago";
+"One_Hour_Ago" = "1 hour ago";
+"One_Day_Ago" = "1 day ago";
+"One_Month_Ago" = "1 month ago";
+"One_Year_Ago" = "1 year ago";
+"%d_Minutes_Ago" = "%d minutes ago";
+"%d_Hours_Ago" = "%d hours ago";
+"%d_Days_Ago" = "%d days ago";
+"%d_Months_Ago" = "%d months ago";
+"%d_Years_Ago" = "%d years ago";
+"Yesterday" = "Yesterday";
+
+// Social
+"Facebook" = "Facebook";
+"Tumblr" = "Tumblr";
+"Twitter" = "Twitter";
+"Gmail" = "Gmail";
+"Friend" = "Friend";
+"Friends" = "Friends";
+"Follower" = "Follower";
+"Followers" = "Followers";
+"Following" = "Following";
+"Notifications" = "Notifications";
+"Profile_Picture" = "Profile picture";
+
+// App Store
+"App_Store_Rate" = "Please rate us on the App Store";
+
+// Camera
+"Take_Photo" = "Take Photo";
+"Choose_Existing_Photo" = "Choose Existing Photo";
+
+// Miscellaneous
+"Address_Book" = "Address Book";
+"None" = "None";
+"Link" = "Link";
+"Version" = "Version";
+
+// Generic errors
+"Error" = "Error";
+"Warning" = "Warning";
+"Error_Try_Again" = "Error!\nTry again";
+"Connection_Error_Try_Again" = "Connection error!\nTry again";
+"No_Internet_Error" = "The Internet connection appears to be offline";
+"Application_Outdated" = "Application is outdated.\nPlease update it";

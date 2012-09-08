@@ -1,0 +1,97 @@
+/*
+  Localizable.strings (fr)
+  weheartit
+
+  Created by Matias Pequeno on 7/5/12.
+  Copyright (c) 2012 WHI, Inc. All rights reserved.
+*/
+
+/* Standard usage strings */
+
+// Actions
+"Cancel" = "Annuler";
+"OK" = "OK";
+"Share" = "Partager";
+"Edit" = "Changer";
+"Back" = "Retour";
+"Save" = "Enregistrer";
+"Follow" = "Suivre";
+"Unfollow" = "Se désabonner";
+"Follow_all" = "Suivre tous";
+"Continue" = "Continuez";
+"Add" = "Ajouter";
+"Allow" = "Autoriser";
+"Ignore" = "Ignorer";
+"Sort_by" = "Trier par";
+"Select" = "Sélection";
+"Confirm" = "Confirmer";
+"Rate" = "Evaluer";
+"Pull_Down_To_Refresh" = "Faites glisser la page vers le bas...";
+"Release_To_Refresh" = "Relâchez pour actualiser...";
+
+// Messages
+"Hello" = "Bonjour";
+"Welcome" = "Accueil";
+"Processing" = "Chargement...";
+"Loading" = "Chargement...";
+
+// Sign-in/up
+"Name" = "Nom";
+"Username" = "Nom d'utilisateur";
+"Password" = "Mot de passe";
+"Email" = "Email";
+"Sign_In" = "Se connecter";
+"Sign_Up" = "Sign up";                                                          // Missing
+"Create_An_Account" = "Créez un compte";
+"Forgot_Password" = "Mot de passe oublié ?";
+"Terms_Of_Service" = " conditions d’utilisation";
+"Invalid_Username" = "Votre nom d'utilisateur ne semble pas être valide. Utilisez seulement des lettres, des nombres et le caractère.";
+"Invalid_Email" = "L'email ne semble pas être correct.";
+
+// Time
+"Less_Than_A_Minute_Ago" = "Il y a moins d'une minute...";
+"One_Minute_Ago" = "Il y a 1 minute";
+"One_Hour_Ago" = "Il y a 1 heure";
+"One_Day_Ago" = "Il y a 1 jour";
+"One_Month_Ago" = "Il y a 1 mois";
+"One_Year_Ago" = "Il y a 1 an";
+"%d_Minutes_Ago" = "Il y a %d minutes";
+"%d_Hours_Ago" = "Il y a %d heures";
+"%d_Days_Ago" = "Il y a %d jours";
+"%d_Months_Ago" = "Il y a %d mois";
+"%d_Years_Ago" = "Il y a %d années";
+"Yesterday" = "Hier";
+
+// Social
+"Facebook" = "Facebook";
+"Tumblr" = "Tumblr";
+"Twitter" = "Twitter";
+"Gmail" = "Gmail";
+"Friend" = "Friend";
+"Friends" = "Friends";
+"Follower" = "Abonné";
+"Followers" = "Abonnés";
+"Following" = "Abonnement";
+"Notifications" = "Notifications";
+"Profile_Picture" = "Photo du profil";
+
+// App Store
+"App_Store_Rate" = "Souhaitez-vous noter cette application ?";
+
+// Camera
+"Take_Photo" = "Prendre une photo";
+"Choose_Existing_Photo" = "Choisir une photo existante";
+
+// Miscellaneous
+"Address_Book" = "Carnet d'adresses";
+"None" = "Aucun";
+"Link" = "Site web";
+"Version" = "Version";
+
+// Generic errors
+"Error" = "Erreur";
+"Warning" = "Attention";
+"Error_Try_Again" = "Erreur !\nEssayez une nouvelle fois";
+"Connection_Error_Try_Again" = "Erreur de connexion !\nEssayez une nouvelle fois";
+"No_Internet_Error" = "Internet ne semble pas être disponible. Reconnexion en cours.";
+"Application_Outdated" = "L'application n'est pas à jour.\nTéléchargez la nouvelle version";

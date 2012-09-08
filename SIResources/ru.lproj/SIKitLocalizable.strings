@@ -1,0 +1,97 @@
+/*
+  Localizable.strings (ru)
+  weheartit
+
+  Created by Matias Pequeno on 7/15/12.
+  Copyright (c) 2012 WHI, Inc. All rights reserved.
+*/
+
+/* Standard usage strings */
+
+// Actions
+"Cancel" = "Отмена";
+"OK" = "OK";
+"Share" = "Поделиться";
+"Edit" = "Изменить";
+"Back" = "Назад";
+"Save" = "Сохранить";
+"Follow" = "Подписаться";
+"Unfollow" = "Отписаться";
+"Follow_all" = "Добавить всех друзей";
+"Continue" = "Продолжить";
+"Add" = "Добавить";
+"Allow" = "Разрешить";
+"Ignore" = "Игнор";
+"Sort_by" = "Сортировать по";
+"Select" = "Выбрать";
+"Confirm" = "Подтвердить";
+"Rate" = "Оценить";
+"Pull_Down_To_Refresh" = "Проведи вниз, чтобы обновить...";
+"Release_To_Refresh" = "Отпусти, чтобы обновить...";
+
+// Messages
+"Hello" = "Привет";
+"Welcome" = "приветствие";
+"Processing" = "Обработка...";
+"Loading" = "Загрузка...";
+
+// Sign-in/up
+"Name" = "Имя";
+"Username" = "Имя пользователя";
+"Password" = "Пароль";
+"Email" = "Эл. почта";
+"Sign_In" = "Войти";
+"Sign_Up" = "Sign up";                                                          // Missing
+"Create_An_Account" = "Создать аккаунт";
+"Forgot_Password" = "Не удается вспомнить пароль?";
+"Terms_Of_Service" = "Условия использования";
+"Invalid_Username" = "Недопустимое имя пользователя. Оно может содержать только буквы, цифры и знаки подчёркивания.";
+"Invalid_Email" = "Неверный адрес эл. почты.";
+
+// Time
+"Less_Than_A_Minute_Ago" = "меньше минуты назад...";
+"One_Minute_Ago" = "1 минуту назад";
+"One_Hour_Ago" = "1 час назад";
+"One_Day_Ago" = "1 день назад";
+"One_Month_Ago" = "1 месяц назад";
+"One_Year_Ago" = "1 год назад";
+"%d_Minutes_Ago" = "%d мин назад";
+"%d_Hours_Ago" = "%d ч назад";
+"%d_Days_Ago" = "%d дн. назад";
+"%d_Months_Ago" = "%d мес. назад";
+"%d_Years_Ago" = "%d г. назад";
+"Yesterday" = "Вчера";
+
+// Social
+"Facebook" = "Facebook";
+"Tumblr" = "Tumblr";
+"Twitter" = "Twitter";
+"Gmail" = "Gmail";
+"Friend" = "Друг";
+"Friends" = "Друзья";
+"Follower" = "Подписчик";
+"Followers" = "Подписчики";
+"Following" = "Друзья";
+"Notifications" = "Уведомления";
+"Profile_Picture" = "Аватар в профиле";
+
+// App Store
+"App_Store_Rate" = "Оцени наше приложение в App Store";
+
+// Camera
+"Take_Photo" = "Сделать фото";
+"Choose_Existing_Photo" = "Выбрать существующее фото";
+
+// Miscellaneous
+"Address_Book" = "Адресная книга";
+"None" = "Нет";
+"Link" = "Ссылка";
+"Version" = "Версия";
+
+// Generic errors
+"Error" = "Ошибка";
+"Warning" = "Внимание!";
+"Error_Try_Again" = "Ошибка!\nПопробуй снова";
+"Connection_Error_Try_Again" = "Ошибка связи!\nПопробуй снова";
+"No_Internet_Error" = "Вероятно, соединение с Интернетом прервано";
+"Application_Outdated" = "Приложение устарело,\nего нужно обновить";

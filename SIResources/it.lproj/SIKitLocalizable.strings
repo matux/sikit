@@ -1,0 +1,97 @@
+/* 
+  Localizable.strings (it)
+  weheartit
+ 
+  Created by Matias Pequeno on 7/15/12.
+  Copyright (c) 2012 WHI, Inc. All rights reserved.
+*/
+
+/* Standard usage strings */
+
+// Actions
+"Cancel" = "Cancella";
+"OK" = "OK";
+"Share" = "Condividi";
+"Edit" = "Edita";
+"Back" = "Indietro";
+"Save" = "Salva";
+"Follow" = "Segui";
+"Unfollow" = "Non Seguire";
+"Follow_all" = "Segui tutti";
+"Continue" = "Continua";
+"Add" = "Aggiungere";
+"Allow" = "Permettere";
+"Ignore" = "Ignorare";
+"Sort_by" = "Ordina per";
+"Select" = "Seleziona";
+"Confirm" = "Conferma";
+"Rate" = "Dai la tua valutazione";
+"Pull_Down_To_Refresh" = "Tirare verso il basso per aggiornare...";
+"Release_To_Refresh" = "Rilasciare per aggiornare...";
+
+// Messages
+"Hello" = "Ciao";
+"Welcome" = "Benvenuto";
+"Processing" = "In corso...";
+"Loading" = "In caricamento...";
+
+// Sign-in/up
+"Name" = "Nome";
+"Username" = "Nome Utente";
+"Password" = "Password";
+"Email" = "Email";
+"Sign_In" = "Registrati";
+"Sign_Up" = "Sign up";                                                          // Missing
+"Create_An_Account" = "Crea un account";
+"Forgot_Password" = "Hai dimenticato la tua Password?";
+"Terms_Of_Service" = "Termini del Servizio";
+"Invalid_Username" = "Il tuo username non sembra essere valido. Per favore, adopera soltanto lettere, numeri e il segno di trattino basso.";
+"Invalid_Email" = "L'email non sembra essere valida.";
+
+// Time
+"Less_Than_A_Minute_Ago" = "meno di 1 minuto fa...";
+"One_Minute_Ago" = "1 minuto fa";
+"One_Hour_Ago" = "1 ora fa";
+"One_Day_Ago" = "1 giorno fa";
+"One_Month_Ago" = "1 mese fa";
+"One_Year_Ago" = "1 anno fa";
+"%d_Minutes_Ago" = "%d minuti fa";
+"%d_Hours_Ago" = "%d ore fa";
+"%d_Days_Ago" = "%d giorni fa";
+"%d_Months_Ago" = "%d mesi fa";
+"%d_Years_Ago" = "%d anni fa";
+"Yesterday" = "Ieri";
+
+// Social
+"Facebook" = "Facebook";
+"Tumblr" = "Tumblr";
+"Twitter" = "Twitter";
+"Gmail" = "Gmail";
+"Friend" = "Amico";
+"Friends" = "Amici";
+"Follower" = "Seguace";
+"Followers" = "Seguaci";
+"Following" = "Amici";
+"Notifications" = "Notifiche";
+"Profile_Picture" = "Foto del profilo";
+
+// App Store
+"App_Store_Rate" = "Per favore, esprimi un giudizio su di noi nell'App Store";
+
+// Camera
+"Take_Photo" = "Scatta Foto";
+"Choose_Existing_Photo" = "Scegli Foto Esistente";
+
+// Miscellaneous
+"Address_Book" = "Book degli Indirizzi";
+"None" = "Nessuno";
+"Link" = "Link";
+"Version" = "Versione";
+
+// Generic errors
+"Error" = "Errore";
+"Warning" = "Avvertenza";
+"Error_Try_Again" = "Errore!\nRiprova";
+"Connection_Error_Try_Again" = "Errore !\nRiprova";
+"No_Internet_Error" = "La connessione a Internet sembra essere disattivata. Ripristinare la connessione.";
+"Application_Outdated" = "L'applicazione è obsoleta.\nPer favore, aggiornala";

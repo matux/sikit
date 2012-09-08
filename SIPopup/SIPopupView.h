@@ -24,7 +24,6 @@
 
 @interface SIPopupView : UIView
 
-
 @property (atomic, readwrite, assign) CGFloat arcRadius;
 @property (nonatomic, readwrite, unsafe_unretained) id <SIPopupViewDelegate> delegate;
 @property (nonatomic, readwrite, retain) UIColor *backgroundColor;

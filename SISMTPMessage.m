@@ -21,9 +21,9 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
 
 @interface SISMTPMessage ()
 
-@property(nonatomic, retain) NSMutableString *inputString;
-@property(nonatomic, retain) NSTimer *connectTimer;
-@property(nonatomic, retain) NSTimer *watchdogTimer;
+@property (nonatomic, readwrite, retain) NSMutableString *inputString;
+@property (nonatomic, readwrite, retain) NSTimer *connectTimer;
+@property (nonatomic, readwrite, retain) NSTimer *watchdogTimer;
 
 - (void)parseBuffer;
 - (BOOL)sendParts;
@@ -36,12 +36,6 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
 @end
 
 @implementation SISMTPMessage
-
-@synthesize login, pass, relayHost, relayPorts, subject, fromEmail, toEmail, \
-			parts, requiresAuth, inputString, wantsSecure, delegate, \
-			connectTimer, connectTimeout, watchdogTimer, validateSSLChain;
-@synthesize ccEmail;
-@synthesize bccEmail;
 
 - (id)init
 {

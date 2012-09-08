@@ -14,11 +14,6 @@
 
 @implementation SIPopupView
 
-@synthesize arcRadius = _arcRadius;
-@synthesize delegate = _delegate;
-@synthesize backgroundColor = _backgroundColor;
-@synthesize parentPopupDisplayer = _parentPopupDisplayer;
-
 - (id)initWithFrame:(CGRect)frame
 {
     if( self = [super initWithFrame:frame] )

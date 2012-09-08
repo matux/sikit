@@ -28,22 +28,6 @@
 
 @implementation SIAppStoreUtil
 
-@synthesize delegate = _delegate;
-
-@synthesize appStoreID = _appStoreID;
-@synthesize appStoreCountry = _appStoreCountry;
-@synthesize applicationName = _applicationName;
-@synthesize applicationVersion = _applicationVersion;
-@synthesize applicationBuildNumber = _applicationBuildNumber;
-@synthesize applicationBundleID = _applicationBundleID;
-
-@synthesize declinedToRateThisVersion = _declinedToRateThisVersion;
-@synthesize ratedThisVersion = _ratedThisVersion;
-@synthesize isLatestVersion = _isLatestVersion;
-@synthesize lastTimeReminded = _lastTimeReminded;
-@synthesize executionCount = _executionCount;
-@synthesize executionCountBeforePromptingForRating = _executionCountBeforePromptingForRating;
-
 #pragma mark -
 #pragma mark init
 

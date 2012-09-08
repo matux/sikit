@@ -11,8 +11,6 @@
 
 @implementation SIPopupDisplayer
 
-@synthesize popupView = _popupView;
-
 - (id)initWithPopupView:(SIPopupView *)popupView
 {
     if( self = [super init] )

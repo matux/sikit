@@ -3,7 +3,7 @@
 //  SIKit
 //
 //  Created by Matias Pequeno on 7/8/12.
-//  Copyright (c) 2012 WHI, Inc. All rights reserved.
+//  Copyright (c) 2012 Silicon Illusions, Inc. All rights reserved.
 //
 
 #include "SILogging.h"

@@ -7,7 +7,7 @@
  * http://www.brenwill.com
  *
  * Additionals: Matias Pequeno on 2012-07-08
- * Copyright (c) 2012 WHI, Inc. All rights reserved.
+ * Copyright (c) 2012 Silicon Illusions, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

@@ -6,8 +6,6 @@
 //  Copyright 2010 Silicon Illusions, Inc. All rights reserved.
 //
 
-#pragma once
-
 @interface NSStream (SIExtension)
 
 + (void)getStreamsToHostNamed:(NSString *)hostName port:(NSInteger)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;

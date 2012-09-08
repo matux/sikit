@@ -3,19 +3,14 @@
 //  SIKit
 //
 //  Created by Matias Pequeno on 7/2/09.
-//  Copyright 2009-2010 Silicon Illusions, Inc. All rights reserved.
+//  Copyright 2009 Silicon Illusions, Inc. All rights reserved.
 //
-
-#pragma once
 
 #import <UIKit/UIKit.h>
 #import <CFNetwork/CFNetwork.h>
 #include <netinet/in.h>
 
-#import "UIView+SIPopup.h"
 #import "SISMTPMessage.h"
-#import "SIAppStoreUtil.h" // Forward header declaration
-#import "SIFoundationExtension.h" // Forward header declaration
 
 @class UIImage;
 

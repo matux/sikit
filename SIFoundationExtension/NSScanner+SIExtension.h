@@ -6,8 +6,6 @@
 //  Copyright 2010 Silicon Illusions, Inc. All rights reserved.
 //
 
-#pragma once
-
 @interface NSScanner (SIExtension)
 
 - (NSString *)remainingString;

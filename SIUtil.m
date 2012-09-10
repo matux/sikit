@@ -29,14 +29,6 @@
 #pragma mark -
 #pragma mark System Utility
 
-NSString *SIResolveIdiom(NSString *concat)
-{
-    if( concat )
-        return [concat stringByAppendingString:(SI_IDIOM_IS_IPHONE?@"_iPhone":@"_iPad")];
-    else
-        return (SI_IDIOM_IS_IPHONE?@"_iPhone":@"_iPad");
-}
-
 OSVersion SIOSVersion(void)
 {
 	OSVersion v;
@@ -268,22 +260,6 @@ UIView *SIRetrieveKeyboardView(void)
 	return nil;
 }
 
-BOOL SIIdiomIsPhone()
-{
-    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone);
-}
-
-BOOL SIIdiomIsPad()
-{
-    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-}
-
-NSString *SIConcatIdiom(NSString *concat)
-{
-    return [concat stringByAppendingString:(SIIdiomIsPhone()?@"_iPhone":@"_iPad")];
-}
-
-
 #pragma mark -
 #pragma mark Graphics Utility
 
@@ -294,7 +270,7 @@ CGSize SIStatusBarSize(void)
 
 float SINavigationBarHeight(void)
 {
-    return SI_IDIOM_IS_IPHONE?32.f:44.f;
+    return SIIdiomIsPhone()?32.f:44.f;
 }
 
 CGSize SIScreenSize(void)

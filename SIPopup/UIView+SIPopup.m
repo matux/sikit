@@ -25,10 +25,7 @@ static char const * const kPopupDisplayerKey = "PopupDisplayerKey";
 {
     if( [self popupDisplayer] )
         [NSException raise:@"SIPopupIsVisibleException" format:@"- [UIView showPopupWithText:andDuration:andStyle:] reached while popup is still visible."];
-
-    //dispatch_async(dispatch_get_main_queue(), ^{
-    //[self performSelectorOnMainThread:(SEL)aSelector withObject:nil waitUntilDone:NO]
-
+    
     SIPopupView *popupView = nil;
     switch( style ) {
         case SIPopupStyleNormal:

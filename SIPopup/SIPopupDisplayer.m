@@ -70,13 +70,11 @@
 {
     [self displayInView:otherView isModal:YES];
 
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        
+    [NSThread executeInNewThread: ^ {
 		block();
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self hide];
-		});
-	});
+        [NSThread executeInMainThread: ^ { [self hide]; }
+                        waitUntilDone:NO];
+	} withQueuePriority:DISPATCH_QUEUE_PRIORITY_BACKGROUND];
 }
 
 @end

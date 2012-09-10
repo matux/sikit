@@ -16,6 +16,7 @@
 #import "NSScanner+SIExtension.h"
 #import "NSStream+SIExtension.h"
 #import "NSString+SIExtension.h"
+#import "NSThread+SIExtension.h"
 #import "NSURL+SIExtension.h"
 
 // CoreFoundation

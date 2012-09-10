@@ -53,11 +53,9 @@ typedef struct _OSVersion {
 	NSString *string;
 } OSVersion;
 
-#define SI_IDIOM_IS_IPHONE  [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone
-NSString *SIResolveIdiom(NSString *concat);
-
 // Phone properties
 OSVersion SIOSVersion(void);
+FOUNDATION_STATIC_INLINE float SIOSVersionFloat(void) { return SIOSVersion().decimalVersion; }
 SIDeviceModel SIRetrieveDeviceModel(void);
 NSString *SIRetrieveDeviceModelUsingAppleFormat(void);
 NSString *SIParseDeviceModel(SIDeviceModel model);
@@ -67,9 +65,9 @@ NSDictionary *SIGlobalPreferences(void);
 NSString *SIApplicationDocumentsDirectory(void); /*! @discussion Returns the path to the application's Documents directory. */
 BOOL SIMultitaskingSupport(void);
 BOOL SIRunningOnSimulator(void);
-BOOL SIIdiomIsPhone(void);
-BOOL SIIdiomIsPad(void);
-NSString *SIConcatIdiom(NSString *concat);
+FOUNDATION_STATIC_INLINE BOOL SIIdiomIsPhone(void)  { return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone); }
+FOUNDATION_STATIC_INLINE BOOL SIIdiomIsPad(void)    { return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad); }
+FOUNDATION_STATIC_INLINE NSString *SIConcatIdiom(NSString *concat)  { return [concat stringByAppendingString:(SIIdiomIsPhone()?@"_iPhone":@"_iPad")]; }
 
 // Phone functions
 void SISendSMS(NSString *number);
@@ -84,16 +82,17 @@ BOOL SIDebuggerAttached(void);
 #pragma mark -
 #pragma mark Language Utility
 
+#define SI_GCD_AVAILABLE  (SIOSVersionFloat() >= 4.f)
+
 #if OBJC_API_VERSION >= 2
-	// with Objective-C 2.0 runtime, we can compare using runtime-provided function
-	#import <objc/runtime.h>
-	FOUNDATION_STATIC_INLINE BOOL SIEqualSelectors(SEL a, SEL b) { return sel_isEqual(a, b); }
+    // with Objective-C 2.0 runtime, we can compare using runtime-provided function
+#   define SIEqualSelectors(a, b)   sel_isEqual(a, b)
 #else
 	// without Objective-C 2.0 runtime, just use pre-Leopard comparison
-	FOUNDATION_STATIC_INLINE BOOL SIEqualSelectors(SEL a, SEL b) { return (a == b); }
+#   define SIEqualSelectors(a, b)   (a == b)
 #endif
 
-// Allow modern Objective-C literals in pre-6.0 SDKs
+// Allow modern Objective-C literals when compiling in pre-6.0 SDKs
 #if __IPHONE_OS_VERSION_MAX_ALLOWED < 60000
 @interface NSDictionary(subscripts)
 - (id)objectForKeyedSubscript:(id)key;

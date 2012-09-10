@@ -33,15 +33,23 @@
 
 + (SIAppStoreUtil *)appStoreUtil
 {
-    static dispatch_once_t predicate = 0;
     __strong static SIAppStoreUtil *_appStoreUtil = nil;
     
-    dispatch_once(&predicate, ^{
-        _appStoreUtil = [[self alloc] init];
-    });
-    
+    if( SI_GCD_AVAILABLE )
+    {
+        static dispatch_once_t predicate = 0;
+        dispatch_once(&predicate, ^ {
+            _appStoreUtil = [[self alloc] init];
+        });
+    }
+    else
+    {
+        if( __builtin_expect(!_appStoreUtil, false)  )
+            _appStoreUtil = [[self alloc] init];
+    }
+
     return _appStoreUtil;
-    
+
 }
 
 - (id)init

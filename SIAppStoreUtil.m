@@ -142,10 +142,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"\n \
-            ******************************\n \
-            * SIAppStoreUtil description *\n \
-            ******************************\n \
+    return [NSString stringWithFormat:@"SIAppStoreUtil description\n \
             appStoreID: %d\n \
             appStoreCountry: %@\n \
             applicationName: %@\n \

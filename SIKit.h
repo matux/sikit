@@ -13,7 +13,6 @@
 
 #import "SIAppStoreUtil.h"
 #import "SIFoundationExtension.h"
-#import "SILogging.h"
 #import "SISMTPMessage.h"
 
 #import "UIView+SIPopup.h"

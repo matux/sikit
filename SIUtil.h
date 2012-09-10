@@ -62,7 +62,7 @@ NSString *SIParseDeviceModel(SIDeviceModel model);
 NSString *SIApplicationVersion(void); /*! @discussion make it: inline (...) __attribute__((always_inline)) */
 NSString *SIPhoneNumber(void);
 NSDictionary *SIGlobalPreferences(void);
-NSString *SIApplicationDocumentsDirectory(void); /*! @discussion Returns the path to the application's Documents directory. */
+NSURL *SIApplicationDocumentsDirectory(); /*! @discussion Returns the path to the application's Documents directory. */
 BOOL SIMultitaskingSupport(void);
 BOOL SIRunningOnSimulator(void);
 FOUNDATION_STATIC_INLINE BOOL SIIdiomIsPhone(void)  { return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone); }

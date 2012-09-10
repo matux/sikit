@@ -146,9 +146,9 @@ NSDictionary *SIGlobalPreferences(void)
 	return dict;
 }
 
-NSString *SIApplicationDocumentsDirectory(void)
+NSURL *SIApplicationDocumentsDirectory()
 {
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
 BOOL SIMultitaskingSupport(void)
@@ -174,7 +174,7 @@ double SIAvailableMemory(void)
 void SIEnableDebugToFile(NSString *filename)
 {
 	// Create OS specific path
-	const char *path = [[SIApplicationDocumentsDirectory() stringByAppendingPathComponent:filename] UTF8String];
+	const char *path = [[[SIApplicationDocumentsDirectory() absoluteString] stringByAppendingPathComponent:filename] UTF8String];
 	// Specify stderr writes to a file (truncating contents first) 
 	freopen(path, "w", stderr);
 	

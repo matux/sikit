@@ -84,14 +84,6 @@ BOOL SIDebuggerAttached(void);
 
 #define SI_GCD_AVAILABLE  (SIOSVersionFloat() >= 4.f)
 
-#if OBJC_API_VERSION >= 2
-    // with Objective-C 2.0 runtime, we can compare using runtime-provided function
-#   define SIEqualSelectors(a, b)   sel_isEqual(a, b)
-#else
-	// without Objective-C 2.0 runtime, just use pre-Leopard comparison
-#   define SIEqualSelectors(a, b)   (a == b)
-#endif
-
 // Allow modern Objective-C literals when compiling in pre-6.0 SDKs
 #if __IPHONE_OS_VERSION_MAX_ALLOWED < 60000
 @interface NSDictionary(subscripts)
@@ -108,15 +100,9 @@ BOOL SIDebuggerAttached(void);
 @end
 #endif
 
-#define SI_UNUSED(v) (void *)v;
-#define SI_RELEASENIL(o) [o release]; o = nil; /*! @discussion Do NOT pass properties with self., pass the pointer variable directly */
-
 #pragma mark -
 #pragma mark Graphics Utility
 
-#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
-												 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
-												  blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 CGSize SIStatusBarSize(void);
 float SINavigationBarHeight(void);
 CGSize SIScreenSize(void);
@@ -131,6 +117,13 @@ void SIBeginCurveAnimation(float duration);
 void SICommitCurveAnimation(void);
 NSString *SIStringFromRect(CGRect r);
 BOOL SIIsRetina(void);
+
+#pragma mark
+#pragma mark Orientation Utility
+
+BOOL SICurrentOrientationIsPortrait(void);
+BOOL SICurrentOrientationIsLandscape(void);
+BOOL SICurrentOrientationIsFacingUpOrDown(void);
 UIInterfaceOrientation SIInterfaceOrientationFromDeviceOrientation(UIDeviceOrientation deviceOrientation);
 NSString *SIInterfaceOrientationToString(UIInterfaceOrientation interfaceOrientation);
 

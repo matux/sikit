@@ -565,6 +565,27 @@ BOOL SIIsRetina(void)
     return [[UIScreen mainScreen] scale] > 1.f;
 }
 
+#pragma mark
+#pragma mark Orientation Utility
+
+BOOL SICurrentOrientationIsPortrait(void)
+{
+    if (UIDeviceOrientationIsValidInterfaceOrientation([[UIDevice currentDevice] orientation]))
+        return UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]);
+    else
+        return UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation);
+}
+
+BOOL SICurrentOrientationIsLandscape(void)
+{
+    return !SICurrentOrientationIsPortrait();
+}
+
+BOOL SICurrentOrientationIsFacingUpOrDown(void)
+{
+    return !UIDeviceOrientationIsValidInterfaceOrientation([[UIDevice currentDevice] orientation]);
+}
+
 UIInterfaceOrientation SIInterfaceOrientationFromDeviceOrientation(UIDeviceOrientation deviceOrientation)
 {
     UIInterfaceOrientation interfaceOrientation = 0;

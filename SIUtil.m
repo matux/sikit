@@ -3,7 +3,7 @@
 //  SIKit
 //
 //  Created by Matias Pequeno on 11/30/09.
-//  Copyright 2009 . All rights reserved.
+//  Copyright 2009 Silicon Illusions, Inc. All rights reserved.
 //
 
 #import "SIUtil.h"
@@ -35,10 +35,10 @@ OSVersion SIOSVersion(void)
 	
 	v.string = [[UIDevice currentDevice] systemVersion];
 	NSArray *vA = [v.string componentsSeparatedByString:@"."];
-	v.major = [((NSString *)[vA objectAtIndex:0]) intValue];
-	v.minor = [((NSString *)[vA objectAtIndex:1]) intValue];
+	v.major = [((NSString *)vA[0]) intValue];
+	v.minor = [((NSString *)vA[1]) intValue];
 	v.decimalVersion = (float)v.major + ((float)v.minor / 10.f);
-	v.build = [vA count] > 2 ? [((NSString *)[vA objectAtIndex:2]) intValue] : 0;
+	v.build = [vA count] > 2 ? [((NSString *)vA[2]) intValue] : 0;
 	
 	return v;
 }
@@ -52,7 +52,7 @@ NSString *SIRetrieveDeviceModelUsingAppleFormat(void)
 	sysctlbyname("hw.machine", NULL, &size, NULL, 0);
 	char *machine = malloc(size);
 	sysctlbyname("hw.machine", machine, &size, NULL, 0);
-	NSString *platform = [NSString stringWithUTF8String:machine];
+	NSString *platform = @(machine);
 	free(machine);
 
 	return platform;
@@ -67,7 +67,7 @@ SIDeviceModel SIRetrieveDeviceModel(void)
 		sysctlbyname("hw.machine", NULL, &size, NULL, 0);
 		char *machine = malloc(size);
 		sysctlbyname("hw.machine", machine, &size, NULL, 0);
-		NSString *platform = [NSString stringWithUTF8String:machine];
+		NSString *platform = @(machine);
 		free(machine);
 		
 		if(      [platform isEqualToString:@"iPhone1,1"] )	cachedDeviceModel = SIDM_IPHONE_EDGE;
@@ -229,7 +229,7 @@ void SICallNumber(NSString *number)
 	NSCharacterSet *charsToRemove = [NSCharacterSet characterSetWithCharactersInString:@":"];
 	NSArray *array = [number componentsSeparatedByCharactersInSet:charsToRemove];
 	// (index 0 is the category, index 1 is the ": " string, index 2 is finally the complete number
-	NSString *cleanNumber = [array objectAtIndex:1];
+	NSString *cleanNumber = array[1];
 	LogInfo(@"about to call %@", cleanNumber);
 	NSString *url = [[@"tel://" stringByAppendingString:cleanNumber] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
 	
@@ -561,6 +561,36 @@ NSString *SIStringFromRect(CGRect r)
     return [NSString stringWithFormat:@"%f, %f, %f, %f", r.origin.x, r.origin.y, r.size.width, r.size.height];
 }
 
+BOOL SIIsRetina(void)
+{
+    return [[UIScreen mainScreen] scale] > 1.f;
+}
+
+UIInterfaceOrientation SIInterfaceOrientationFromDeviceOrientation(UIDeviceOrientation deviceOrientation)
+{
+    UIInterfaceOrientation interfaceOrientation = 0;
+    switch( deviceOrientation ) {
+        case UIDeviceOrientationPortrait:           interfaceOrientation = UIInterfaceOrientationPortrait; break;
+        case UIDeviceOrientationPortraitUpsideDown: interfaceOrientation = UIInterfaceOrientationPortraitUpsideDown; break;
+        case UIDeviceOrientationLandscapeLeft:      interfaceOrientation = UIInterfaceOrientationLandscapeRight; break;
+        case UIDeviceOrientationLandscapeRight:     interfaceOrientation = UIInterfaceOrientationLandscapeLeft; break;
+        default:
+            interfaceOrientation = 0;
+    }
+    
+    return interfaceOrientation;
+}
+
+NSString *SIInterfaceOrientationToString(UIInterfaceOrientation interfaceOrientation)
+{
+    switch( interfaceOrientation ) {
+        case UIInterfaceOrientationPortrait:            return @"UIInterfaceOrientationPortrait";
+        case UIInterfaceOrientationPortraitUpsideDown:  return @"UIInterfaceOrientationPortraitUpsideDown";
+        case UIInterfaceOrientationLandscapeLeft:       return @"UIInterfaceOrientationLandscapeLeft";
+        case UIInterfaceOrientationLandscapeRight:      return @"UIInterfaceOrientationLandscapeRight";
+    }
+}
+
 #pragma mark -
 #pragma mark UIView Utility
 
@@ -699,21 +729,20 @@ void SISendEmailWithAttachment(NSString *to, NSString *subject, NSString *body, 
     // mail.validateSSLChain = NO; // Only do this for self-signed certs!
     mail.delegate = delegate;
     
-    NSDictionary *plainPart = [NSDictionary dictionaryWithObjectsAndKeys:@"text/plain", kSISMTPPartContentTypeKey,
-																		 body, kSISMTPPartMessageKey, 
-																		 @"8bit", kSISMTPPartContentTransferEncodingKey, nil];
+    NSDictionary *plainPart = @{kSISMTPPartContentTypeKey: @"text/plain",
+                                kSISMTPPartMessageKey: body,
+                                kSISMTPPartContentTransferEncodingKey: @"8bit"};
     
 	NSString *filename = [attachment lastPathComponent];
 	NSString *typeKey = [NSString stringWithFormat:@"text/directory;\r\n\tx-unix-mode=0644;\r\n\tname=\"%@\"", filename];
 	NSString *contentDisposition = [NSString stringWithFormat:@"attachment;\r\n\tfilename=\"%@\"", filename];
     NSData *attachmentData = [NSData dataWithContentsOfFile:attachment];
-    NSDictionary *attachmentPart = [NSDictionary dictionaryWithObjectsAndKeys:
-									typeKey, kSISMTPPartContentTypeKey,
-									contentDisposition, kSISMTPPartContentDispositionKey,
-									[attachmentData base64EncodedString], kSISMTPPartMessageKey,
-									@"base64", kSISMTPPartContentTransferEncodingKey, nil];
+    NSDictionary *attachmentPart = @{kSISMTPPartContentTypeKey: typeKey,
+                                     kSISMTPPartContentDispositionKey: contentDisposition,
+                                     kSISMTPPartMessageKey: [attachmentData encodeBase64ForData],
+                                     kSISMTPPartContentTransferEncodingKey: @"base64"};
     
-    [mail setParts:[NSArray arrayWithObjects:plainPart, attachmentPart, nil]];
+    [mail setParts:@[plainPart, attachmentPart]];
     [mail send];
 	
 }
@@ -750,8 +779,7 @@ NSString *SIIPAddressForHost(NSString *theHost)
 	}
 	
 	struct in_addr **list = (struct in_addr **)host->h_addr_list;
-	NSString *addressString = [NSString stringWithUTF8String:inet_ntoa(*list[0])];
-	//NSString *addressString = [NSString stringWithCString:inet_ntoa(*list[0])];
+	NSString *addressString = @(inet_ntoa(*list[0]));
 	
 	return addressString;
 }
@@ -853,6 +881,60 @@ CFIndex SIWriteStreamWriteFully(CFWriteStreamRef outputStream, const uint8_t* bu
     
     return bufferOffset;
 	
+}
+
+NSString *SIStringFromNetworkError(SINetworkErrorsExtended networkError)
+{
+    switch( networkError )
+    {
+            // Client Errors; 4xx
+        case kSIErrorClientBadRequest: return @"Bad Request";
+        case kSIErrorClientUnauthorized: return @"Unauthorized";
+        case kSIErrorClientPaymentRequired: return @"Payment Required";
+        case kSIErrorClientForbidden: return @"Forbidden";
+        case kSIErrorClientNotFound: return @"Not Found";
+        case kSIErrorClientMethodNotAllowed: return @"Method Not Allowed";
+        case kSIErrorClientNotAcceptable: return @"Not Acceptable";
+        case kSIErrorClientProxyAuthenticationRequired: return @"Proxy Authentication Required";
+        case kSIErrorClientRequestTimeout: return @"Request Timeout";
+        case kSIErrorClientConflict: return @"Conflict";
+        case kSIErrorClientGone: return @"Gone";
+        case kSIErrorClientLengthRequired: return @"Length Required";
+        case kSIErrorClientPreconditionFailed: return @"Precondition Failed";
+        case kSIErrorClientRequestEntityTooLarge: return @"Request Entity Too Large";
+        case kSIErrorClientRequestURITooLong: return @"Request URI Too Long";
+        case kSIErrorClientUnsupportedMediaType: return @"Unsupported Media Type";
+        case kSIErrorClientRequestedRangeNotSatisfiable: return @"Requested Range Not Satisfiable";
+        case kSIErrorClientExpectationFailed: return @"Expectation Failed";
+            // beyond rfc2616
+        case kSIErrorClientImaTeapot: return @"I'm a Teapot";                                       // IETF April Fools' jokes
+        case kSIErrorClientEnhanceYourCalm: return @"Enhance Your Calm";                            // non-standard, used by Twitter
+        case kSIErrorClientUnprocessableEntity: return @"Unprocessable Entity";                     // WebDAV; rfc4918
+        case kSIErrorClientLocked: return @"Locked";                                                // WebDAV; rfc4918
+        case kSIErrorClientFailedDependency: return @"Failed Dependency";                           // WebDAV; rfc4918
+        case kSIErrorClientUnorderedCollection: return @"Unordered Collection";
+        case kSIErrorClientUpgradeRequired: return @"Upgrade Required";                             // rfc2817
+        case kSIErrorClientPreconditionRequired: return @"Precondition Required";                   // rfc6585
+        case kSIErrorClientTooManyRequests: return @"Too Many Requests";                            // rfc6585
+        case kSIErrorClientRequestHeaderFieldsTooLarge: return @"Request Header Fields Too Large";  // rfc6585
+            
+            // Server Errors; 5xx
+        case kSIErrorServerInternalServerError: return @"Internal Server Error";
+        case kSIErrorServerNotImplemented: return @"Not Implemented";
+        case kSIErrorServerBadGateway: return @"Bad Gateway";
+        case kSIErrorServerServiceUnavailable: return @"Service Unavailable";
+        case kSIErrorServerGatewayTimeout: return @"Gateway Timeout";
+        case kSIErrorServerHTTPVersionNotSupported: return @"HTTP Version Not Supported";
+            // beyond rfc2616
+        case kSIErrorServerVariantAlsoNegotiates: return @"Variant Also Negotiates";                    // rfc 2295
+        case kSIErrorServerInsufficientStorage: return @"Insufficient Storage";                         // WebDAV; rfc4918
+        case kSIErrorServerLoopDetected: return @"Loop Detected";                                       // WebDAV; rfc5842
+        case kSIErrorServerBandwidthLimitExceeded: return @"Bandwidth Limit Exceeded";                  // Apache; non-standard
+        case kSIErrorServerNotExtended: return @"Not Extended";                                         // rfc2774
+        case kSIErrorServerNetworkAuthenticationRequired: return @"Network Authentication Required";    // rfc6585
+            
+        default: return @""; // This case caused a crash when not implemented.
+    }
 }
 
 #pragma mark -

@@ -26,6 +26,8 @@
 #define kAutomateExecutionTimeCount     false
 #define kForceDefaultReset              false
 
+#pragma mark -
+
 @implementation SIAppStoreUtil
 
 #pragma mark -
@@ -63,6 +65,10 @@
         self.applicationName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
         self.applicationBundleID = [[NSBundle mainBundle] bundleIdentifier];
         
+        self.executionCountBeforePromptingForRating = 3; // Default
+        
+        self.appTrackID = 0;
+        
         // If this is a new version, we have to reset the notification
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *lastVersionUsed = [userDefaults objectForKey:kLastVersionUsedKey];
@@ -78,7 +84,7 @@
             [userDefaults setInteger:0 forKey:kExecCountToRateKey];
             [userDefaults setObject:nil forKey:kRatedVersionKey];
             [userDefaults setObject:nil forKey:kDeclinedVersionKey];
-            [userDefaults setObject:[NSNumber numberWithBool:YES] forKey:kIsLatestVerUsedKey];
+            [userDefaults setObject:@(YES) forKey:kIsLatestVerUsedKey];
             [userDefaults setObject:nil forKey:kLastRemindedKey];
             [userDefaults synchronize];
         }
@@ -116,13 +122,13 @@
 
 - (BOOL)openRatingsPage
 {
-    if (self.appStoreID <= 0) {
+    if (![self appTrackIdIsValid]) {
         [self retrieveAppTrackID];
     }
     
-    if (self.appStoreID) { 
+    if (self.appTrackID) {
         
-        NSString *ratingURLString = [NSString stringWithFormat:kAppStoreURLFormat, (unsigned int)self.appStoreID];
+        NSString *ratingURLString = [NSString stringWithFormat:kAppStoreURLFormat, self.appTrackID];
         NSURL *ratingURL = [NSURL URLWithString:ratingURLString];
         LogAppStore(@"Opening URL %@", ratingURL);
         if( [[UIApplication sharedApplication] canOpenURL:ratingURL] ) 
@@ -132,43 +138,22 @@
             [[UIApplication sharedApplication] openURL:ratingURL];
         } 
         else 
-            [self setAppStoreID:0];
+            [self setAppTrackID:0];
         
     }
     
-    return (BOOL)self.appStoreID;
+    return (BOOL)self.appTrackID;
     
 }
 
-- (NSString *)description
+#pragma mark App Track ID methods
+
+- (BOOL)appTrackIdIsValid
 {
-    return [NSString stringWithFormat:@"SIAppStoreUtil description\n \
-            appStoreID: %d\n \
-            appStoreCountry: %@\n \
-            applicationName: %@\n \
-            applicationVersion: %@\n \
-            applicationBuildNumber: %@\n \
-            applicationBundleID: %@\n \
-            ----\n \
-            declinedToRateThisVersion: %@\n \
-            ratedThisVersion: %@\n \
-            isLatestVersion: %@\n \
-            lastTimeReminded: %@\n \
-            executionCount: %d\n \
-            executionCountBeforePromptingForRating: %d\n \
-            ----\n \
-            shouldPromptForRating: %@",
-            self.appStoreID, self.appStoreCountry, self.applicationName, self.applicationVersion, self.applicationBuildNumber,
-            self.applicationBundleID, self.declinedToRateThisVersion?@"YES":@"NO", self.ratedThisVersion?@"YES":@"NO",
-            self.isLatestVersion?@"YES":@"NO", self.lastTimeReminded, self.executionCount, self.executionCountBeforePromptingForRating, 
-            [self shouldPromptForRating]?@"YES":@"NO"];
-            
+    return self.appTrackID > 0;
 }
 
-#pragma mark -
-#pragma mark Private methods
-
-- (void)retrieveAppTrackID
+- (NSUInteger)retrieveAppTrackID
 {
     if( [_delegate respondsToSelector:@selector(willSyncWithItunesConnect)] )
         [_delegate willSyncWithItunesConnect];
@@ -185,15 +170,14 @@
     if( data )
     {
         // Get the JSON string
-        NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSString *json = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
         
         LogAppStore(@"iTunes Service - Got response with %d bytes", [data length]);
-        //LogQuiet(@"%@", json);
         
         // Track ID
-        NSString *appStoreIDString = SIValueInJsonForKey(json, @"trackId");
-        self.appStoreID = (NSUInteger)[appStoreIDString longLongValue];
-        LogAppStore(@"iTunes Service - Got appStoreID: %d", self.appStoreID);
+        NSString *appTrackIDString = SIValueInJsonForKey(json, @"trackId");
+        self.appTrackID = [appTrackIDString longLongValue];
+        LogAppStore(@"iTunes Service - Got appTrackID: %u", self.appTrackID);
         
         // Check version (we only want to rate if this is the latest version)
         NSString *latestVersion = SIValueInJsonForKey(json, @"version");
@@ -203,6 +187,7 @@
     if( [_delegate respondsToSelector:@selector(didFinishSyncWithItunesConnect)] )
         [_delegate didFinishSyncWithItunesConnect];
     
+    return self.appTrackID;
 }
 
 #pragma mark -
@@ -237,8 +222,8 @@
     LogAppStore(@"Incremented execution time to: %d - shouldPromptForRating: %@", 
                 (int)self.executionCount, ([self shouldPromptForRating]?@"YES":@"NO"));
     
-    LogAppStore(@"Challenge Details: (_ratedThisVersion:%@_declinedToRateThisVersion:%@_isLatestVersion:%@)",
-                (self.ratedThisVersion?@"YES":@"NO"), (self.declinedToRateThisVersion?@"YES":@"NO"), (self.isLatestVersion?@"YES":@"NO"));
+    //LogAppStore(@"Challenge Details: (_ratedThisVersion:%@_declinedToRateThisVersion:%@_isLatestVersion:%@)",
+    //            (self.ratedThisVersion?@"YES":@"NO"), (self.declinedToRateThisVersion?@"YES":@"NO"), (self.isLatestVersion?@"YES":@"NO"));
     
     if( [self shouldPromptForRating] && [_delegate respondsToSelector:@selector(applicationShouldPromptForRating)] )
          [_delegate applicationShouldPromptForRating];
@@ -264,7 +249,7 @@
 
 - (void)setIsLatestVersion:(BOOL)isLatestVersion
 {
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:isLatestVersion] forKey:kIsLatestVerUsedKey];
+    [[NSUserDefaults standardUserDefaults] setObject:@(isLatestVersion) forKey:kIsLatestVerUsedKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -290,6 +275,36 @@
     [[NSUserDefaults standardUserDefaults] setObject:(rated ? self.applicationVersion : nil) 
                                               forKey:kRatedVersionKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+#pragma mark 
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"\n \
+            ******************************\n \
+            * SIAppStoreUtil description *\n \
+            ******************************\n \
+            appTrackID: %u\n \
+            appStoreCountry: %@\n \
+            applicationName: %@\n \
+            applicationVersion: %@\n \
+            applicationBuildNumber: %@\n \
+            applicationBundleID: %@\n \
+            ----\n \
+            declinedToRateThisVersion: %@\n \
+            ratedThisVersion: %@\n \
+            isLatestVersion: %@\n \
+            lastTimeReminded: %@\n \
+            executionCount: %d\n \
+            executionCountBeforePromptingForRating: %d\n \
+            ----\n \
+            shouldPromptForRating: %@",
+            self.appTrackID, self.appStoreCountry, self.applicationName, self.applicationVersion, self.applicationBuildNumber,
+            self.applicationBundleID, self.declinedToRateThisVersion?@"YES":@"NO", self.ratedThisVersion?@"YES":@"NO",
+            self.isLatestVersion?@"YES":@"NO", self.lastTimeReminded, self.executionCount, self.executionCountBeforePromptingForRating,
+            [self shouldPromptForRating]?@"YES":@"NO"];
+    
 }
 
 @end

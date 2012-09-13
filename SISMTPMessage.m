@@ -7,7 +7,6 @@
 //
 
 #import "SISMTPMessage.h"
-#import "NSData+Base64.h"
 #import "SIFoundationExtension.h"
 #import "SIUtil.h"
 
@@ -155,17 +154,17 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
         [delegate messageFailed:self 
                           error:[NSError errorWithDomain:@"SISMTPMessageError" 
                                                     code:kSISMTPErrorConnectionFailed 
-                                                userInfo:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Unable to connect to the server.", @"server connection fail error description"),NSLocalizedDescriptionKey,
-                                                          NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery"),NSLocalizedRecoverySuggestionErrorKey,nil]]];
+                                                userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to connect to the server.", @"server connection fail error description"),
+                                                          NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery")}]];
         
         return NO;
     }
     
     // Grab the next relay port
-    short relayPort = [[relayPorts objectAtIndex:0] shortValue];
+    short relayPort = [relayPorts[0] shortValue];
     
     // Pop this off the head of the queue.
-    self.relayPorts = ([relayPorts count] > 1) ? [relayPorts subarrayWithRange:NSMakeRange(1, [relayPorts count] - 1)] : [NSArray array];
+    self.relayPorts = ([relayPorts count] > 1) ? [relayPorts subarrayWithRange:NSMakeRange(1, [relayPorts count] - 1)] : @[];
     
     NSLog(@"C: Attempting to connect to server at: %@:%d", relayHost, relayPort);
     
@@ -208,8 +207,8 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
         [delegate messageFailed:self 
                           error:[NSError errorWithDomain:@"SISMTPMessageError" 
                                                     code:kSISMTPErrorConnectionFailed 
-                                                userInfo:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Unable to connect to the server.", @"server connection fail error description"),NSLocalizedDescriptionKey,
-                                                          NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery"),NSLocalizedRecoverySuggestionErrorKey,nil]]];
+                                                userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to connect to the server.", @"server connection fail error description"),
+                                                          NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery")}]];
         
         return NO;
     }
@@ -249,8 +248,8 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                 [delegate messageFailed:self 
                                   error:[NSError errorWithDomain:@"SISMTPMessageError" 
                                                             code:kSISMTPErrorConnectionInterrupted 
-                                                        userInfo:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"The connection to the server was interrupted.", @"server connection interrupted error description"),NSLocalizedDescriptionKey,
-                                                                  NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery"),NSLocalizedRecoverySuggestionErrorKey,nil]]];
+                                                        userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The connection to the server was interrupted.", @"server connection interrupted error description"),
+                                                                  NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery")}]];
 				
             }
             
@@ -399,7 +398,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                             {
                                 sendState = kSISMTPWaitingAuthSuccess;
                                 NSString *loginString = [NSString stringWithFormat:@"\000%@\000%@", login, pass];
-                                NSString *authString = [NSString stringWithFormat:@"AUTH PLAIN %@\r\n", [[loginString dataUsingEncoding:NSUTF8StringEncoding] base64EncodedString]];
+                                NSString *authString = [NSString stringWithFormat:@"AUTH PLAIN %@\r\n", [[loginString dataUsingEncoding:NSUTF8StringEncoding] encodeBase64ForData]];
                                 NSLog(@"C: %@", authString);
                                 if( SIWriteStreamWriteFully((CFWriteStreamRef)outputStream, (const uint8_t *)[authString UTF8String], [authString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]) < 0 )
                                 {
@@ -430,8 +429,8 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                             {
                                 error = [NSError errorWithDomain:@"SISMTPMessageError" 
                                                             code:kSISMTPErrorUnsupportedLogin
-                                                        userInfo:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Unsupported login mechanism.", @"server unsupported login fail error description"),NSLocalizedDescriptionKey,
-                                                                  NSLocalizedString(@"Your server's security setup is not supported, please contact your system administrator or use a supported email account like MobileMe.", @"server security fail error recovery"),NSLocalizedRecoverySuggestionErrorKey,nil]];
+                                                        userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Unsupported login mechanism.", @"server unsupported login fail error description"),
+                                                                  NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Your server's security setup is not supported, please contact your system administrator or use a supported email account like MobileMe.", @"server security fail error recovery")}];
 								
                                 encounteredError = YES;
                             }
@@ -522,7 +521,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                     {
                         sendState = kSISMTPWaitingLOGINPasswordReply;
                         
-                        NSString *authString = [NSString stringWithFormat:@"%@\r\n", [[login dataUsingEncoding:NSUTF8StringEncoding] base64EncodedString]];
+                        NSString *authString = [NSString stringWithFormat:@"%@\r\n", [[login dataUsingEncoding:NSUTF8StringEncoding] encodeBase64ForData]];
                         NSLog(@"C: %@", authString);
                         if( SIWriteStreamWriteFully((CFWriteStreamRef)outputStream, (const uint8_t *)[authString UTF8String], [authString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]) < 0 )
                         {
@@ -543,7 +542,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                     {
                         sendState = kSISMTPWaitingAuthSuccess;
                         
-                        NSString *authString = [NSString stringWithFormat:@"%@\r\n", [[pass dataUsingEncoding:NSUTF8StringEncoding] base64EncodedString]];
+                        NSString *authString = [NSString stringWithFormat:@"%@\r\n", [[pass dataUsingEncoding:NSUTF8StringEncoding] encodeBase64ForData]];
                         NSLog(@"C: %@", authString);
                         if( SIWriteStreamWriteFully((CFWriteStreamRef)outputStream, (const uint8_t *)[authString UTF8String], [authString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]) < 0 )
                         {
@@ -580,8 +579,8 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                     {
                         error =[NSError errorWithDomain:@"SISMTPMessageError" 
                                                    code:kSISMTPErrorInvalidUserPass 
-                                               userInfo:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Invalid username or password.", @"server login fail error description"),NSLocalizedDescriptionKey,
-                                                         NSLocalizedString(@"Go to Email Preferences in the application and re-enter your username and password.", @"server login error recovery"),NSLocalizedRecoverySuggestionErrorKey,nil]];
+                                               userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Invalid username or password.", @"server login fail error description"),
+                                                         NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Go to Email Preferences in the application and re-enter your username and password.", @"server login error recovery")}];
                         encounteredError = YES;
                     }
                     break;
@@ -635,16 +634,16 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                     {
                         error =[NSError errorWithDomain:@"SISMTPMessageError" 
                                                    code:kSISMTPErrorNoRelay 
-                                               userInfo:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Relay rejected.", @"server relay fail error description"),NSLocalizedDescriptionKey,
-														 NSLocalizedString(@"Your server probably requires a username and password.", @"server relay fail error recovery"),NSLocalizedRecoverySuggestionErrorKey,nil]];
+                                               userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Relay rejected.", @"server relay fail error description"),
+														 NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Your server probably requires a username and password.", @"server relay fail error recovery")}];
                         encounteredError = YES;
                     }
                     else if ([tmpLine hasPrefix:@"550 "])
                     {
                         error =[NSError errorWithDomain:@"SISMTPMessageError" 
                                                    code:kSISMTPErrorInvalidMessage 
-                                               userInfo:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"To address rejected.", @"server to address fail error description"),NSLocalizedDescriptionKey,
-                                                         NSLocalizedString(@"Please re-enter the To: address.", @"server to address fail error recovery"),NSLocalizedRecoverySuggestionErrorKey,nil]];
+                                               userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"To address rejected.", @"server to address fail error description"),
+                                                         NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Please re-enter the To: address.", @"server to address fail error recovery")}];
                         encounteredError = YES;
                     }
                     break;
@@ -685,8 +684,8 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                     {
                         error =[NSError errorWithDomain:@"SISMTPMessageError" 
                                                    code:kSISMTPErrorInvalidMessage 
-                                               userInfo:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Failed to logout.", @"server logout fail error description"),NSLocalizedDescriptionKey,
-                                                         NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery"),NSLocalizedRecoverySuggestionErrorKey,nil]];
+                                               userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Failed to logout.", @"server logout fail error description"),
+                                                         NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery")}];
                         encounteredError = YES;
                     }
                 }
@@ -775,13 +774,13 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
     
     for (NSDictionary *part in parts)
     {
-        if ([part objectForKey:kSISMTPPartContentDispositionKey])
+        if (part[kSISMTPPartContentDispositionKey])
         {
-            [message appendFormat:@"Content-Disposition: %@\r\n", [part objectForKey:kSISMTPPartContentDispositionKey]];
+            [message appendFormat:@"Content-Disposition: %@\r\n", part[kSISMTPPartContentDispositionKey]];
         }
-        [message appendFormat:@"Content-Type: %@\r\n", [part objectForKey:kSISMTPPartContentTypeKey]];
-        [message appendFormat:@"Content-Transfer-Encoding: %@\r\n\r\n", [part objectForKey:kSISMTPPartContentTransferEncodingKey]];
-        [message appendString:[part objectForKey:kSISMTPPartMessageKey]];
+        [message appendFormat:@"Content-Type: %@\r\n", part[kSISMTPPartContentTypeKey]];
+        [message appendFormat:@"Content-Transfer-Encoding: %@\r\n\r\n", part[kSISMTPPartContentTransferEncodingKey]];
+        [message appendString:part[kSISMTPPartMessageKey]];
         [message appendString:@"\r\n"];
         [message appendString:separatorString];
     }
@@ -832,8 +831,8 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
     {
         NSError *error = [NSError errorWithDomain:@"SISMTPMessageError" 
                                              code:kSKPSMPTErrorConnectionTimeout 
-                                         userInfo:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Timeout sending message.", @"server timeout fail error description"),NSLocalizedDescriptionKey,
-                                                   NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery"),NSLocalizedRecoverySuggestionErrorKey,nil]];
+                                         userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Timeout sending message.", @"server timeout fail error description"),
+                                                   NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery")}];
         [delegate messageFailed:self error:error];
     }
     else

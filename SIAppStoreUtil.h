@@ -21,7 +21,7 @@
 @property (nonatomic, readwrite, unsafe_unretained) id <SIAppStoreUtilDelegate> delegate;
 
 // App Store and Application properties
-@property (nonatomic, readwrite, assign) NSInteger appStoreID;
+@property (nonatomic, readwrite, assign) NSUInteger appTrackID;
 @property (nonatomic, readwrite, copy) NSString *appStoreCountry;
 @property (nonatomic, readwrite, copy) NSString *applicationName;
 @property (nonatomic, readwrite, copy) NSString *applicationVersion;
@@ -40,10 +40,14 @@
 + (SIAppStoreUtil *)appStoreUtil;
 
 // Basic checking
-- (BOOL)shouldPromptForRating; 
+- (BOOL)shouldPromptForRating;
 
 // Opens up App Store ratings page
 - (BOOL)openRatingsPage;
+
+// App Track ID
+- (BOOL)appTrackIdIsValid;
+- (NSUInteger)retrieveAppTrackID;
 
 // Increments execution time by one
 // Returns whether or not a request for rating should be presented

@@ -121,6 +121,9 @@ UIImage *SIImageToGrayScale(UIImage *image);
 void SIBeginCurveAnimation(float duration);
 void SICommitCurveAnimation(void);
 NSString *SIStringFromRect(CGRect r);
+BOOL SIIsRetina(void);
+UIInterfaceOrientation SIInterfaceOrientationFromDeviceOrientation(UIDeviceOrientation deviceOrientation);
+NSString *SIInterfaceOrientationToString(UIInterfaceOrientation interfaceOrientation);
 
 #pragma mark -
 #pragma mark UIView Utility
@@ -143,6 +146,7 @@ BOOL SIHostAvailable(NSString *theHost); /*! @discussion Use NSURL */
 void SISendEmail(NSString *to, NSString *subject, NSString *body);
 void SISendEmailWithAttachment(NSString *to, NSString *subject, NSString *body, NSString *attachment, id <SISMTPMessageDelegate> delegate);
 void SIOpenWeb(NSString *url);
+NSString *SIStringFromNetworkError(SINetworkErrorsExtended networkError); /*! @discussion Only supports SINetworkErrorsExtended */
 
 // Streams
 void SIStreamCreatePairWithUNIXSocketPair(CFAllocatorRef alloc, CFReadStreamRef *readStream, CFWriteStreamRef *writeStream);

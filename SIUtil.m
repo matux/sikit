@@ -145,7 +145,7 @@ NSDictionary *SIGlobalPreferences(void)
 	return dict;
 }
 
-NSURL *SIApplicationDocumentsDirectory()
+NSURL *SIApplicationDocumentsDirectory(void)
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }

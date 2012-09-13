@@ -14,6 +14,8 @@
 - (NSString *)URLEncodedString;
 - (NSString *)URLDecodedString;
 
+- (NSString *)base64EncodedString;
+
 - (NSString *)truncatedString:(int)characters;
 - (NSString *)truncatedString:(int)characters charsLeftOut:(unsigned int *)charsLeftOut;
 

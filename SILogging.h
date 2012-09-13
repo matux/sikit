@@ -6,7 +6,7 @@
  * Copyright (c) 2010 The Brenwill Workshop Ltd. 
  * http://www.brenwill.com
  *
- * Additionals: Matias Pequeno on 2012-07-08
+ * Additionals: Matias Pequeno on 2012-09-13
  * Copyright (c) 2012 Silicon Illusions, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -83,7 +83,7 @@
 #import <Foundation/Foundation.h>
 
 #if defined(LOGGING_FORWARD_TO_TEST_FLIGHT) && LOGGING_FORWARD_TO_TEST_FLIGHT
-#   import "TestFlight/TestFlight.h"
+#   import "TestFlight.h"
 #endif
 
 #if defined(LOGGING_FORWARD_TO_CRASHLYTICS) && LOGGING_FORWARD_TO_CRASHLYTICS

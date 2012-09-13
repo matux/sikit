@@ -24,6 +24,7 @@
 
 // UserInterface
 #import "UIColor+SIExtension.h"
+#import "UIImage+SIExtension.h"
 #import "UINavigationItem+SIExtension.h"
 #import "UIScrollView+SIExtension.h"
 #import "UISearchBar+SIExtension.h"

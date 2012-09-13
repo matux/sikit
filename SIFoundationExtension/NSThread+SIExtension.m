@@ -3,7 +3,7 @@
 //  Crunch
 //
 //  Created by Matias Pequeno on 9/9/12.
-//  Copyright (c) 2012 AvatarLA. All rights reserved.
+//  Copyright (c) 2012 Silicon Illusions, Inc. All rights reserved.
 //
 
 #import "NSThread+SIExtension.h"

@@ -55,7 +55,7 @@ typedef struct _OSVersion {
 
 // Phone properties
 OSVersion SIOSVersion(void);
-FOUNDATION_STATIC_INLINE float SIOSVersionFloat(void) { return SIOSVersion().decimalVersion; }
+FOUNDATION_STATIC_INLINE float SIOSVersionFloat(void) { return [[[UIDevice currentDevice] systemVersion] floatValue]; }
 SIDeviceModel SIRetrieveDeviceModel(void);
 NSString *SIRetrieveDeviceModelUsingAppleFormat(void);
 NSString *SIParseDeviceModel(SIDeviceModel model);

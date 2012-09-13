@@ -17,6 +17,11 @@
 - (void)resizeBy:(CGSize)size;
 - (void)moveAndResizeBy:(CGRect)rect;
 
+- (void)setFrameX:(CGFloat)x;
+- (void)setFrameY:(CGFloat)y;
+- (void)setFrameHeight:(CGFloat)height;
+- (void)setFrameWidth:(CGFloat)width;
+
 - (void)removeAllSubviews;
 
 - (NSString *)frameDescriptionRecursive:(int)recursive;

@@ -70,6 +70,26 @@
 	self.bounds = CGRectMake(0, 0, _frame.size.width, _frame.size.height);
 }
 
+- (void)setFrameX:(CGFloat)x
+{
+    [self moveTo:CGPointMake(x, self.frame.origin.y)];
+}
+
+- (void)setFrameY:(CGFloat)y
+{
+    [self moveTo:CGPointMake(self.frame.origin.x, y)];
+}
+
+- (void)setFrameHeight:(CGFloat)height
+{
+    [self resizeTo:CGSizeMake(self.frame.size.width, height)];
+}
+
+- (void)setFrameWidth:(CGFloat)width
+{
+    [self resizeTo:CGSizeMake(width, self.frame.size.height)];
+}
+
 - (void)removeAllSubviews
 {
     for( UIView *subview in self.subviews )

@@ -13,4 +13,6 @@
 - (BOOL)isEmpty;
 - (NSDictionary *)indexKeyedDictionary;
 
+- (id)firstObject;
+
 @end

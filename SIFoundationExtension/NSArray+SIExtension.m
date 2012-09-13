@@ -30,4 +30,12 @@
     
 }
 
+- (id)firstObject
+{
+    if( [self isEmpty] )
+        return nil;
+    else
+        return self[0];
+}
+
 @end

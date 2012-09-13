@@ -76,8 +76,16 @@
 
 - (BOOL)isEmpty
 {
-    // return [[self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] == 0;
 	return [self length] == 0;
+}
+
+- (BOOL)isInvisible
+{
+    int length = [[self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
+    length += [[self stringByTrimmingCharactersInSet:[NSCharacterSet controlCharacterSet]] length];
+    length += [[self stringByTrimmingCharactersInSet:[NSCharacterSet illegalCharacterSet]] length];
+    
+    return length;
 }
 
 - (BOOL)containsString:(NSString *)string

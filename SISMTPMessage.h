@@ -55,52 +55,12 @@ extern NSString *kSISMTPPartContentTransferEncodingKey;
 @end
 
 @interface SISMTPMessage : NSObject <NSCopying, NSStreamDelegate>
-{
-    NSString *login;
-    NSString *pass;
-    NSString *relayHost;
-    NSArray *relayPorts;
-    
-    NSString *subject;
-    NSString *fromEmail;
-    NSString *toEmail;
-	NSString *ccEmail;
-	NSString *bccEmail;
-    NSArray *parts;
-    
-    NSOutputStream *outputStream;
-    NSInputStream *inputStream;
-    
-    BOOL requiresAuth;
-    BOOL wantsSecure;
-    BOOL validateSSLChain;
-    
-    SISMTPState sendState;
-    BOOL isSecure;
-    NSMutableString *inputString;
-    
-    // Auth support flags
-    BOOL serverAuthCRAMMD5;
-    BOOL serverAuthPLAIN;
-    BOOL serverAuthLOGIN;
-    BOOL serverAuthDIGESTMD5;
-    
-    // Content support flags
-    BOOL server8bitMessages;
-    
-    id <SISMTPMessageDelegate> delegate;
-    
-    NSTimeInterval connectTimeout;
-    
-    NSTimer *connectTimer;
-    NSTimer *watchdogTimer;
-}
 
 @property(nonatomic, copy) NSString *login;
 @property(nonatomic, copy) NSString *pass;
 @property(nonatomic, copy) NSString *relayHost;
-
 @property(nonatomic, retain) NSArray *relayPorts;
+
 @property(nonatomic, assign) BOOL requiresAuth;
 @property(nonatomic, assign) BOOL wantsSecure;
 @property(nonatomic, assign) BOOL validateSSLChain;

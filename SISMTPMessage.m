@@ -35,7 +35,23 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
 @end
 
 @implementation SISMTPMessage
-
+{
+    NSOutputStream *outputStream;
+    NSInputStream *inputStream;
+    
+    SISMTPState sendState;
+    BOOL isSecure;
+    
+    // Auth support flags
+    BOOL serverAuthCRAMMD5;
+    BOOL serverAuthPLAIN;
+    BOOL serverAuthLOGIN;
+    BOOL serverAuthDIGESTMD5;
+    
+    // Content support flags
+    BOOL server8bitMessages;
+}
+    
 - (id)init
 {
     static NSArray *defaultPorts = nil;
@@ -51,10 +67,10 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
         self.relayPorts = defaultPorts;
         
         // setup a default timeout (8 seconds)
-        connectTimeout = 8.0; 
+        _connectTimeout = 8.0;
         
         // by default, validate the SSL chain
-        validateSSLChain = YES;
+        _validateSSLChain = YES;
     }
     
     return self;
@@ -131,21 +147,21 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
 {
     NSAssert(sendState == kSISMTPIdle, @"Message has already been sent!");
     
-    if (requiresAuth)
+    if (_requiresAuth)
     {
-        NSAssert(login, @"auth requires login");
-        NSAssert(pass, @"auth requires pass");
+        NSAssert(_login, @"auth requires login");
+        NSAssert(_pass, @"auth requires pass");
     }
     
-    NSAssert(relayHost, @"send requires relayHost");
-    NSAssert(subject, @"send requires subject");
-    NSAssert(fromEmail, @"send requires fromEmail");
-    NSAssert(toEmail, @"send requires toEmail");
-    NSAssert(parts, @"send requires parts");
+    NSAssert(_relayHost, @"send requires relayHost");
+    NSAssert(_subject, @"send requires subject");
+    NSAssert(_fromEmail, @"send requires fromEmail");
+    NSAssert(_toEmail, @"send requires toEmail");
+    NSAssert(_parts, @"send requires parts");
     
-    if (![relayPorts count])
+    if (![_relayPorts count])
     {
-        [delegate messageFailed:self 
+        [_delegate messageFailed:self
                           error:[NSError errorWithDomain:@"SISMTPMessageError" 
                                                     code:kSISMTPErrorConnectionFailed 
                                                 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to connect to the server.", @"server connection fail error description"),
@@ -155,20 +171,20 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
     }
     
     // Grab the next relay port
-    short relayPort = [relayPorts[0] shortValue];
+    short relayPort = [_relayPorts[0] shortValue];
     
     // Pop this off the head of the queue.
-    self.relayPorts = ([relayPorts count] > 1) ? [relayPorts subarrayWithRange:NSMakeRange(1, [relayPorts count] - 1)] : @[];
+    self.relayPorts = ([_relayPorts count] > 1) ? [_relayPorts subarrayWithRange:NSMakeRange(1, [_relayPorts count] - 1)] : @[];
     
-    NSLog(@"C: Attempting to connect to server at: %@:%d", relayHost, relayPort);
+    NSLog(@"C: Attempting to connect to server at: %@:%d", _relayHost, relayPort);
     
-    self.connectTimer = [NSTimer scheduledTimerWithTimeInterval:connectTimeout
+    self.connectTimer = [NSTimer scheduledTimerWithTimeInterval:_connectTimeout
                                                          target:self
                                                        selector:@selector(connectionConnectedCheck:)
                                                        userInfo:nil 
                                                         repeats:NO];
     
-    [NSStream getStreamsToHostNamed:relayHost port:relayPort inputStream:&inputStream outputStream:&outputStream];
+    [NSStream getStreamsToHostNamed:_relayHost port:relayPort inputStream:&inputStream outputStream:&outputStream];
     if ((inputStream != nil) && (outputStream != nil))
     {
         sendState = kSISMTPConnecting;
@@ -198,7 +214,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
         [self.connectTimer invalidate];
         self.connectTimer = nil;
         
-        [delegate messageFailed:self 
+        [_delegate messageFailed:self
                           error:[NSError errorWithDomain:@"SISMTPMessageError" 
                                                     code:kSISMTPErrorConnectionFailed 
                                                 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to connect to the server.", @"server connection fail error description"),
@@ -221,7 +237,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
             if(len) 
             {
                 NSString *tmpStr = [[NSString alloc] initWithBytes:buf length:len encoding:NSUTF8StringEncoding];
-                [inputString appendString:tmpStr];
+                [_inputString appendString:tmpStr];
                 [tmpStr release];
                 
                 [self parseBuffer];
@@ -239,7 +255,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
             
             if (sendState != kSISMTPMessageSent)
             {
-                [delegate messageFailed:self 
+                [_delegate messageFailed:self
                                   error:[NSError errorWithDomain:@"SISMTPMessageError" 
                                                             code:kSISMTPErrorConnectionInterrupted 
                                                         userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The connection to the server was interrupted.", @"server connection interrupted error description"),
@@ -293,7 +309,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
 - (void)parseBuffer
 {
     // Pull out the next line
-    NSScanner *scanner = [NSScanner scannerWithString:inputString];
+    NSScanner *scanner = [NSScanner scannerWithString:_inputString];
     NSString *tmpLine = nil;
     
     NSError *error = nil;
@@ -366,7 +382,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                     {
                         server8bitMessages = YES;
                     }
-                    else if ([tmpLine hasPrefix:@"250-STARTTLS"] && !isSecure && wantsSecure)
+                    else if ([tmpLine hasPrefix:@"250-STARTTLS"] && !isSecure && _wantsSecure)
                     {
                         // if we're not already using TLS, start it up
                         sendState = kSISMTPWaitingTLSReply;
@@ -391,7 +407,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                             if (serverAuthPLAIN)
                             {
                                 sendState = kSISMTPWaitingAuthSuccess;
-                                NSString *loginString = [NSString stringWithFormat:@"\000%@\000%@", login, pass];
+                                NSString *loginString = [NSString stringWithFormat:@"\000%@\000%@", _login, _pass];
                                 NSString *authString = [NSString stringWithFormat:@"AUTH PLAIN %@\r\n", [[loginString dataUsingEncoding:NSUTF8StringEncoding] encodeBase64ForData]];
                                 NSLog(@"C: %@", authString);
                                 if( SIWriteStreamWriteFully((CFWriteStreamRef)outputStream, (const uint8_t *)[authString UTF8String], [authString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]) < 0 )
@@ -435,7 +451,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                             // Start up send from
                             sendState = kSISMTPWaitingFromReply;
                             
-                            NSString *mailFrom = [NSString stringWithFormat:@"MAIL FROM:<%@>\r\n", fromEmail];
+                            NSString *mailFrom = [NSString stringWithFormat:@"MAIL FROM:<%@>\r\n", _fromEmail];
                             NSLog(@"C: %@", mailFrom);
                             if( SIWriteStreamWriteFully((CFWriteStreamRef)outputStream, (const uint8_t *)[mailFrom UTF8String], [mailFrom lengthOfBytesUsingEncoding:NSUTF8StringEncoding]) < 0 )
                             {
@@ -515,7 +531,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                     {
                         sendState = kSISMTPWaitingLOGINPasswordReply;
                         
-                        NSString *authString = [NSString stringWithFormat:@"%@\r\n", [[login dataUsingEncoding:NSUTF8StringEncoding] encodeBase64ForData]];
+                        NSString *authString = [NSString stringWithFormat:@"%@\r\n", [[_login dataUsingEncoding:NSUTF8StringEncoding] encodeBase64ForData]];
                         NSLog(@"C: %@", authString);
                         if( SIWriteStreamWriteFully((CFWriteStreamRef)outputStream, (const uint8_t *)[authString UTF8String], [authString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]) < 0 )
                         {
@@ -536,7 +552,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                     {
                         sendState = kSISMTPWaitingAuthSuccess;
                         
-                        NSString *authString = [NSString stringWithFormat:@"%@\r\n", [[pass dataUsingEncoding:NSUTF8StringEncoding] encodeBase64ForData]];
+                        NSString *authString = [NSString stringWithFormat:@"%@\r\n", [[_pass dataUsingEncoding:NSUTF8StringEncoding] encodeBase64ForData]];
                         NSLog(@"C: %@", authString);
                         if( SIWriteStreamWriteFully((CFWriteStreamRef)outputStream, (const uint8_t *)[authString UTF8String], [authString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]) < 0 )
                         {
@@ -557,7 +573,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                     {
                         sendState = kSISMTPWaitingFromReply;
                         
-                        NSString *mailFrom = server8bitMessages ? [NSString stringWithFormat:@"MAIL FROM:<%@> BODY=8BITMIME\r\n", fromEmail] : [NSString stringWithFormat:@"MAIL FROM:<%@>\r\n", fromEmail];
+                        NSString *mailFrom = server8bitMessages ? [NSString stringWithFormat:@"MAIL FROM:<%@> BODY=8BITMIME\r\n", _fromEmail] : [NSString stringWithFormat:@"MAIL FROM:<%@>\r\n", _fromEmail];
                         NSLog(@"C: %@", mailFrom);
                         if (SIWriteStreamWriteFully((CFWriteStreamRef)outputStream, (const uint8_t *)[mailFrom cStringUsingEncoding:NSASCIIStringEncoding], [mailFrom lengthOfBytesUsingEncoding:NSASCIIStringEncoding]) < 0)
                         {
@@ -589,9 +605,9 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                         sendState = kSISMTPWaitingToReply;
                         
 						NSMutableString	*multipleRcptTo = [NSMutableString string];
-						[multipleRcptTo appendString:[self formatAddresses:toEmail]];
-						[multipleRcptTo appendString:[self formatAddresses:ccEmail]];
-						[multipleRcptTo appendString:[self formatAddresses:bccEmail]];
+						[multipleRcptTo appendString:[self formatAddresses:_toEmail]];
+						[multipleRcptTo appendString:[self formatAddresses:_ccEmail]];
+						[multipleRcptTo appendString:[self formatAddresses:_bccEmail]];
 						
                         NSLog(@"C: %@", multipleRcptTo);
                         if (SIWriteStreamWriteFully((CFWriteStreamRef)outputStream, (const uint8_t *)[multipleRcptTo UTF8String], [multipleRcptTo lengthOfBytesUsingEncoding:NSUTF8StringEncoding]) < 0)
@@ -700,19 +716,19 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
             break;
         }
     }
-    self.inputString = [[[inputString substringFromIndex:[scanner scanLocation]] mutableCopy] autorelease];
+    self.inputString = [[[_inputString substringFromIndex:[scanner scanLocation]] mutableCopy] autorelease];
     
     if (messageSent)
     {
         [self cleanUpStreams];
         
-        [delegate messageSent:self];
+        [_delegate messageSent:self];
     }
     else if (encounteredError)
     {
         [self cleanUpStreams];
         
-        [delegate messageFailed:self error:error];
+        [_delegate messageFailed:self error:error];
     }
 }
 
@@ -737,7 +753,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
     [dateFormatter release];
     [uuid release];
     
-    [message appendFormat:@"From:%@\r\n", fromEmail];
+    [message appendFormat:@"From:%@\r\n", _fromEmail];
 	
     
 	if ((self.toEmail != nil) && (![self.toEmail isEqualToString:@""])) 
@@ -752,7 +768,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
     
     [message appendString:@"Content-Type: multipart/mixed; boundary=SISMTPMessage--Separator--Delimiter\r\n"];
     [message appendString:@"Mime-Version: 1.0 (SISMTPMessage 1.0)\r\n"];
-    [message appendFormat:@"Subject:%@\r\n\r\n",subject];
+    [message appendFormat:@"Subject:%@\r\n\r\n",_subject];
     [message appendString:separatorString];
     
     NSData *messageData = [message dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -766,7 +782,7 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
     
     message = [[NSMutableString alloc] init];
     
-    for (NSDictionary *part in parts)
+    for (NSDictionary *part in _parts)
     {
         if (part[kSISMTPPartContentDispositionKey])
         {
@@ -827,11 +843,11 @@ NSString *kSISMTPPartContentTransferEncodingKey = @"kSISMTPPartContentTransferEn
                                              code:kSKPSMPTErrorConnectionTimeout 
                                          userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Timeout sending message.", @"server timeout fail error description"),
                                                    NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Try sending your message again later.", @"server generic error recovery")}];
-        [delegate messageFailed:self error:error];
+        [_delegate messageFailed:self error:error];
     }
     else
     {
-        [delegate messageSent:self];
+        [_delegate messageSent:self];
     }
 }
 

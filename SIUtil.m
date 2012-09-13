@@ -15,7 +15,6 @@
 
 #import "SIFoundationExtension.h"
 #import "Reachability.h"
-#import "NSData+Base64.h"
 
 #include <assert.h>
 #include <stdbool.h>

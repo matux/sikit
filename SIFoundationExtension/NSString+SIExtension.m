@@ -112,9 +112,9 @@
 
 - (BOOL)isInvisible
 {
-    int length = [[self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
-    length += [[self stringByTrimmingCharactersInSet:[NSCharacterSet controlCharacterSet]] length];
-    length += [[self stringByTrimmingCharactersInSet:[NSCharacterSet illegalCharacterSet]] length];
+    int length = [[self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] - [self length];
+    length += [[self stringByTrimmingCharactersInSet:[NSCharacterSet controlCharacterSet]] length] - [self length];
+    length += [[self stringByTrimmingCharactersInSet:[NSCharacterSet illegalCharacterSet]] length] - [self length];
     
     return length;
 }

@@ -117,6 +117,7 @@ void SIBeginCurveAnimation(float duration);
 void SICommitCurveAnimation(void);
 NSString *SIStringFromRect(CGRect r);
 BOOL SIIsRetina(void);
+BOOL SIIsTall(void);
 
 #pragma mark
 #pragma mark Orientation Utility

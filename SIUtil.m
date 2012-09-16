@@ -565,6 +565,35 @@ BOOL SIIsRetina(void)
     return [[UIScreen mainScreen] scale] > 1.f;
 }
 
+UIImage *SIRotateImageByDegrees(UIImage *image, CGFloat degrees)
+{
+    // Create the bitmap context
+    UIImage* self = image;
+    CGSize size = CGSizeMake(self.size.width *self.scale, self.size.height *self.scale);
+    UIGraphicsBeginImageContext(size);
+    CGContextRef bitmap = UIGraphicsGetCurrentContext();
+    
+    // Move the origin to the middle of the image so we will rotate and scale around the center.
+    CGContextTranslateCTM(bitmap, size.width/2, size.height/2);
+    
+    // Rotate the image context
+    CGContextRotateCTM(bitmap, SIDegreesToRadians(degrees));
+    
+    // Now, draw the rotated/scaled image into the context
+    CGContextScaleCTM(bitmap, 1.0, -1.0);
+    CGContextDrawImage(bitmap, CGRectMake(-size.width / 2, -size.height / 2, size.width, size.height), [self CGImage]);
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
+UIImage *SIRotateImageByRadians(UIImage *image, CGFloat radians)
+{
+    return SIRotateImageByDegrees(image, SIRadiansToDegrees(radians));
+}
+
 #pragma mark
 #pragma mark Orientation Utility
 

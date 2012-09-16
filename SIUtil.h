@@ -117,6 +117,8 @@ void SIBeginCurveAnimation(float duration);
 void SICommitCurveAnimation(void);
 NSString *SIStringFromRect(CGRect r);
 BOOL SIIsRetina(void);
+UIImage *SIRotateImageByDegrees(UIImage *image, CGFloat degrees);
+UIImage *SIRotateImageByRadians(UIImage *image, CGFloat radians);
 
 #pragma mark
 #pragma mark Orientation Utility
@@ -157,4 +159,6 @@ CFIndex SIWriteStreamWriteFully(CFWriteStreamRef outputStream, const uint8_t* bu
 #pragma mark -
 #pragma mark Math Utility
 
-float normB(unsigned char b);
+FOUNDATION_STATIC_INLINE double SIDegreesToRadians(double degrees) { return degrees * M_PI / 180.0; }
+FOUNDATION_STATIC_INLINE double SIRadiansToDegrees(double radians) { return radians * 180.0 / M_PI; }
+float SINormB(unsigned char b);

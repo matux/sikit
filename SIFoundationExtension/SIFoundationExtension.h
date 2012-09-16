@@ -12,6 +12,7 @@
 #import "NSCharacterSet+SIExtension.h"
 #import "NSData+SIExtension.h"
 #import "NSDate+SIExtension.h"
+#import "NSDictionary+SIExtension.h"
 #import "NSFetchRequest+SIExtension.h"
 #import "NSHTTPCookieStorage+SIExtension.h"
 #import "NSScanner+SIExtension.h"

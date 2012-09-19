@@ -134,13 +134,14 @@
     // If recursive, go nuts
     if( recursive /*&& [self.subviews count]*/ )
     {
-        // Padding (format)
-        for( int lvl = 0; lvl < recursive; ++lvl)
-            [description appendString:@"|\t"];
-        
         // Append subviews' frame info
-        for( UIView *view in self.subviews )
-            [description appendFormat:@"%@", [view frameDescriptionRecursive:++recursive]];
+        for( UIView *view in self.subviews ) {
+            // Padding (format)
+            for( int lvl = 0; lvl < recursive; ++lvl)
+                [description appendString:@"|\t"];
+            [description appendFormat:@"%@", [view frameDescriptionRecursive:recursive + 1]];
+        }
+    
     }
     
     return description;

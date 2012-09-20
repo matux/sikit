@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SIGridView.h"
 
-@interface SIGridViewController : UIViewController
+@interface SIGridViewController : UIViewController <SIGridViewDelegate, SIGridViewDataSourceDelegate>
+
+@property (nonatomic, readwrite, retain) SIGridView *gridView;
+
+@property (atomic, readwrite, assign) int screenWidth;
 
 @end

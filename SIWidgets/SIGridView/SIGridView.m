@@ -208,7 +208,7 @@
 
 - (void)handleCellTap:(UITapGestureRecognizer *)sender
 {
-    [self.delegate didSelectItemAtIndex:sender.view.tag];
+    [self.delegate gridView:self didSelectItemAtIndex:sender.view.tag];
 }
 
 - (void)addCell:(UIView *)cell
@@ -379,7 +379,7 @@
     // start loading when dragging is released
     if( _readyToLoadWhenReleased && !_loading )
     {
-        [self.delegate didEnterLoadingMode];
+        [self.delegate gridViewDidEnterLoadingMode:self];
         
         [UIView animateWithDuration:0.3f
                               delay:0

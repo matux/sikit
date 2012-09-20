@@ -11,11 +11,23 @@
 #import "SIMessageInterceptor.h"
 #import "SISpinnerView.h"
 
+@class SIGridView;
+
 @protocol SIGridViewDelegate <UIScrollViewDelegate>
 
 @optional
-- (void)didSelectItemAtIndex:(int)index;
-- (void)didEnterLoadingMode;
+- (void)gridView:(SIGridView *)gridView didSelectItemAtIndex:(int)index;
+- (void)gridViewDidEnterLoadingMode:(SIGridView *)gridView;
+
+@end
+
+#pragma mark
+
+@protocol SIGridViewDataSourceDelegate <NSObject>
+
+@required
+- (void)fetchData;
+- (void)clearItems;
 
 @end
 

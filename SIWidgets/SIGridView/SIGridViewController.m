@@ -53,7 +53,10 @@
     _gridView.loadMoreEnabled = YES;
     
     // optional
-    _gridView.backgroundColor = [UIColor darkGrayColor];
+    if( [UIColor respondsToSelector:@selector(scrollViewTexturedBackgroundColor)] )
+        [self.view setBackgroundColor:[UIColor scrollViewTexturedBackgroundColor]];
+    else
+        [self.view setBackgroundColor:[UIColor darkGrayColor]];
     
     // optional
     _gridView.horizontalModeEnabled = NO;

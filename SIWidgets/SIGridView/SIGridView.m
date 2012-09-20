@@ -342,7 +342,7 @@
     for( UIView *view in _items )
         [view removeFromSuperview];
     
-    _items = [NSMutableArray array];
+    self.items = [NSMutableArray array];
     _lastVisibleItemIndex = 0;
     
     [self initialize];

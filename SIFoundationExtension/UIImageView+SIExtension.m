@@ -13,7 +13,9 @@
 #pragma mark
 
 @interface AFImageCache : NSCache
++ (AFImageCache *)af_sharedImageCache;
 - (UIImage *)cachedImageForRequest:(NSURLRequest *)request;
+- (void)cacheImage:(UIImage *)image forURL:(NSURL *)url;
 - (void)cacheImage:(UIImage *)image forRequest:(NSURLRequest *)request;
 @end
 
@@ -23,6 +25,7 @@ static NSMutableArray *__imageRequestCollection = nil;
 
 @interface SIURLConnectionDelegateForImageRequest : NSObject <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 @property (nonatomic, readwrite, retain) UIImageView *imageView;
+@property (nonatomic, readwrite, retain) NSURL *url;
 @property (nonatomic, readonly, assign) BOOL finished;
 - (id)initWithImageView:(UIImageView *)imageView;
 @end
@@ -46,6 +49,8 @@ static NSMutableArray *__imageRequestCollection = nil;
 {
     [_imageView release];
     [_dataReceived release];
+    [_url release];
+    
     [super dealloc];
 }
 
@@ -55,6 +60,8 @@ static NSMutableArray *__imageRequestCollection = nil;
     _imageView = nil;
     [_dataReceived release];
     _dataReceived = nil;
+    [_url release];
+    _url = nil;
     
     _finished = YES;
 }
@@ -63,6 +70,7 @@ static NSMutableArray *__imageRequestCollection = nil;
 {
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     _statusCode = httpResponse.statusCode;
+    _url = [httpResponse.URL retain];
     if( _statusCode == 200 )
         _dataReceived = [[NSMutableData data] retain];
 }
@@ -83,6 +91,7 @@ static NSMutableArray *__imageRequestCollection = nil;
     if( _statusCode == 200 )
     {
         _imageView.image = [UIImage imageWithData:_dataReceived];
+        [[AFImageCache af_sharedImageCache] cacheImage:_imageView.image forURL:_url];
         if( [[_imageView class] respondsToSelector:@selector(animateWithDuration:animations:completion:)] )
         {
             _imageView.alpha = 0.f;
@@ -112,14 +121,6 @@ static NSMutableArray *__imageRequestCollection = nil;
 
 #ifndef _AFNETWORKING_
 
-+ (AFImageCache *)af_sharedImageCache
-{
-    static AFImageCache *_af_imageCache = nil;
-    if( !_af_imageCache )
-        _af_imageCache = [[AFImageCache alloc] init];    
-    return _af_imageCache;
-}
-
 - (void)setImageWithURL:(NSURL *)url
 {
     [self setImageWithURL:url placeholderImage:nil];
@@ -133,7 +134,7 @@ static NSMutableArray *__imageRequestCollection = nil;
         [request setHTTPShouldUsePipelining:YES];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     
-    self.image = [[[self class] af_sharedImageCache] cachedImageForRequest:request];
+    self.image = [[AFImageCache af_sharedImageCache] cachedImageForRequest:request];
     if( !self.image )
     {
         self.image = placeholderImage;
@@ -142,20 +143,20 @@ static NSMutableArray *__imageRequestCollection = nil;
         
         // Store connection so we can purge it later
         if( !__imageRequestCollection )
-            __imageRequestCollection = [NSMutableArray arrayWithCapacity:12];
-        else {
+            __imageRequestCollection = [[NSMutableArray arrayWithCapacity:24] retain];
+        else
+        {
             // Purge previously created connections
             NSMutableArray *toDelete = [NSMutableArray array];
             for( SIURLConnectionDelegateForImageRequest *connection in __imageRequestCollection )
-                if( connection.finished ) {
+                if( connection.finished )
                     [toDelete addObject:connection];
-                    [connection release]; // This releases the first alloc (*1)
-                }
             [__imageRequestCollection removeObjectsInArray:toDelete];
             [toDelete removeAllObjects];
         }
+        
         // Store current connection
-        [__imageRequestCollection addObject:connection]; // (*1) First alloc
+        [__imageRequestCollection addObject:connection];
         
         // Try to get the image
         [NSURLConnection connectionWithRequest:request delegate:connection];
@@ -170,6 +171,14 @@ static NSMutableArray *__imageRequestCollection = nil;
 
 @implementation AFImageCache
 
++ (AFImageCache *)af_sharedImageCache
+{
+    static AFImageCache *_af_imageCache = nil;
+    if( !_af_imageCache )
+        _af_imageCache = [[AFImageCache alloc] init];
+    return _af_imageCache;
+}
+
 - (UIImage *)cachedImageForRequest:(NSURLRequest *)request
 {
     switch ([request cachePolicy]) {
@@ -180,14 +189,22 @@ static NSMutableArray *__imageRequestCollection = nil;
             break;
     }
     
-	return [self objectForKey:[[request URL] absoluteString]];
+    UIImage *cachedImage = [self objectForKey:[[request URL] absoluteString]];
+    LogDebug(@"Cached %p with url: '%@'", cachedImage, [[request URL] absoluteString]);
+	return cachedImage;
+}
+
+- (void)cacheImage:(UIImage *)image forURL:(NSURL *)url
+{
+    if( image && url ) {
+        LogDebug(@"Caching image with url: '%@'", [url absoluteString]);
+        [self setObject:image forKey:[url absoluteString]];
+    }
 }
 
 - (void)cacheImage:(UIImage *)image forRequest:(NSURLRequest *)request
 {
-    if (image && request) {
-        [self setObject:image forKey:[[request URL] absoluteString]];
-    }
+    [self cacheImage:image forURL:[request URL]];
 }
 
 @end

@@ -562,7 +562,14 @@ NSString *SIStringFromRect(CGRect r)
 
 BOOL SIIsRetina(void)
 {
-    return [[UIScreen mainScreen] scale] > 1.f;
+    return [[UIScreen mainScreen] respondsToSelector:@selector(scale)] && ([[UIScreen mainScreen] scale] > 1.f);
+}
+
+BOOL SIIsTall(void)
+{
+    BOOL isPhone = SIIdiomIsPhone();
+    CGFloat screenHeight = ([UIScreen mainScreen].bounds.size.height * [[UIScreen mainScreen] scale]);
+    return isPhone && (screenHeight >= 1136.f);
 }
 
 UIImage *SIRotateImageByDegrees(UIImage *image, CGFloat degrees)

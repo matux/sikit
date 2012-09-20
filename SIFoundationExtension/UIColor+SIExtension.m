@@ -71,7 +71,10 @@
         {
             const CGFloat *oldComponents = CGColorGetComponents(color.CGColor);
             CGFloat components[4] = {oldComponents[0], oldComponents[0], oldComponents[0], oldComponents[1]};
-            return [UIColor colorWithCGColor:CGColorCreate(colorSpaceRGB, components)];
+            CGColorRef colorRef = CGColorCreate(colorSpaceRGB, components);
+            UIColor * retVal = [UIColor colorWithCGColor:colorRef];
+            CGColorRelease(colorRef);
+            return retVal;
         } else
             return color;
     };

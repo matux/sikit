@@ -27,4 +27,7 @@
 
 - (NSDictionary *)parseQueryString;
 
+- (NSArray *)componentsSeparatedByHtmlTags;
+- (NSString *)stringByTrimmingHtmlTags;
+
 @end

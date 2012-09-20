@@ -149,4 +149,57 @@
     return result;
 }
 
+- (NSArray *)componentsSeparatedByHtmlTags
+{
+    NSMutableArray *html = [NSMutableArray arrayWithCapacity:64];
+    NSScanner *scanner = [NSScanner scannerWithString:self];
+    NSString *tempText = nil;
+    
+    while( ![scanner isAtEnd] )
+    {
+        [scanner scanUpToString:@"<" intoString:&tempText];
+        
+        if (tempText != nil)
+            [html addObject:tempText];
+        
+        [scanner scanUpToString:@">" intoString:NULL];
+        
+        if (![scanner isAtEnd])
+            [scanner setScanLocation:[scanner scanLocation] + 1];
+        
+        tempText = nil;
+        
+    }
+    
+    return html;
+    
+}
+
+- (NSString *)stringByTrimmingHtmlTags
+{    
+    NSMutableString *html = [NSMutableString stringWithCapacity:[self length]];
+    
+    NSScanner *scanner = [NSScanner scannerWithString:self];
+    NSString *tempText = nil;
+    
+    while( ![scanner isAtEnd] )
+    {
+        [scanner scanUpToString:@"<" intoString:&tempText];
+        
+        if (tempText != nil)
+            [html appendString:tempText];
+        
+        [scanner scanUpToString:@">" intoString:NULL];
+        
+        if (![scanner isAtEnd])
+            [scanner setScanLocation:[scanner scanLocation] + 1];
+        
+        tempText = nil;
+        
+    }
+    
+    return html;
+    
+}
+
 @end

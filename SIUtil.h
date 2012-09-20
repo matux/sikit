@@ -117,6 +117,7 @@ void SIBeginCurveAnimation(float duration);
 void SICommitCurveAnimation(void);
 NSString *SIStringFromRect(CGRect r);
 BOOL SIIsRetina(void);
+BOOL SIIsTall(void);
 UIImage *SIRotateImageByDegrees(UIImage *image, CGFloat degrees);
 UIImage *SIRotateImageByRadians(UIImage *image, CGFloat radians);
 

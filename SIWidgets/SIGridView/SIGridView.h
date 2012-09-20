@@ -23,33 +23,31 @@
 
 @interface SIGridView : UIScrollView
 {
-    SIMessageInterceptor *delegate_interceptor;
-    SISpinnerView *spinner;
-    UILabel *spinnerLabel;
-    BOOL loading;
-    BOOL loadMoreEnabled;
-    BOOL horizontalModeEnabled;
-    NSInteger *columnHeights;
-    NSInteger *rowWidths;
-    int numberOfColumns;
-    int numberOfRows;
-    int lastVisibleItemIndex;
-    int columnWidth;
-    int rowHeight;
-    BOOL readyToLoadWhenReleased;
-    id <SIGridViewDelegate> delegate;
-    UIView *headerView;
-    UIView *contentView;
+@protected
+    SIMessageInterceptor *_delegate_interceptor;
+    SISpinnerView *_spinner;
+    UILabel *_spinnerLabel;
+
+    NSInteger *_columnHeights;
+    NSInteger *_rowWidths;
+    int _numberOfColumns;
+    int _numberOfRows;
+    int _lastVisibleItemIndex;
+    BOOL _readyToLoadWhenReleased;
+
+    UIView *_contentGridView;
 }
 
-@property (nonatomic, strong) UIView *headerView;
-@property (nonatomic, strong) NSMutableArray *items;
-@property int columnWidth;
-@property int rowHeight;
-@property BOOL loading;
-@property BOOL loadMoreEnabled;
-@property BOOL horizontalModeEnabled;
-@property (nonatomic, unsafe_unretained) id <SIGridViewDelegate> delegate;
+@property (nonatomic, readwrite, retain) UIView *headerView;
+@property (nonatomic, readwrite, retain) NSMutableArray *items;
+
+@property (nonatomic, readwrite, assign) int columnWidth;
+@property (nonatomic, readwrite, assign) int rowHeight;
+@property (nonatomic, readwrite, assign) BOOL loading;
+@property (nonatomic, readwrite, assign) BOOL loadMoreEnabled;
+@property (nonatomic, readwrite, assign) BOOL horizontalModeEnabled;
+
+@property (nonatomic, readwrite, unsafe_unretained) id <SIGridViewDelegate> delegate;
 
 - (void)layoutCells;
 - (void)clearCells;

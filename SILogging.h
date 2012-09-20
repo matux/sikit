@@ -266,3 +266,17 @@ void compactLogAltFormat(NSString *namespace, int indentLevel, NSString *functio
 #else
 #   define LogDebug(...)
 #endif
+
+#pragma mark
+
+// SIKit library Logging
+#if defined(LOGGING_ENABLED) && LOGGING_ENABLED
+#   define LOGGING_GRID_VIEW            1
+#endif
+
+// SIGridView logging
+#if defined(LOGGING_GRID_VIEW) && LOGGING_GRID_VIEW
+#   define LogGridView(fmt, ...) LOG_FORMAT(fmt, @"GRID VIEW", ##__VA_ARGS__)
+#else
+#   define LogGridView(...)
+#endif

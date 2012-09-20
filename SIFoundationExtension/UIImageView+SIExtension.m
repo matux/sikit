@@ -113,7 +113,8 @@ static NSMutableArray *__imageRequestCollection = nil;
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPShouldHandleCookies:NO];
-    [request setHTTPShouldUsePipelining:YES];
+    if( [request respondsToSelector:@selector(setHTTPShouldUsePipelining:)] )
+        [request setHTTPShouldUsePipelining:YES];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     
     self.image = [[[self class] af_sharedImageCache] cachedImageForRequest:request];

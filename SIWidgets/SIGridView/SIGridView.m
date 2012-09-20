@@ -117,16 +117,26 @@
                 longestRowWidth = _rowWidths[i];
         }
         
-        [UIView animateWithDuration:0.3f
-                              delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction
-                         animations:^ {
-                             if( (longestRowWidth + 20) > self.frame.size.width )
-                                 [self setContentSize:CGSizeMake(longestRowWidth + 50, self.frame.size.height)];
-                             else
-                                 [self setContentSize:CGSizeMake(self.frame.size.width + 1, self.bounds.size.height)];
-                         }
-                         completion:nil];
+        if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+        {
+            [UIView animateWithDuration:0.3f
+                                  delay:0
+                                options:UIViewAnimationOptionAllowUserInteraction
+                             animations:^ {
+                                 if( (longestRowWidth + 20) > self.frame.size.width )
+                                     [self setContentSize:CGSizeMake(longestRowWidth + 50, self.frame.size.height)];
+                                 else
+                                     [self setContentSize:CGSizeMake(self.frame.size.width + 1, self.bounds.size.height)];
+                             }
+                             completion:nil];
+        }
+        else
+        {
+            if( (longestRowWidth + 20) > self.frame.size.width )
+                [self setContentSize:CGSizeMake(longestRowWidth + 50, self.frame.size.height)];
+            else
+                [self setContentSize:CGSizeMake(self.frame.size.width + 1, self.bounds.size.height)];
+        }
     }
     else
     {
@@ -135,16 +145,26 @@
             if( _columnHeights[i] > longestColumnHeight )
                 longestColumnHeight = _columnHeights[i];
         
-        [UIView animateWithDuration:0.3f
-                              delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction
-                         animations:^ {
-                             if (longestColumnHeight + 20 + _headerView.frame.size.height > self.frame.size.height)
-                                 [self setContentSize:CGSizeMake(self.frame.size.width, longestColumnHeight + 50 + _headerView.frame.size.height)];
-                             else
-                                 [self setContentSize:CGSizeMake(self.frame.size.width, self.bounds.size.height+1)];
-                         }
-                         completion:nil];
+        if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+        {
+            [UIView animateWithDuration:0.3f
+                                  delay:0
+                                options:UIViewAnimationOptionAllowUserInteraction
+                             animations:^ {
+                                 if (longestColumnHeight + 20 + _headerView.frame.size.height > self.frame.size.height)
+                                     [self setContentSize:CGSizeMake(self.frame.size.width, longestColumnHeight + 50 + _headerView.frame.size.height)];
+                                 else
+                                     [self setContentSize:CGSizeMake(self.frame.size.width, self.bounds.size.height+1)];
+                             }
+                             completion:nil];
+        }
+        else
+        {
+            if (longestColumnHeight + 20 + _headerView.frame.size.height > self.frame.size.height)
+                [self setContentSize:CGSizeMake(self.frame.size.width, longestColumnHeight + 50 + _headerView.frame.size.height)];
+            else
+                [self setContentSize:CGSizeMake(self.frame.size.width, self.bounds.size.height+1)];
+        }
     }
     
     [_contentGridView setFrame:CGRectMake(0, _headerView.frame.size.height, self.contentSize.width, self.contentSize.height)];
@@ -153,14 +173,22 @@
 
 - (void)placeItem:(UIView *)item :(int)shortestIndex :(int)top :(int)left
 {
-    [UIView animateWithDuration:0.5f
-                          delay:0
-                        options:UIViewAnimationOptionAllowUserInteraction
-                     animations:^ {
-                         [item setFrame:CGRectMake(left, top, item.frame.size.width, item.frame.size.height)];
-                         item.alpha = 1.0;
-                     }
-                     completion:nil];
+    if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+    {
+        [UIView animateWithDuration:0.5f
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
+                         animations:^ {
+                             [item setFrame:CGRectMake(left, top, item.frame.size.width, item.frame.size.height)];
+                             item.alpha = 1.0;
+                         }
+                         completion:nil];
+    }
+    else
+    {
+        [item setFrame:CGRectMake(left, top, item.frame.size.width, item.frame.size.height)];
+        item.alpha = 1.0;        
+    }
     
     if( _horizontalModeEnabled ) {
         int newWidth = left + item.frame.size.width;
@@ -197,13 +225,21 @@
         _columnHeights[shortestIndex] = newHeight;
     }
     
-    [UIView animateWithDuration:0.5f
-                          delay:0
-                        options:UIViewAnimationOptionAllowUserInteraction
-                     animations: ^ {
-                         [item setFrame:CGRectMake(left, top, item.frame.size.width, item.frame.size.height)];
-                     }
-                     completion:nil];
+    if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+    {
+        [UIView animateWithDuration:0.5f
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
+                         animations: ^ {
+                             [item setFrame:CGRectMake(left, top, item.frame.size.width, item.frame.size.height)];
+                         }
+                         completion:nil];
+    }
+    else
+    {
+        [item setFrame:CGRectMake(left, top, item.frame.size.width, item.frame.size.height)];
+    }
+        
 }
 
 - (void)handleCellTap:(UITapGestureRecognizer *)sender
@@ -269,20 +305,35 @@
     // position the spinner
     if( [self.items count] && _loadMoreEnabled )
     {
-        [UIView animateWithDuration:0.5f
-                              delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction
-                         animations: ^ {
-                             _spinner.alpha = 1;
-                             if (_horizontalModeEnabled) {
-                                 [_spinner setFrame:CGRectMake(self.contentSize.width-20, self.bounds.size.height/2 - 20, 20, 20)];
-                                 [_spinnerLabel setFrame:CGRectMake(_spinner.frame.origin.x + 50, self.bounds.size.height/2 - 20, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
-                             } else {
-                                 [_spinner setFrame:CGRectMake(self.bounds.size.width/2 - 20, self.contentSize.height-20, 20, 20)];
-                                 [_spinnerLabel setFrame:CGRectMake(self.bounds.size.width/2 - 100, _spinner.frame.origin.y + 50, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
+        if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+        {
+            [UIView animateWithDuration:0.5f
+                                  delay:0
+                                options:UIViewAnimationOptionAllowUserInteraction
+                             animations: ^ {
+                                 _spinner.alpha = 1;
+                                 if (_horizontalModeEnabled) {
+                                     [_spinner setFrame:CGRectMake(self.contentSize.width-20, self.bounds.size.height/2 - 20, 20, 20)];
+                                     [_spinnerLabel setFrame:CGRectMake(_spinner.frame.origin.x + 50, self.bounds.size.height/2 - 20, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
+                                 } else {
+                                     [_spinner setFrame:CGRectMake(self.bounds.size.width/2 - 20, self.contentSize.height-20, 20, 20)];
+                                     [_spinnerLabel setFrame:CGRectMake(self.bounds.size.width/2 - 100, _spinner.frame.origin.y + 50, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
+                                 }
                              }
-                         }
-                         completion:nil];
+                             completion:nil];
+        }
+        else
+        {
+            _spinner.alpha = 1;
+            if (_horizontalModeEnabled) {
+                [_spinner setFrame:CGRectMake(self.contentSize.width-20, self.bounds.size.height/2 - 20, 20, 20)];
+                [_spinnerLabel setFrame:CGRectMake(_spinner.frame.origin.x + 50, self.bounds.size.height/2 - 20, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
+            } else {
+                [_spinner setFrame:CGRectMake(self.bounds.size.width/2 - 20, self.contentSize.height-20, 20, 20)];
+                [_spinnerLabel setFrame:CGRectMake(self.bounds.size.width/2 - 100, _spinner.frame.origin.y + 50, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
+            }            
+        }
+        
     }
 }
 
@@ -381,15 +432,24 @@
     {
         [self.delegate gridViewDidEnterLoadingMode:self];
         
-        [UIView animateWithDuration:0.3f
-                              delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction
-                         animations:^ {
+        if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+        {
+            [UIView animateWithDuration:0.3f
+                                  delay:0
+                                options:UIViewAnimationOptionAllowUserInteraction
+                             animations:^ {
                                  [self setContentSize:(_horizontalModeEnabled ?
-                                                       CGSizeMake(self.contentSize.width + 40, 0) :
-                                                       CGSizeMake(0, self.contentSize.height + 40))];
-                         }
-                         completion:nil];
+                                                        CGSizeMake(self.contentSize.width + 40, 0) :
+                                                        CGSizeMake(0, self.contentSize.height + 40))];
+                             }
+                             completion:nil];
+        }
+        else
+        {
+            [self setContentSize:(_horizontalModeEnabled ?
+                                    CGSizeMake(self.contentSize.width + 40, 0) :
+                                    CGSizeMake(0, self.contentSize.height + 40))];
+        }
     }
     
 }
@@ -431,7 +491,20 @@
             _readyToLoadWhenReleased = NO;
             [_spinner stopIndefiniteMode];
             
-            [UIView animateWithDuration:0.3f  animations:^ {
+            if( [self respondsToSelector:@selector(animateWithDuration:animations:)] )
+            {
+                [UIView animateWithDuration:0.3f  animations:^ {
+                    if( _horizontalModeEnabled ) {
+                        [_spinner setFrame:CGRectMake(self.contentSize.width - 20, self.frame.size.height / 2 - 20, 20, 20)];
+                        [_spinnerLabel setFrame:CGRectMake(_spinner.frame.origin.x + 50, self.frame.size.height / 2 - 20, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
+                    } else {
+                        [_spinner setFrame:CGRectMake(self.frame.size.width / 2 - 20, self.contentSize.height - _headerView.frame.size.height - 20, 20, 20)];
+                        [_spinnerLabel setFrame:CGRectMake(self.frame.size.width / 2 - 100, _spinner.frame.origin.y + 50, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
+                    }
+                }];
+            }
+            else
+            {
                 if( _horizontalModeEnabled ) {
                     [_spinner setFrame:CGRectMake(self.contentSize.width - 20, self.frame.size.height / 2 - 20, 20, 20)];
                     [_spinnerLabel setFrame:CGRectMake(_spinner.frame.origin.x + 50, self.frame.size.height / 2 - 20, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
@@ -439,7 +512,7 @@
                     [_spinner setFrame:CGRectMake(self.frame.size.width / 2 - 20, self.contentSize.height - _headerView.frame.size.height - 20, 20, 20)];
                     [_spinnerLabel setFrame:CGRectMake(self.frame.size.width / 2 - 100, _spinner.frame.origin.y + 50, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
                 }
-            }];
+            }
         }
         else
         {

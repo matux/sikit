@@ -117,7 +117,7 @@
                 longestRowWidth = _rowWidths[i];
         }
         
-        if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+        if( [[self class] respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
         {
             [UIView animateWithDuration:0.3f
                                   delay:0
@@ -145,7 +145,7 @@
             if( _columnHeights[i] > longestColumnHeight )
                 longestColumnHeight = _columnHeights[i];
         
-        if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+        if( [[self class] respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
         {
             [UIView animateWithDuration:0.3f
                                   delay:0
@@ -173,7 +173,7 @@
 
 - (void)placeItem:(UIView *)item :(int)shortestIndex :(int)top :(int)left
 {
-    if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+    if( [[self class] respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
     {
         [UIView animateWithDuration:0.5f
                               delay:0
@@ -225,7 +225,7 @@
         _columnHeights[shortestIndex] = newHeight;
     }
     
-    if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+    if( [[self class] respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
     {
         [UIView animateWithDuration:0.5f
                               delay:0
@@ -305,7 +305,7 @@
     // position the spinner
     if( [self.items count] && _loadMoreEnabled )
     {
-        if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+        if( [[self class] respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
         {
             [UIView animateWithDuration:0.5f
                                   delay:0
@@ -432,7 +432,7 @@
     {
         [self.delegate gridViewDidEnterLoadingMode:self];
         
-        if( [self respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
+        if( [[self class] respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
         {
             [UIView animateWithDuration:0.3f
                                   delay:0
@@ -491,7 +491,7 @@
             _readyToLoadWhenReleased = NO;
             [_spinner stopIndefiniteMode];
             
-            if( [self respondsToSelector:@selector(animateWithDuration:animations:)] )
+            if( [[self class] respondsToSelector:@selector(animateWithDuration:animations:)] )
             {
                 [UIView animateWithDuration:0.3f  animations:^ {
                     if( _horizontalModeEnabled ) {

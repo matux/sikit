@@ -49,6 +49,16 @@ static NSMutableArray *__imageRequestCollection = nil;
     [super dealloc];
 }
 
+- (void)finish
+{
+    [_imageView release];
+    _imageView = nil;
+    [_dataReceived release];
+    _dataReceived = nil;
+    
+    _finished = YES;
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
@@ -65,25 +75,31 @@ static NSMutableArray *__imageRequestCollection = nil;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    [_imageView release];
-    _imageView = nil;
-    [_dataReceived release];
-    _dataReceived = nil;
-    
-    _finished = YES;    
+    [self finish];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     if( _statusCode == 200 )
+    {
         _imageView.image = [UIImage imageWithData:_dataReceived];
+        if( [[_imageView class] respondsToSelector:@selector(animateWithDuration:animations:completion:)] )
+        {
+            _imageView.alpha = 0.f;
+            [[_imageView class] animateWithDuration:.5f
+                                         animations:^ {
+                                             _imageView.alpha = 1.f;
+                                         }
+                                         completion:^(BOOL finished) {
+                                             [self finish];
+                                         }];
+        }
+        else
+            [self finish];
+    }
+    else
+        [self finish];
     
-    [_imageView release];
-    _imageView = nil;
-    [_dataReceived release];
-    _dataReceived = nil;
-    
-    _finished = YES;
 }
 
 @end

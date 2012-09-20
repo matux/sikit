@@ -213,10 +213,10 @@
 
 - (void)addCell:(UIView *)cell
 {
-    UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCellTap:)];
+    UITapGestureRecognizer *singleFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCellTap:)] autorelease];
     [cell addGestureRecognizer:singleFingerTap];
     
-    UIView *item = [[UIView alloc] init];
+    UIView *item = [[[UIView alloc] init] autorelease];
     
     int shortestIndex, top, left;
     
@@ -226,7 +226,7 @@
         top = shortestIndex * _rowHeight;
         left = _rowWidths[shortestIndex];
     
-        [item setFrame:CGRectMake(left-50, top, cell.frame.size.width, _rowHeight)];
+        [item setFrame:CGRectMake(left - 50, top, cell.frame.size.width, _rowHeight)];
     }
     else
     {

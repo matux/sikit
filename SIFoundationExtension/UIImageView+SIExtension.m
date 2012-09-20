@@ -121,7 +121,7 @@ static NSMutableArray *__imageRequestCollection = nil;
     {
         self.image = placeholderImage;
         
-        SIURLConnectionDelegateForImageRequest *connection = [[SIURLConnectionDelegateForImageRequest alloc] initWithImageView:self]; // (*1) First alloc
+        SIURLConnectionDelegateForImageRequest *connection = [[[SIURLConnectionDelegateForImageRequest alloc] initWithImageView:self] autorelease];
         
         // Store connection so we can purge it later
         if( !__imageRequestCollection )
@@ -138,7 +138,7 @@ static NSMutableArray *__imageRequestCollection = nil;
             [toDelete removeAllObjects];
         }
         // Store current connection
-        [__imageRequestCollection addObject:connection];
+        [__imageRequestCollection addObject:connection]; // (*1) First alloc
         
         // Try to get the image
         [NSURLConnection connectionWithRequest:request delegate:connection];

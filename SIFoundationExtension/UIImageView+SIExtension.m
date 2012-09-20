@@ -190,14 +190,14 @@ static NSMutableArray *__imageRequestCollection = nil;
     }
     
     UIImage *cachedImage = [self objectForKey:[[request URL] absoluteString]];
-    LogDebug(@"Cached %p with url: '%@'", cachedImage, [[request URL] absoluteString]);
+    //LogDebug(@"Cached %p with url: '%@'", cachedImage, [[request URL] absoluteString]);
 	return cachedImage;
 }
 
 - (void)cacheImage:(UIImage *)image forURL:(NSURL *)url
 {
     if( image && url ) {
-        LogDebug(@"Caching image with url: '%@'", [url absoluteString]);
+        //LogDebug(@"Caching image with url: '%@'", [url absoluteString]);
         [self setObject:image forKey:[url absoluteString]];
     }
 }

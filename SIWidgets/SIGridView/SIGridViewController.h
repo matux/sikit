@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "SIGridView.h"
+#import "SIGridViewCell.h"
 
 @interface SIGridViewController : UIViewController <SIGridViewDelegate, SIGridViewDataSourceDelegate>
 
 @property (nonatomic, readwrite, retain) SIGridView *gridView;
-
-@property (atomic, readwrite, assign) int screenWidth;
 
 @end

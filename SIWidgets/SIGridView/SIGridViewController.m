@@ -24,9 +24,6 @@
 {
     [super viewDidLoad];
     
-    // get the screenWidth to determine the resolution
-    _screenWidth = (int)[[UIScreen mainScreen] applicationFrame].size.width % 256;
-
     // create a MasonryView in any size you want
     _gridView = [[SIGridView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
 
@@ -35,7 +32,7 @@
 
     // set a size for each column, 256px wide columns means 4 columns for landscape and 3 for portrait (4*246=1024, 3*256=768)
     // set column width to 256px if the view is in iPad
-    if( (int)[[UIScreen mainScreen] applicationFrame].size.width % 256 == 0 )
+    if( SIIdiomIsPad() )
     {
         _gridView.columnWidth = 256;
         

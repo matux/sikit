@@ -30,6 +30,7 @@ static NSMutableArray *__imageRequestCollection = nil;
 @implementation SIURLConnectionDelegateForImageRequest
 {
     int _statusCode;
+    NSMutableData *_dataReceived;
 }
 
 - (id)initWithImageView:(UIImageView *)imageView
@@ -44,6 +45,7 @@ static NSMutableArray *__imageRequestCollection = nil;
 - (void)dealloc
 {
     [_imageView release];
+    [_dataReceived release];
     [super dealloc];
 }
 
@@ -51,15 +53,36 @@ static NSMutableArray *__imageRequestCollection = nil;
 {
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     _statusCode = httpResponse.statusCode;
+    if( _statusCode == 200 )
+        _dataReceived = [[NSMutableData data] retain];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     if( _statusCode == 200 )
-        _imageView.image = [UIImage imageWithData:data];
+        [_dataReceived appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    [_imageView release];
+    _imageView = nil;
+    [_dataReceived release];
+    _dataReceived = nil;
+    
+    _finished = YES;    
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    if( _statusCode == 200 )
+        _imageView.image = [UIImage imageWithData:_dataReceived];
     
     [_imageView release];
     _imageView = nil;
+    [_dataReceived release];
+    _dataReceived = nil;
+    
     _finished = YES;
 }
 

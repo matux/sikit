@@ -147,7 +147,9 @@ NSDictionary *SIGlobalPreferences(void)
 
 NSURL *SIApplicationDocumentsDirectory(void)
 {
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    return ([[NSFileManager defaultManager] respondsToSelector:@selector(URLsForDirectory:inDomains:)] ?
+                [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] :
+                [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]);
 }
 
 BOOL SIMultitaskingSupport(void)

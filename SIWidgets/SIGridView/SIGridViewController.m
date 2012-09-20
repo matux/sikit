@@ -97,7 +97,9 @@
 
 - (void)fetchData
 {
-    
+    // set your MasonryView to be in loading state
+    _gridView.loading = YES;
+
 }
 
 - (void)clearItems

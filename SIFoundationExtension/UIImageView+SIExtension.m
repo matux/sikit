@@ -40,6 +40,8 @@ static NSMutableArray *__imageRequestCollection = nil;
 {
     if( self = [super init] ) {
         _imageView = [imageView retain];
+        _dataReceived = [[NSMutableData data] retain];
+        _url = nil;
         _finished = NO;
     }
     return self;
@@ -71,8 +73,6 @@ static NSMutableArray *__imageRequestCollection = nil;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     _statusCode = httpResponse.statusCode;
     _url = [httpResponse.URL retain];
-    if( _statusCode == 200 )
-        _dataReceived = [[NSMutableData data] retain];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -92,16 +92,16 @@ static NSMutableArray *__imageRequestCollection = nil;
     {
         _imageView.image = [UIImage imageWithData:_dataReceived];
         [[AFImageCache af_sharedImageCache] cacheImage:_imageView.image forURL:_url];
-        if( [[_imageView class] respondsToSelector:@selector(animateWithDuration:animations:completion:)] )
+        if( [UIView respondsToSelector:@selector(animateWithDuration:animations:completion:)] )
         {
-            _imageView.alpha = 0.f;
-            [[_imageView class] animateWithDuration:.5f
-                                         animations:^ {
-                                             _imageView.alpha = 1.f;
-                                         }
-                                         completion:^(BOOL finished) {
-                                             [self finish];
-                                         }];
+            _imageView.alpha = 1.f;
+            [UIView animateWithDuration:.5f
+                             animations:^ {
+                                 _imageView.alpha = 1.f;
+                             }
+                             completion:^(BOOL finished) {
+                                 [self finish];
+                             }];
         }
         else
             [self finish];
@@ -139,7 +139,7 @@ static NSMutableArray *__imageRequestCollection = nil;
     {
         self.image = placeholderImage;
         
-        SIURLConnectionDelegateForImageRequest *connection = [[[SIURLConnectionDelegateForImageRequest alloc] initWithImageView:self] autorelease];
+        SIURLConnectionDelegateForImageRequest *connection = [[SIURLConnectionDelegateForImageRequest alloc] initWithImageView:self];
         
         // Store connection so we can purge it later
         if( !__imageRequestCollection )
@@ -160,6 +160,9 @@ static NSMutableArray *__imageRequestCollection = nil;
         
         // Try to get the image
         [NSURLConnection connectionWithRequest:request delegate:connection];
+        
+        // Release the connection
+        [connection release];
     }
 }
 

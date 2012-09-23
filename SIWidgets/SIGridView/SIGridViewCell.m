@@ -61,7 +61,7 @@
         
         [_imageView setFrame:CGRectMake(_imageView.frame.origin.x, _imageView.frame.origin.y, _imageView.frame.size.width, self.imageHeight)];
         [_titleLabel setFrame:CGRectMake(_titleLabel.frame.origin.x, 5.f + _imageView.frame.origin.y + _imageView.frame.size.height, _titleLabel.frame.size.width, expectedLabelSize.height)];
-        [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, _titleLabel.frame.origin.y + _titleLabel.frame.size.height + 15.f)];
+        [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, _titleLabel.frame.origin.y + _titleLabel.frame.size.height + (_imageView.frame.origin.y * 2))];
     }
     
 }

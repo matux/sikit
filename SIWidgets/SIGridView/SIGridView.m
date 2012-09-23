@@ -270,7 +270,7 @@
         top = _columnHeights[shortestIndex];
         left = shortestIndex * _columnWidth;
         
-        [item setFrame:CGRectMake(left, top - 50, _columnWidth, cell.frame.size.height)];
+        [item setFrame:CGRectMake(left, top - 50, _columnWidth, cell.frame.size.height + cell.frame.origin.y)];
     }
     
     item.alpha = 0.f;

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SIPopupView.h"
+#import "SIPopupDisplayer.h"
 
 typedef enum {
     SIPopupStyleNormal = 0,

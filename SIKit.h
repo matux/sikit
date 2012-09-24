@@ -14,6 +14,10 @@
 #import "SIAppStoreUtil.h"
 #import "SISMTPMessage.h"
 
+// UI
 #import "UIView+SIPopup.h"
+#import "SIRateView.h"
+#import "SIGridView.h"
+#import "SISpinnerView.h"
 
 #endif // __SIKit_H__

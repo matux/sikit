@@ -24,7 +24,7 @@
 {
     [super viewDidLoad];
     
-    // create a MasonryView in any size you want
+    // create a GridView in any size you want
     _gridView = [[SIGridView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
 
     // set delegate to self
@@ -97,7 +97,7 @@
 
 - (void)fetchData
 {
-    // set your MasonryView to be in loading state
+    // set your GridView to be in loading state
     _gridView.loading = YES;
 
 }

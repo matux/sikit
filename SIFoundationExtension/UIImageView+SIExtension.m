@@ -10,6 +10,8 @@
 
 #ifndef _AFNETWORKING_
 
+NSString * const AFNetworkingOperationDidFinishNotification = @"com.alamofire.networking.operation.finish";
+
 #pragma mark
 
 @interface AFImageCache : NSCache
@@ -58,6 +60,8 @@ static NSMutableArray *__imageRequestCollection = nil;
 
 - (void)finish
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingOperationDidFinishNotification object:_imageView userInfo:@{ @"url": _url }];
+    
     [_imageView release];
     _imageView = nil;
     [_dataReceived release];
@@ -88,26 +92,12 @@ static NSMutableArray *__imageRequestCollection = nil;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    if( _statusCode == 200 )
-    {
+    if( _statusCode == 200 ) {
         _imageView.image = [UIImage imageWithData:_dataReceived];
         [[AFImageCache af_sharedImageCache] cacheImage:_imageView.image forURL:_url];
-        if( [UIView respondsToSelector:@selector(animateWithDuration:animations:completion:)] )
-        {
-            _imageView.alpha = 1.f;
-            [UIView animateWithDuration:.5f
-                             animations:^ {
-                                 _imageView.alpha = 1.f;
-                             }
-                             completion:^(BOOL finished) {
-                                 [self finish];
-                             }];
-        }
-        else
-            [self finish];
     }
-    else
-        [self finish];
+    
+    [self finish];
     
 }
 

@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#ifndef _AFNETWORKING_
+/**
+ Posted when an operation finishes.
+ */
+extern NSString * const AFNetworkingOperationDidFinishNotification;
+#endif
+
 @interface UIImageView (SIExtension)
 
 /*!
@@ -27,4 +34,3 @@
 #endif
 
 @end
-

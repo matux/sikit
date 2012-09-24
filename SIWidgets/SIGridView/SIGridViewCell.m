@@ -23,7 +23,7 @@
 
 - (void)updateCellInfo:(NSDictionary *)data
 {    
-    [_imageView setImageWithURL:[NSURL URLWithString:_imageURL]];
+    [_imageView setImageWithURL:[NSURL URLWithString:_imageURL]]; // This should only be requested when rect is visible
     [_imageView setContentMode:UIViewContentModeScaleAspectFill];
     [_imageView setClipsToBounds:YES];
     

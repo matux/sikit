@@ -132,7 +132,7 @@
     for( int i = 0; i < maxRating; i++ )
     {
         UIImageView *imageView = [[[UIImageView alloc] init] autorelease];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.contentMode = UIViewContentModeTopLeft; //UIViewContentModeScaleAspectFit;
         [_imageViews addObject:imageView];
         [self addSubview:imageView];
     }

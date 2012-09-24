@@ -13,7 +13,7 @@
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *imageView;
 
-@property (nonatomic, readwrite, copy) NSString *text;
+@property (nonatomic, readwrite, copy) NSString *title;
 @property (nonatomic, readwrite, copy) NSString *imageURL;
 
 @property (nonatomic, readwrite, assign) BOOL horizontalModeEnabled;

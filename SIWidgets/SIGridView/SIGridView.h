@@ -37,7 +37,6 @@
 {
 @protected
     SIMessageInterceptor *_delegate_interceptor;
-    SISpinnerView *_spinner;
     UILabel *_spinnerLabel;
 
     NSInteger *_columnHeights;
@@ -52,6 +51,7 @@
 
 @property (nonatomic, readwrite, retain) UIView *headerView;
 @property (nonatomic, readwrite, retain) NSMutableArray *items;
+@property (nonatomic, readwrite, retain) SISpinnerView *spinner;
 
 @property (nonatomic, readwrite, assign) int columnWidth;
 @property (nonatomic, readwrite, assign) int rowHeight;

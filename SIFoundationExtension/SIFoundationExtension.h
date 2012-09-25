@@ -19,6 +19,7 @@
 #import "NSString+SIExtension.h"
 #import "NSThread+SIExtension.h"
 #import "NSURL+SIExtension.h"
+#import "NSUserDefaults+SIExtension.h"
 
 // CoreFoundation
 #import "CFNetworkErrors+SIExtension.h"

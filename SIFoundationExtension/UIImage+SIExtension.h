@@ -14,4 +14,6 @@
 - (UIImage *)croppedAndResizedImage:(CGSize)size;
 - (UIImage *)scaledAndRotatedImage;
 
+- (UIImage *)tiledImage:(CGSize)size;
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "SIGridView.h"
+#import "SIGridViewCell.h"
 
 @implementation SIGridView
 
@@ -247,7 +248,7 @@
     [self.delegate gridView:self didSelectItemAtIndex:sender.view.tag];
 }
 
-- (void)addCell:(UIView *)cell
+- (void)addCell:(SIGridViewCell *)cell
 {
     UITapGestureRecognizer *singleFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCellTap:)] autorelease];
     [cell addGestureRecognizer:singleFingerTap];
@@ -468,6 +469,11 @@
     [super setDelegate:nil];
     [_delegate_interceptor setReceiver:newDelegate];
     [super setDelegate:(id)_delegate_interceptor];
+}
+
+- (SIGridViewCell *)cellAtIndex:(NSInteger)index
+{
+    return ((UIView *)_items[index]).subviews[0];
 }
 
 - (void)setHeaderView:(UIView *)input

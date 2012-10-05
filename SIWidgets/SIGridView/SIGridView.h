@@ -12,6 +12,7 @@
 #import "SISpinnerView.h"
 
 @class SIGridView;
+@class SIGridViewCell;
 
 @protocol SIGridViewDelegate <UIScrollViewDelegate>
 
@@ -63,6 +64,8 @@
 
 - (void)layoutCells;
 - (void)clearCells;
-- (void)addCell:(UIView *)cell;
+- (void)addCell:(SIGridViewCell *)cell;
+
+- (SIGridViewCell *)cellAtIndex:(NSInteger)index;
 
 @end

@@ -147,4 +147,15 @@
     return imageCopy;
 }
 
+- (UIImage *)tiledImage:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    CGContextRef imageContext = UIGraphicsGetCurrentContext();
+    CGContextDrawTiledImage(imageContext, (CGRect){ CGPointZero, size }, [self CGImage]);
+    UIImage *tiledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return tiledImage;
+}
+
 @end

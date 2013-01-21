@@ -7,6 +7,7 @@
 //
 
 #import "SIGridView.h"
+#import "SIGridViewCell.h"
 
 @implementation SIGridView
 
@@ -47,7 +48,7 @@
         if( _loadMoreEnabled )
             [_spinner setFrame:CGRectMake(self.bounds.size.width/2 - 20, 20, 20, 20)];
         
-        LogGridView(@"width: %f", self.bounds.size.width);
+        //LogGridView(@"width: %f", self.bounds.size.width);
         _numberOfColumns = self.bounds.size.width / (float)_columnWidth;
         _columnHeights = (NSInteger *)calloc(_numberOfColumns, sizeof(NSInteger));
         for( NSInteger i = 0; i < _numberOfColumns; i++ )
@@ -108,7 +109,7 @@
 
 - (void)setContentSizeAuto
 {
-    if( self.horizontalModeEnabled )
+    if( _horizontalModeEnabled )
     {
         float longestRowWidth = 0.0;
         for( int i = 0; i < _numberOfRows; i++ )
@@ -119,7 +120,7 @@
         
         if( [[self class] respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
         {
-            [UIView animateWithDuration:0.3f
+            [UIView animateWithDuration:.3f
                                   delay:0
                                 options:UIViewAnimationOptionAllowUserInteraction
                              animations:^ {
@@ -206,7 +207,7 @@
 {
     int shortestIndex, top, left;
     
-    if( self.horizontalModeEnabled )
+    if( _horizontalModeEnabled )
     {
         shortestIndex = [self shortestRowIndex];
         top = shortestIndex * _rowHeight;
@@ -227,7 +228,7 @@
     
     if( [[self class] respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
     {
-        [UIView animateWithDuration:0.5f
+        [UIView animateWithDuration:.5f
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction
                          animations: ^ {
@@ -247,7 +248,7 @@
     [self.delegate gridView:self didSelectItemAtIndex:sender.view.tag];
 }
 
-- (void)addCell:(UIView *)cell
+- (void)addCell:(SIGridViewCell *)cell
 {
     UITapGestureRecognizer *singleFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCellTap:)] autorelease];
     [cell addGestureRecognizer:singleFingerTap];
@@ -287,7 +288,7 @@
 {
     [self initialize];
     
-    for( UIView *item in self.items )
+    for( UIView *item in self.items ) 
         [self repositionItem:item];
     
     // scroll to the last visible item
@@ -305,6 +306,7 @@
     // position the spinner
     if( [self.items count] && _loadMoreEnabled )
     {
+        /*
         if( [[self class] respondsToSelector:@selector(animateWithDuration:delay:options:animations:completion:)] )
         {
             [UIView animateWithDuration:0.5f
@@ -323,7 +325,7 @@
                              completion:nil];
         }
         else
-        {
+        {*/
             _spinner.alpha = 1;
             if (_horizontalModeEnabled) {
                 [_spinner setFrame:CGRectMake(self.contentSize.width-20, self.bounds.size.height/2 - 20, 20, 20)];
@@ -332,7 +334,7 @@
                 [_spinner setFrame:CGRectMake(self.bounds.size.width/2 - 20, self.contentSize.height-20, 20, 20)];
                 [_spinnerLabel setFrame:CGRectMake(self.bounds.size.width/2 - 100, _spinner.frame.origin.y + 50, _spinnerLabel.frame.size.width, _spinnerLabel.frame.size.height)];
             }            
-        }
+        //}
         
     }
 }
@@ -467,6 +469,11 @@
     [super setDelegate:nil];
     [_delegate_interceptor setReceiver:newDelegate];
     [super setDelegate:(id)_delegate_interceptor];
+}
+
+- (SIGridViewCell *)cellAtIndex:(NSInteger)index
+{
+    return ((UIView *)_items[index]).subviews[0];
 }
 
 - (void)setHeaderView:(UIView *)input

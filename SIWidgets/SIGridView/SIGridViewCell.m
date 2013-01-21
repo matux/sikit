@@ -15,7 +15,7 @@
     [_titleLabel release];
     [_imageView release];
     
-    [_text release];
+    [_title release];
     [_imageURL release];
     
     [super dealloc];
@@ -27,7 +27,7 @@
     [_imageView setContentMode:UIViewContentModeScaleAspectFill];
     [_imageView setClipsToBounds:YES];
     
-    _titleLabel.text = _text;
+    _titleLabel.text = _title;
     
     // calculate title label height depending on the text amount and font size
     CGSize maximumLabelSize;
@@ -40,9 +40,9 @@
         
         maximumLabelSize = CGSizeMake(200.f, _titleLabel.frame.size.height);
         
-        CGSize expectedLabelSize = [_text sizeWithFont:_titleLabel.font
-                                     constrainedToSize:maximumLabelSize
-                                         lineBreakMode:_titleLabel.lineBreakMode];
+        CGSize expectedLabelSize = [_title sizeWithFont:_titleLabel.font
+                                      constrainedToSize:maximumLabelSize
+                                          lineBreakMode:_titleLabel.lineBreakMode];
         
         [_imageView setFrame:CGRectMake(_imageView.frame.origin.x, _imageView.frame.origin.y, self.imageWidth, _imageView.frame.size.height)];
         [_titleLabel setFrame:CGRectMake(5.f + _imageView.frame.origin.x + _imageView.frame.size.width, _titleLabel.frame.origin.y, expectedLabelSize.width, _titleLabel.frame.size.height)];
@@ -55,13 +55,13 @@
         
         maximumLabelSize = CGSizeMake(_titleLabel.frame.size.width, 1000.f);
         
-        CGSize expectedLabelSize = [_text sizeWithFont:_titleLabel.font
-                                     constrainedToSize:maximumLabelSize
-                                         lineBreakMode:_titleLabel.lineBreakMode];
+        CGSize expectedLabelSize = [_title sizeWithFont:_titleLabel.font
+                                      constrainedToSize:maximumLabelSize
+                                          lineBreakMode:_titleLabel.lineBreakMode];
         
         [_imageView setFrame:CGRectMake(_imageView.frame.origin.x, _imageView.frame.origin.y, _imageView.frame.size.width, self.imageHeight)];
         [_titleLabel setFrame:CGRectMake(_titleLabel.frame.origin.x, 5.f + _imageView.frame.origin.y + _imageView.frame.size.height, _titleLabel.frame.size.width, expectedLabelSize.height)];
-        [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, _titleLabel.frame.origin.y + _titleLabel.frame.size.height + (_imageView.frame.origin.y * 2))];
+        //[self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, _titleLabel.frame.origin.y + _titleLabel.frame.size.height + (_imageView.frame.origin.y * 2))];
     }
     
 }

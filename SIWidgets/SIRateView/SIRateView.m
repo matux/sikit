@@ -10,21 +10,35 @@
 
 @implementation SIRateView
 
+- (void)initialize
+{
+    _editable = NO;
+    _imageViews = [[NSMutableArray alloc] init];
+    
+    _maxRating = 5;
+    _midMargin = 5;
+    _minImageSize = CGSizeMake(5.f, 5.f);
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithFrame:frame])
+    if( self = [super initWithFrame:frame] )
     {
-        _editable = NO;
-        _imageViews = [[NSMutableArray alloc] init];
-        
-        _maxRating = 5;
-        _midMargin = 5;
-        _minImageSize = CGSizeMake(5.f, 5.f);
-        
+        [self initialize];
     }
     
     return self;
     
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    if( self = [super initWithCoder:decoder] )
+    {
+        [self initialize];
+    }
+    
+    return self;
 }
 
 - (void)refresh
@@ -55,7 +69,7 @@
     for( int i = 0; i < _imageViews.count; i++ )
     {
         UIImageView *imageView = (UIImageView *)_imageViews[i];
-        imageView.frame = CGRectMake(self.leftMargin + i * (_midMargin + imageWidth), 0, imageWidth, imageHeight);
+        imageView.frame = CGRectMake(_leftMargin + i * (_midMargin + imageWidth), 0, imageWidth, imageHeight);
     }
     
 }
@@ -110,7 +124,6 @@
     {
         UIImageView *imageView = (UIImageView *)_imageViews[i];
         [imageView removeFromSuperview];
-        // release?
     }
     
     [_imageViews removeAllObjects];
@@ -118,8 +131,8 @@
     // Add new image views
     for( int i = 0; i < maxRating; i++ )
     {
-        UIImageView *imageView = [[UIImageView alloc] init];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        UIImageView *imageView = [[[UIImageView alloc] init] autorelease];
+        imageView.contentMode = UIViewContentModeTopLeft; //UIViewContentModeScaleAspectFit;
         [_imageViews addObject:imageView];
         [self addSubview:imageView];
     }
@@ -132,19 +145,19 @@
 
 - (void)setNotSelectedImage:(UIImage *)image
 {
-    _notSelectedImage = image;
+    _notSelectedImage = image; // retain];
     [self refresh];
 }
 
 - (void)setHalfSelectedImage:(UIImage *)image
 {
-    _halfSelectedImage = image;
+    _halfSelectedImage = image; // retain];
     [self refresh];
 }
 
 - (void)setFullSelectedImage:(UIImage *)image
 {
-    _fullSelectedImage = image;
+    _fullSelectedImage = image; // retain];
     [self refresh];
 }
 

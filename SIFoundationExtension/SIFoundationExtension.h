@@ -26,6 +26,7 @@
 #import "CFNetworkErrors+SIExtension.h"
 
 // UserInterface
+#import "UIAlertView+SIExtension.h"
 #import "UIBezierPath+SIExtension.h"
 #import "UIColor+SIExtension.h"
 #import "UIImage+SIExtension.h"

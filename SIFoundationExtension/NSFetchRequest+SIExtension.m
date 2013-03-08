@@ -12,14 +12,14 @@
 
 + (NSFetchRequest *)fetchRequestWithEntity:(NSEntityDescription *)entityDescription
 {
-	NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescription];
 	return fetchRequest;
 }
 
 + (NSFetchRequest *)fetchRequestWithEntity:(NSEntityDescription *)entityDescription andPredicate:(NSPredicate *)predicate
 {
-	NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescription];
 	[fetchRequest setPredicate:predicate];
 	return fetchRequest;
@@ -27,7 +27,7 @@
 	 
 + (NSFetchRequest *)fetchRequestWithEntity:(NSEntityDescription *)entityDescription andPredicate:(NSPredicate *)predicate andSortDescriptor:(NSSortDescriptor *)sortDescriptor
 {
-	NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescription];
 	[fetchRequest setPredicate:predicate];
 	[fetchRequest setSortDescriptors:@[sortDescriptor]];
@@ -36,7 +36,7 @@
 
 + (NSFetchRequest *)fetchRequestWithEntity:(NSEntityDescription *)entityDescription andPredicate:(NSPredicate *)predicate andSortDescriptors:(NSArray *)sortDescriptors
 {
-	NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescription];
 	[fetchRequest setPredicate:predicate];
 	[fetchRequest setSortDescriptors:sortDescriptors];

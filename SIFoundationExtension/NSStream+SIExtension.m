@@ -19,7 +19,7 @@
     readStream = NULL;
     writeStream = NULL;
     
-    host = CFHostCreateWithName(NULL, (CFStringRef) hostName);
+    host = CFHostCreateWithName(NULL, (__bridge CFStringRef) hostName);
     if( host ) 
     {
         (void)CFStreamCreatePairWithSocketToCFHost(NULL, host, port, &readStream, &writeStream);
@@ -32,7 +32,7 @@
             CFRelease(readStream);
     } 
     else 
-        *inputStream = [(NSInputStream *) readStream autorelease];
+        *inputStream = (NSInputStream *) CFBridgingRelease(readStream);
 
     if( !outputStream ) 
     {
@@ -40,7 +40,7 @@
             CFRelease(writeStream);
     } 
     else 
-        *outputStream = [(NSOutputStream *) writeStream autorelease];
+        *outputStream = (NSOutputStream *) CFBridgingRelease(writeStream);
 	
 }
 

@@ -59,7 +59,7 @@ extern NSString *kSISMTPPartContentTransferEncodingKey;
 @property(nonatomic, copy) NSString *login;
 @property(nonatomic, copy) NSString *pass;
 @property(nonatomic, copy) NSString *relayHost;
-@property(nonatomic, retain) NSArray *relayPorts;
+@property(nonatomic, strong) NSArray *relayPorts;
 
 @property(nonatomic, assign) BOOL requiresAuth;
 @property(nonatomic, assign) BOOL wantsSecure;
@@ -70,11 +70,11 @@ extern NSString *kSISMTPPartContentTransferEncodingKey;
 @property(nonatomic, copy) NSString *toEmail;
 @property(nonatomic, copy) NSString *ccEmail;
 @property(nonatomic, copy) NSString *bccEmail;
-@property(nonatomic, retain) NSArray *parts;
+@property(nonatomic, strong) NSArray *parts;
 
 @property(nonatomic, assign) NSTimeInterval connectTimeout;
 
-@property(nonatomic, assign) id <SISMTPMessageDelegate> delegate;
+@property(nonatomic, weak) id <SISMTPMessageDelegate> delegate;
 
 - (BOOL)send;
 

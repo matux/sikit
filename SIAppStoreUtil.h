@@ -18,7 +18,7 @@
 @interface SIAppStoreUtil : NSObject
 
 // Delegate
-@property (nonatomic, readwrite, unsafe_unretained) id <SIAppStoreUtilDelegate> delegate;
+@property (nonatomic, readwrite, weak) id <SIAppStoreUtilDelegate> delegate;
 
 // App Store and Application properties
 @property (nonatomic, readwrite, assign) NSUInteger appTrackID;
@@ -52,5 +52,7 @@
 // Increments execution time by one
 // Returns whether or not a request for rating should be presented
 - (BOOL)incrementExecutionCount;
+
+- (void)setDeclinedThisVersion:(BOOL)declined;
 
 @end

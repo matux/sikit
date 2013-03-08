@@ -12,8 +12,8 @@
 @interface SITextPopupView : SIPopupView
 
 @property (nonatomic, readwrite, copy) NSString *text;
-@property (nonatomic, readwrite, retain) UIColor *textColor;
-@property (nonatomic, readwrite, retain) UIFont *textFont;
+@property (nonatomic, readwrite, strong) UIColor *textColor;
+@property (nonatomic, readwrite, strong) UIFont *textFont;
 
 + (SITextPopupView *)errorPopupWithFrame:(CGRect)frame andText:(NSString *)text;
 + (SITextPopupView *)normalPopupWithFrame:(CGRect)frame andText:(NSString *)text;

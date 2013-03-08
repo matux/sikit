@@ -16,7 +16,7 @@
     UIView *_backgroundView;
 }
 
-@property (nonatomic, readonly, retain) SIPopupView *popupView;
+@property (nonatomic, readonly, strong) SIPopupView *popupView;
 
 - (id)initWithPopupView:(SIPopupView *)popupView;
 

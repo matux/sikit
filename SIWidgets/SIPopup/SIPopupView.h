@@ -25,9 +25,9 @@
 @interface SIPopupView : UIView
 
 @property (atomic, readwrite, assign) CGFloat arcRadius;
-@property (nonatomic, readwrite, unsafe_unretained) id <SIPopupViewDelegate> delegate;
-@property (nonatomic, readwrite, retain) UIColor *backgroundColor;
-@property (nonatomic, readwrite, retain) SIPopupDisplayer *parentPopupDisplayer;
+@property (nonatomic, readwrite, weak) id <SIPopupViewDelegate> delegate;
+@property (nonatomic, readwrite, strong) UIColor *backgroundColor;
+@property (nonatomic, readwrite, strong) SIPopupDisplayer *parentPopupDisplayer;
 
 - (void)showAnimated:(BOOL)animated;
 - (void)hideAnimated:(BOOL)animated;

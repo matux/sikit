@@ -15,7 +15,7 @@
 {
     if( self = [super init] )
     {
-        _popupView = [popupView retain];
+        _popupView = popupView;
         [_popupView setParentPopupDisplayer:self];
         
         _backgroundView = [[UIView alloc] init];
@@ -31,10 +31,7 @@
     if( [_popupView superview] )
         [NSException raise:@"SIPopupIsVisibleException" format:@"- [UIPopup dealloc] reached while popup is still visible."];
 
-    [_popupView release];
-    [_backgroundView release];
 
-    [super dealloc];
 }
 
 - (void)displayInView:(UIView *)otherView isModal:(BOOL)isModal 

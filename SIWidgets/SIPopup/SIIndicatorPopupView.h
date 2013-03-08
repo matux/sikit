@@ -16,8 +16,8 @@
 }
 
 @property (nonatomic, copy) NSString *text;
-@property (nonatomic, retain) UIColor *textColor;
-@property (nonatomic, retain) UIFont *textFont;
+@property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, strong) UIFont *textFont;
 
 + (SIIndicatorPopupView *)loadingPopupWithFrame:(CGRect)frame andText:(NSString *)text;
 

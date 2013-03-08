@@ -118,6 +118,11 @@
     return length;
 }
 
+- (BOOL)isNullOrWhitespace
+{
+	return self == (id)[NSNull null] || [self length] == 0 || [self isEqualToString:@""];
+}
+
 - (BOOL)containsString:(NSString *)string
 {
 	return ([self rangeOfString:string].location != NSNotFound);

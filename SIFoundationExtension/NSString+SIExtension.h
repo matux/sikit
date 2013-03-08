@@ -21,6 +21,8 @@
 
 - (BOOL)isEmpty;
 - (BOOL)isInvisible; /*! @discussion checks for invisible characters as well as empty, could have a better name */
+- (BOOL)isNullOrWhitespace;
+
 - (BOOL)containsString:(NSString *)string;
 
 - (NSNumber *)toIntegerNumber;

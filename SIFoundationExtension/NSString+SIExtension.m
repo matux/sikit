@@ -33,22 +33,21 @@
 
 - (NSString *)URLEncodedString 
 {
-    NSString *result = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+    NSString *result = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                                            (CFStringRef)self,
                                                                            NULL,
 																		   CFSTR("!*'();:@&=+$,/?%#[]"),
-                                                                           kCFStringEncodingUTF8);
-    [result autorelease];
+                                                                           kCFStringEncodingUTF8));
+
 	return result;
 }
 
 - (NSString *)URLDecodedString
 {
-	NSString *result = (NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
+	NSString *result = CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
 																						   (CFStringRef)self,
 																						   CFSTR(""),
-																						   kCFStringEncodingUTF8);
-    [result autorelease];
+																						   kCFStringEncodingUTF8));
 	return result;	
 }
 
@@ -79,7 +78,7 @@
         output[idx + 3] = (i + 2) < length ? kAFBase64EncodingTable[(value >> 0)  & 0x3F] : '=';
     }
     
-    return [[[NSString alloc] initWithData:mutableData encoding:NSASCIIStringEncoding] autorelease];
+    return [[NSString alloc] initWithData:mutableData encoding:NSASCIIStringEncoding];
 
 }
 
@@ -126,7 +125,7 @@
 
 - (NSNumber *)toIntegerNumber
 {
-	NSNumberFormatter *formatter = [[[NSNumberFormatter alloc] init] autorelease];
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
 	return [formatter numberFromString:self];
 }

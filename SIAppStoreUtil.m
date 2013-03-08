@@ -8,6 +8,7 @@
 
 #import "SIAppStoreUtil.h"
 #import "SIUtil.h"
+#import "PDKeychainBindings.h"
 
 #define kRatedVersionKey    @"SIRatedVersionChecked"
 #define kDeclinedVersionKey @"SIDeclinedVersion"
@@ -25,6 +26,8 @@
 
 #define kAutomateExecutionTimeCount     false
 #define kForceDefaultReset              false
+
+#define kSecondsPerDay 86400
 
 #pragma mark -
 
@@ -72,14 +75,11 @@
         // If this is a new version, we have to reset the notification
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *lastVersionUsed = [userDefaults objectForKey:kLastVersionUsedKey];
-        NSString *lastBuildUsed = [userDefaults objectForKey:kLastBuildUsedKey];
         if (![lastVersionUsed isEqualToString:self.applicationVersion] ||
-            ![lastBuildUsed isEqualToString:self.applicationBuildNumber] ||
             kForceDefaultReset )
         {
             // Reset stored defaults
             [userDefaults setObject:self.applicationVersion forKey:kLastVersionUsedKey];
-            [userDefaults setObject:self.applicationBuildNumber forKey:kLastBuildUsedKey];
             [userDefaults setInteger:0 forKey:kExecCountKey];
             [userDefaults setInteger:0 forKey:kExecCountToRateKey];
             [userDefaults setObject:nil forKey:kRatedVersionKey];
@@ -98,26 +98,21 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [_appStoreCountry release];
-    [_applicationBundleID release];
-    [_applicationName release];
-    [_applicationVersion release];
-    
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark App Store Actions
 
 - (BOOL)shouldPromptForRating
 {
-    BOOL challenge = ((!(self.ratedThisVersion || self.declinedToRateThisVersion)) &&
-                      self.isLatestVersion &&
-                      self.executionCount >= self.executionCountBeforePromptingForRating);
+    BOOL rated = [self ratedThisVersion];
+    BOOL declined = [self declinedThisVersion];
+    BOOL latest = [self isLatestVersion];
+    NSUInteger executionCount = [self executionCount];
+    NSUInteger countBeforePrompt = [self executionCountBeforePromptingForRating];
     
-    return challenge;
+    NSDate * lastReminded = [self lastTimeReminded];
+    
+    return ( ( !lastReminded || [[NSDate date] timeIntervalSinceDate:lastReminded] > kSecondsPerDay * 15 ) && (  ! ( rated || declined ) ) && latest && ( executionCount > countBeforePrompt ) );
 }
 
 - (BOOL)openRatingsPage
@@ -170,7 +165,7 @@
     if( data )
     {
         // Get the JSON string
-        NSString *json = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+        NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
         LogAppStore(@"iTunes Service - Got response with %d bytes", [data length]);
         
@@ -267,11 +262,13 @@
 
 - (BOOL)ratedThisVersion
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:kRatedVersionKey] isEqualToString:self.applicationVersion];
+    NSString * str = [[NSUserDefaults standardUserDefaults] objectForKey:kRatedVersionKey];
+    return [str isEqualToString:self.applicationVersion];
 }
 
 - (void)setRatedThisVersion:(BOOL)rated
 {
+    
     [[NSUserDefaults standardUserDefaults] setObject:(rated ? self.applicationVersion : nil) 
                                               forKey:kRatedVersionKey];
     [[NSUserDefaults standardUserDefaults] synchronize];

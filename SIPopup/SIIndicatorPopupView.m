@@ -28,13 +28,6 @@
     return self;
 }
 
-- (void)dealloc 
-{
-    [_indicatorView release];
-    [_label release];
-
-    [super dealloc];
-}
 
 - (void)setText:(NSString *)value 
 {
@@ -84,7 +77,7 @@
     _label.numberOfLines = 0;
     
     CGFloat wrapperViewHeight = _label.frame.origin.y + _label.frame.size.height;
-    UIView *wrapperView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, wrapperViewHeight)] autorelease];
+    UIView *wrapperView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, wrapperViewHeight)];
     wrapperView.center = SICenterPointForView(self);
 
     [wrapperView addSubview:_indicatorView];
@@ -95,7 +88,7 @@
 
 + (SIIndicatorPopupView *)loadingPopupWithFrame:(CGRect)frame andText:(NSString *)text
 {
-    SIIndicatorPopupView *indicatorPopupView = [[[SIIndicatorPopupView alloc] initWithFrame:frame] autorelease];
+    SIIndicatorPopupView *indicatorPopupView = [[SIIndicatorPopupView alloc] initWithFrame:frame];
     indicatorPopupView.textColor = [UIColor whiteColor];
     indicatorPopupView.backgroundColor = [UIColor colorWithHex:0x00000 alpha:0.85f];
     indicatorPopupView.text = text;

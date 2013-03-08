@@ -31,9 +31,11 @@
 OSVersion SIOSVersion(void)
 {
 	OSVersion v;
-	
-	v.string = [[UIDevice currentDevice] systemVersion];
-	NSArray *vA = [v.string componentsSeparatedByString:@"."];
+    
+    NSString * versionString = [[UIDevice currentDevice] systemVersion];
+	v.string = [versionString UTF8String];
+    
+	NSArray *vA = [versionString componentsSeparatedByString:@"."];
 	v.major = [((NSString *)vA[0]) intValue];
 	v.minor = [((NSString *)vA[1]) intValue];
 	v.decimalVersion = (float)v.major + ((float)v.minor / 10.f);
@@ -623,7 +625,7 @@ NSString *SIInterfaceOrientationToString(UIInterfaceOrientation interfaceOrienta
 
 CGPoint SICenterPointForView(UIView *view)
 {
-    UIView *tmpView = [[[UIView alloc] initWithFrame:view.bounds] autorelease];
+    UIView *tmpView = [[UIView alloc] initWithFrame:view.bounds];
     return tmpView.center;
 }
 

@@ -33,11 +33,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [_label release];
-    [super dealloc];
-}
 
 - (void)setText:(NSString *)value
 {
@@ -84,7 +79,7 @@
 
 + (SITextPopupView *)errorPopupWithFrame:(CGRect)frame andText:(NSString *)text
 {
-    SITextPopupView *alertView = [[[SITextPopupView alloc] initWithFrame:frame] autorelease];
+    SITextPopupView *alertView = [[SITextPopupView alloc] initWithFrame:frame];
     alertView.textColor = [UIColor whiteColor];
     alertView.backgroundColor = [UIColor colorWithHex:0xDC3232 alpha:.85f];
     alertView.text = text;
@@ -93,7 +88,7 @@
 
 + (SITextPopupView *)normalPopupWithFrame:(CGRect)frame andText:(NSString *)text
 {
-    SITextPopupView *alertView = [[[SITextPopupView alloc] initWithFrame:frame] autorelease];
+    SITextPopupView *alertView = [[SITextPopupView alloc] initWithFrame:frame];
     alertView.textColor = [UIColor whiteColor];
     alertView.backgroundColor = [UIColor colorWithHex:0x000000 alpha:.85f];
     alertView.text = text;

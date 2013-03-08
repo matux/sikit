@@ -52,7 +52,7 @@ static char const * const kPopupDisplayerKey = "PopupDisplayerKey";
     [popupView setCenter:SICenterPointForView(self)];
     
     // Popup Displayer    
-    [self setPopupDisplayer:[[[SIPopupDisplayer alloc] initWithPopupView:popupView] autorelease]];
+    [self setPopupDisplayer:[[SIPopupDisplayer alloc] initWithPopupView:popupView]];
     [[self popupDisplayer] displayInView:self during:seconds isModal:NO];
     
     //});

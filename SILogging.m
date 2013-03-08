@@ -45,7 +45,6 @@ void compactLog(NSString *format, ...)
         CLSLog(@"%@", s);
 #endif
     
-    [s release];
     
 }
 
@@ -114,7 +113,6 @@ void compactLogAltFormat(NSString *namespace, int indentLevel, NSString *functio
             CLSLog(@"%@%@ -> %@", prefix, functionName, formattedString);
 #endif
         
-        [formattedString release];
         
     }
     else

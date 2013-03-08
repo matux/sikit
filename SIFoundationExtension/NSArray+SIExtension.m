@@ -18,7 +18,8 @@
 - (NSDictionary *)indexKeyedDictionary
 {
     NSUInteger arrayCount = [self count];
-    id arrayObjects[arrayCount], objectKeys[arrayCount];
+    
+    __unsafe_unretained id arrayObjects[arrayCount], objectKeys[arrayCount];
     
     [self getObjects:arrayObjects range:NSMakeRange(0UL, arrayCount)];
     for( NSUInteger index = 0UL; index < arrayCount; index++) 

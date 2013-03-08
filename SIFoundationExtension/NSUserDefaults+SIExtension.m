@@ -19,15 +19,15 @@
     }
     
     NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:[settingsBundle stringByAppendingPathComponent:@"Root.plist"]];
-    NSArray *preferences = [settings objectForKey:@"PreferenceSpecifiers"];
+    NSArray *preferences = settings[@"PreferenceSpecifiers"];
     
-    NSMutableDictionary *defaultsToRegister = [[[NSMutableDictionary alloc] initWithCapacity:[preferences count]] autorelease];
+    NSMutableDictionary *defaultsToRegister = [[NSMutableDictionary alloc] initWithCapacity:[preferences count]];
     for( NSDictionary *prefSpecification in preferences )
     {
-        NSString *key = [prefSpecification objectForKey:@"Key"];
-        id defaultValue = [prefSpecification objectForKey:@"DefaultValue"];
+        NSString *key = prefSpecification[@"Key"];
+        id defaultValue = prefSpecification[@"DefaultValue"];
         if( key && defaultValue )
-            [defaultsToRegister setObject:defaultValue forKey:key];
+            defaultsToRegister[key] = defaultValue;
     }
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsToRegister];

@@ -1,6 +1,6 @@
 //
 //  NSThread+SIExtension.m
-//  Crunch
+//  SIKit
 //
 //  Created by Matias Pequeno on 9/9/12.
 //  Copyright (c) 2012 Silicon Illusions, Inc. All rights reserved.
@@ -12,12 +12,19 @@
 static const dispatch_queue_priority_t kDefaultPriorityForNewThreads = DISPATCH_QUEUE_PRIORITY_HIGH;
 
 // Thread naming
-static int __threadId = 2; // 0 = invalid, 1 = main, +2 = non-main threads
 static void __baptizeCurrentThread()
 {
+    static int __threadId = 2; // 0 = invalid, 1 = main, +2 = non-main threads
+    static NSString *bundleIdentifier = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    });
+    
     NSThread *currentThread = [NSThread currentThread];
     if( ![currentThread name] || [currentThread.name isEmpty] )
-        [currentThread setName:[NSString stringWithFormat:@"%03d", [currentThread isMainThread] ? 1 : __threadId++]];
+        [currentThread setName:[NSString stringWithFormat:@"%@ (%03d)", bundleIdentifier, [currentThread isMainThread] ? 1 : __threadId++]];
     
     return;
 }
@@ -61,19 +68,19 @@ static void __baptizeCurrentThread()
     if( SI_GCD_AVAILABLE ) {
         
         if ([self isMainThread]) {
-            __baptizeCurrentThread();
+            //__baptizeCurrentThread();
             block();
             
         } else {
             
             if (waitUntilDone) {
                 dispatch_sync(dispatch_get_main_queue(), ^ {
-                    __baptizeCurrentThread();
+                    //__baptizeCurrentThread();
                     block();
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^ {
-                    __baptizeCurrentThread();
+                    //__baptizeCurrentThread();
                     block();
                 });
             }
@@ -81,6 +88,14 @@ static void __baptizeCurrentThread()
         
     } else
         block();
+}
+
++ (void)executeInMainThread:(void (^)(void))block afterDelay:(CGFloat)delay
+{
+    int64_t internalDelay = delay * NSEC_PER_SEC;
+    
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, internalDelay);
+    dispatch_after(popTime, dispatch_get_main_queue(), block);
 }
 
 @end

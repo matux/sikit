@@ -50,7 +50,7 @@ typedef struct _OSVersion {
 	unsigned char major;
 	unsigned char minor;
 	int build;
-	NSString *string;
+    const char * string;
 } OSVersion;
 
 // Phone properties

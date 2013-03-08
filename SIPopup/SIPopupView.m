@@ -27,12 +27,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    self.backgroundColor = nil;
-
-    [super dealloc];
-}
 
 - (void)drawRect:(CGRect)rect
 {
@@ -55,66 +49,63 @@
 
 - (void)showAnimated:(BOOL)animated
 {
-    if( [_delegate respondsToSelector:@selector(popupViewWillAppear:)] )
+    __block __weak SIPopupView * blockSelf = self;
+    
+    if( [_delegate respondsToSelector:@selector(popupViewWillAppear:)] ) {
         [_delegate popupViewWillAppear:self];
+    }
     
     [self setAlpha:0];
     
     if( animated )
     {
-        [UIView beginAnimations:@"showPopup" context:NULL];
-        [UIView setAnimationDuration:.3f];
-        [UIView setAnimationDelegate:self];
-        [self setAlpha:1.f];
-        [UIView commitAnimations];
+        [UIView animateWithDuration:.3f animations:^{
+            blockSelf.alpha = 1.f;
+        } completion:^(BOOL finished) {
+            if( [blockSelf.delegate respondsToSelector:@selector(popupViewDidAppear:)] ) {
+                [blockSelf.delegate popupViewDidAppear:blockSelf];
+            }
+        }];
     }
     else
     {
         [self setAlpha:1.f];
         
-        if( [_delegate respondsToSelector:@selector(popupViewDidAppear:)] )
+        if( [_delegate respondsToSelector:@selector(popupViewDidAppear:)] ) {
             [_delegate popupViewDidAppear:self];
+        }
 
     }
 }
 
 - (void)hideAnimated:(BOOL)animated
 {
-    if( [_delegate respondsToSelector:@selector(popupViewWillDisappear:)] )
+    __weak __block SIPopupView * blockSelf = self;
+    
+    if( [_delegate respondsToSelector:@selector(popupViewWillDisappear:)] ) {
         [_delegate popupViewWillDisappear:self];
+    }
 
     if( animated )
     {
-        [UIView beginAnimations:@"hidePopup" context:NULL];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDuration:.3f];
-        [self setAlpha:0];
-        [UIView commitAnimations];
+        
+        [UIView animateWithDuration:.3f animations:^{
+            blockSelf.alpha = 0.f;
+        } completion:^(BOOL finished) {
+            if( [blockSelf.delegate respondsToSelector:@selector(popupViewDidDisappear:)] ) {
+                [blockSelf.delegate popupViewDidDisappear:blockSelf];
+            }
+        }];
+        
     }
     else
     {
         [self setAlpha:0];
 
-        if( [_delegate respondsToSelector:@selector(popupViewDidDisappear:)] )
+        if( [_delegate respondsToSelector:@selector(popupViewDidDisappear:)] ) {
             [_delegate popupViewDidDisappear:self];
+        }
 
-    }
-}
-
-#pragma mark Animation delegate
-
-- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
-{
-    if( [animationID compare:@"showPopup"] )
-    {
-        if( [_delegate respondsToSelector:@selector(popupViewDidAppear:)] )
-            [_delegate popupViewDidAppear:self];
-    }
-    else if( [animationID compare:@"hidePopup"] )
-    {
-        if( [_delegate respondsToSelector:@selector(popupViewDidDisappear:)] )
-            [_delegate popupViewDidDisappear:self];
-        
     }
 }
 

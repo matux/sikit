@@ -181,7 +181,7 @@ void SIEnableDebugToFile(NSString *filename)
 	// Specify stderr writes to a file (truncating contents first) 
 	freopen(path, "w", stderr);
 	
-	LogInfo(@"Enabled debug to path: %@", [NSString stringWithUTF8String:path]);;
+	NSLog(@"Enabled debug to path: %@", [NSString stringWithUTF8String:path]);;
 }
 
 // Returns true if the current process is being debugged (either
@@ -233,7 +233,7 @@ void SICallNumber(NSString *number)
 	NSArray *array = [number componentsSeparatedByCharactersInSet:charsToRemove];
 	// (index 0 is the category, index 1 is the ": " string, index 2 is finally the complete number
 	NSString *cleanNumber = array[1];
-	LogInfo(@"about to call %@", cleanNumber);
+	NSLog(@"about to call %@", cleanNumber);
 	NSString *url = [[@"tel://" stringByAppendingString:cleanNumber] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
 	
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
@@ -477,7 +477,7 @@ UIImage *SIResizeImage(UIImage *image, CGSize size, UIViewContentMode contentMod
 	}
 	else 
 	{
-		LogWarning(@"SIResizeImage: UIViewContentMode not supported.");
+		NSLog(@"SIResizeImage: UIViewContentMode not supported.");
 	}
 	
 	UIGraphicsBeginImageContext(size);
@@ -820,7 +820,7 @@ BOOL SIAddressFromString(NSString *IPAddress, struct sockaddr_in *address)
 	int conversionResult = inet_aton([IPAddress UTF8String], &address->sin_addr);
 	if( conversionResult == 0 ) 
 	{
-		LogError(@"SIAddressFromString: Failed to convert the IP address (%@) string into a sockaddr_in (%@).", IPAddress, address);
+		NSLog(@"SIAddressFromString: Failed to convert the IP address (%@) string into a sockaddr_in (%@).", IPAddress, address);
 		return NO;
 	}
 	

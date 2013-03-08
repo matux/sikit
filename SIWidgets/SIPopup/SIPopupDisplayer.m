@@ -8,6 +8,7 @@
 
 #import "SIPopupDisplayer.h"
 #import "SIPopupView.h"
+#import "NSThread+SIExtension.h"
 
 @implementation SIPopupDisplayer
 

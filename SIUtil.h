@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CFNetwork/CFNetwork.h>
 #include <netinet/in.h>
-
+#import "CFNetworkErrors+SIExtension.h"
 #import "SISMTPMessage.h"
 
 @class UIImage;

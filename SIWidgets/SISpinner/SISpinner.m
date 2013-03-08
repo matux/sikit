@@ -7,6 +7,7 @@
 //
 
 #import "SISpinner.h"
+#import "SIUtil.h"
 
 @interface SISpinner ()
 
@@ -35,10 +36,6 @@
 - (void)dealloc
 {
     [_indefiniteTimer invalidate];
-    [_indefiniteTimer release];
-    [_spinnerImage release];
-    
-    [super dealloc];
 }
 
 #pragma mark

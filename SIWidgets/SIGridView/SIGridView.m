@@ -63,7 +63,7 @@
         //    [spinner setFrame:CGRectMake(20, self.bounds.size.height/2 - 20, 20, 20)];
         
         _numberOfRows = self.bounds.size.height / (float)_rowHeight;
-        LogGridView(@"r: %f", self.bounds.size.height);
+        NSLog(@"r: %f", self.bounds.size.height);
         _rowWidths = (NSInteger *)calloc(_numberOfRows, sizeof(NSInteger));
         for( NSInteger i = 0; i < _numberOfRows; i++ )
             _rowWidths[i] = 0;
@@ -250,10 +250,10 @@
 
 - (void)addCell:(SIGridViewCell *)cell
 {
-    UITapGestureRecognizer *singleFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCellTap:)] autorelease];
+    UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCellTap:)];
     [cell addGestureRecognizer:singleFingerTap];
     
-    UIView *item = [[[UIView alloc] init] autorelease];
+    UIView *item = [[UIView alloc] init];
     
     int shortestIndex, top, left;
     

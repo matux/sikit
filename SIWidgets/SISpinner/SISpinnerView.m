@@ -58,12 +58,7 @@
 - (void)dealloc
 {
     [_spinner removeFromSuperview];
-    [_spinner release];
-    
     [_containerImageView removeFromSuperview];
-    [_containerImageView release];
-    
-    [super dealloc];
 }
 
 #pragma mark

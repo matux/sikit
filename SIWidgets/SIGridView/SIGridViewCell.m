@@ -7,19 +7,9 @@
 //
 
 #import "SIGridViewCell.h"
+#import "UIImageView+SIExtension.h"
 
 @implementation SIGridViewCell
-
-- (void)dealloc
-{
-    [_titleLabel release];
-    [_imageView release];
-    
-    [_title release];
-    [_imageURL release];
-    
-    [super dealloc];
-}
 
 - (void)updateCellInfo:(NSDictionary *)data
 {    

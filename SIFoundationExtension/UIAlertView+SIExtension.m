@@ -7,6 +7,7 @@
 //
 
 #import "UIAlertView+SIExtension.h"
+#import <objc/runtime.h>
 
 static NSString *SI_ALERTVIEW_BUTTON_KEY = @"com.siliconillusions.alertview.button";
 

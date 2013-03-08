@@ -131,7 +131,7 @@
     // Add new image views
     for( int i = 0; i < maxRating; i++ )
     {
-        UIImageView *imageView = [[[UIImageView alloc] init] autorelease];
+        UIImageView *imageView = [[UIImageView alloc] init];
         imageView.contentMode = UIViewContentModeTopLeft; //UIViewContentModeScaleAspectFit;
         [_imageViews addObject:imageView];
         [self addSubview:imageView];

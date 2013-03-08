@@ -12,6 +12,7 @@
 #import "SIPopupDisplayer.h"
 #import "SITextPopupView.h"
 #import "SIIndicatorPopupView.h"
+#import "SIUtil.h"
 
 static char const * const kPopupDisplayerKey = "PopupDisplayerKey";
 

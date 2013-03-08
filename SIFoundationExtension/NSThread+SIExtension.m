@@ -7,6 +7,8 @@
 //
 
 #import "NSThread+SIExtension.h"
+#import "NSString+SIExtension.h"
+#import "SIUtil.h"
 
 // Default thread priority
 static const dispatch_queue_priority_t kDefaultPriorityForNewThreads = DISPATCH_QUEUE_PRIORITY_HIGH;

@@ -7,6 +7,7 @@
 //
 
 #import "SIGridViewController.h"
+#import "SIUtil.h"
 
 @implementation SIGridViewController
 

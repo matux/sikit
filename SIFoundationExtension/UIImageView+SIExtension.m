@@ -41,32 +41,20 @@ static NSMutableArray *__imageRequestCollection = nil;
 - (id)initWithImageView:(UIImageView *)imageView
 {
     if( self = [super init] ) {
-        _imageView = [imageView retain];
-        _dataReceived = [[NSMutableData data] retain];
+        _imageView = imageView;
+        _dataReceived = [NSMutableData data];
         _url = nil;
         _finished = NO;
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [_imageView release];
-    [_dataReceived release];
-    [_url release];
-    
-    [super dealloc];
-}
-
 - (void)finish
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingOperationDidFinishNotification object:_imageView userInfo:@{ @"url": _url }];
     
-    [_imageView release];
     _imageView = nil;
-    [_dataReceived release];
     _dataReceived = nil;
-    [_url release];
     _url = nil;
     
     _finished = YES;
@@ -76,7 +64,7 @@ static NSMutableArray *__imageRequestCollection = nil;
 {
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     _statusCode = httpResponse.statusCode;
-    _url = [httpResponse.URL retain];
+    _url = httpResponse.URL;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -133,7 +121,7 @@ static NSMutableArray *__imageRequestCollection = nil;
         
         // Store connection so we can purge it later
         if( !__imageRequestCollection )
-            __imageRequestCollection = [[NSMutableArray arrayWithCapacity:24] retain];
+            __imageRequestCollection = [NSMutableArray arrayWithCapacity:24];
         else
         {
             // Purge previously created connections
@@ -151,8 +139,6 @@ static NSMutableArray *__imageRequestCollection = nil;
         // Try to get the image
         [NSURLConnection connectionWithRequest:request delegate:connection];
         
-        // Release the connection
-        [connection release];
     }
 }
 

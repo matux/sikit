@@ -59,11 +59,8 @@
         if( _loadMoreEnabled )
             [_spinner setFrame:CGRectMake(20, self.bounds.size.height/2 - 20, 20, 20)];
         
-        //if( _loadMoreEnabled )
-        //    [spinner setFrame:CGRectMake(20, self.bounds.size.height/2 - 20, 20, 20)];
-        
         _numberOfRows = self.bounds.size.height / (float)_rowHeight;
-        //NSLog(@"r: %f", self.bounds.size.height);
+        //LogGridView(@"r: %f", self.bounds.size.height);
         _rowWidths = (NSInteger *)calloc(_numberOfRows, sizeof(NSInteger));
         for( NSInteger i = 0; i < _numberOfRows; i++ )
             _rowWidths[i] = 0;
@@ -74,7 +71,7 @@
 - (int)shortestColumnIndex
 {
     int shortestIndex = 0;
-    int shortestColumnHeight = INT_MAX; //9999999;
+    int shortestColumnHeight = INT_MAX;
     
     for( int i = 0; i < _numberOfColumns; i++ )
     {
@@ -92,7 +89,7 @@
 - (int)shortestRowIndex
 {    
     int shortestIndex = 0;
-    int shortestRowWidth = INT_MAX; //9999999;
+    int shortestRowWidth = INT_MAX;
     
     for( int i = 0; i < _numberOfRows; i++ )
     {

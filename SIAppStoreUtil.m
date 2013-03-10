@@ -125,7 +125,7 @@
         
         NSString *ratingURLString = [NSString stringWithFormat:kAppStoreURLFormat, self.appTrackID];
         NSURL *ratingURL = [NSURL URLWithString:ratingURLString];
-        NSLog(@"Opening URL %@", ratingURL);
+        LogAppStore(@"Opening URL %@", ratingURL);
         if( [[UIApplication sharedApplication] canOpenURL:ratingURL] ) 
         {
             [self setRatedThisVersion:YES];
@@ -156,7 +156,7 @@
     // Set proper iTunes URL
     NSString *iTunesServiceURL = [NSString stringWithFormat:kAppLookupURLFormat, self.appStoreCountry, self.applicationBundleID];
     
-    NSLog(@"Connecting to iTunes Service at: %@", iTunesServiceURL);
+    LogAppStore(@"Connecting to iTunes Service at: %@", iTunesServiceURL);
     
     NSError *error = nil;
     NSURLResponse *response = nil;
@@ -167,12 +167,12 @@
         // Get the JSON string
         NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
-        NSLog(@"iTunes Service - Got response with %d bytes", [data length]);
+        LogAppStore(@"iTunes Service - Got response with %d bytes", [data length]);
         
         // Track ID
         NSString *appTrackIDString = SIValueInJsonForKey(json, @"trackId");
         self.appTrackID = [appTrackIDString longLongValue];
-        NSLog(@"iTunes Service - Got appTrackID: %u", self.appTrackID);
+        LogAppStore(@"iTunes Service - Got appTrackID: %u", self.appTrackID);
         
         // Check version (we only want to rate if this is the latest version)
         NSString *latestVersion = SIValueInJsonForKey(json, @"version");
@@ -214,7 +214,7 @@
 {
     [self setExecutionCount:self.executionCount + 1];
     
-    NSLog(@"Incremented execution time to: %d - shouldPromptForRating: %@", 
+    LogAppStore(@"Incremented execution time to: %d - shouldPromptForRating: %@", 
                 (int)self.executionCount, ([self shouldPromptForRating]?@"YES":@"NO"));
     
     //LogAppStore(@"Challenge Details: (_ratedThisVersion:%@_declinedToRateThisVersion:%@_isLatestVersion:%@)",

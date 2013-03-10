@@ -7,6 +7,7 @@
 //
 
 #import "NSUserDefaults+SIExtension.h"
+#import "SILogging.h"
 
 @implementation NSUserDefaults (SIExtension)
 
@@ -14,7 +15,7 @@
 {
     NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
     if( !settingsBundle ) {
-        NSLog(@"Could not find Settings.bundle");
+        LogWarning(@"Could not find Settings.bundle");
         return;
     }
     

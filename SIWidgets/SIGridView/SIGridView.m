@@ -63,7 +63,7 @@
         //    [spinner setFrame:CGRectMake(20, self.bounds.size.height/2 - 20, 20, 20)];
         
         _numberOfRows = self.bounds.size.height / (float)_rowHeight;
-        NSLog(@"r: %f", self.bounds.size.height);
+        //NSLog(@"r: %f", self.bounds.size.height);
         _rowWidths = (NSInteger *)calloc(_numberOfRows, sizeof(NSInteger));
         for( NSInteger i = 0; i < _numberOfRows; i++ )
             _rowWidths[i] = 0;

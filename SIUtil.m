@@ -1000,7 +1000,7 @@ NSString *SIStringFromNetworkError(SINetworkErrorsExtended networkError)
 #pragma mark -
 #pragma mark Math Utility
 
-float normB(unsigned char b)
+float SINormB(unsigned char b)
 {
 	return (float)b / 255.0f;
 }

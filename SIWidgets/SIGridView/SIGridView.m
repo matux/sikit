@@ -294,7 +294,7 @@
     // scroll to the last visible item
     if( _lastVisibleItemIndex != 0 )
     {
-        UIView *lastVisibleItem = [self.items objectAtIndex:_lastVisibleItemIndex];
+        UIView *lastVisibleItem = self.items[_lastVisibleItemIndex];
         [self setContentOffset:(_horizontalModeEnabled ?
                                 CGPointMake(lastVisibleItem.frame.origin.x, 0) :
                                 CGPointMake(0, lastVisibleItem.frame.origin.y))

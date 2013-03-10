@@ -68,7 +68,7 @@ static NSString *SI_ALERTVIEW_BUTTON_KEY = @"com.siliconillusions.alertview.butt
     if( buttonIndex >= 0 )
     {
         NSArray *buttonsArray = objc_getAssociatedObject(self, (__bridge const void *)SI_ALERTVIEW_BUTTON_KEY);
-        SIAlertViewButton *item = [buttonsArray objectAtIndex:buttonIndex];
+        SIAlertViewButton *item = buttonsArray[buttonIndex];
         if( item.block )
             item.block();
     }

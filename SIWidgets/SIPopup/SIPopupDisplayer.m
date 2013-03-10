@@ -68,10 +68,10 @@
 {
     [self displayInView:otherView isModal:YES];
 
-    [NSThread executeInNewThread: ^ {
+    [NSThread dispatchInNewThread:^{
 		block();
-        [NSThread executeInMainThread: ^ { [self hide]; }
-                        waitUntilDone:NO];
+        [NSThread dispatchInMainThread:^{ [self hide]; }
+                                  sync:NO];
 	} withQueuePriority:DISPATCH_QUEUE_PRIORITY_BACKGROUND];
 }
 

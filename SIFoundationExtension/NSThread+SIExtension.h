@@ -8,11 +8,11 @@
 
 @interface NSThread (SIExtension)
 
-+ (void)executeInNewThread:(void (^)(void))block;
-+ (void)executeInNewThread:(void (^)(void))block withQueuePriority:(dispatch_queue_priority_t)priority;
++ (void)dispatchInNewThread:(void (^)(void))block;
++ (void)dispatchInNewThread:(void (^)(void))block withQueuePriority:(dispatch_queue_priority_t)priority;
 
-+ (void)executeInMainThread:(void (^)(void))block;
-+ (void)executeInMainThread:(void (^)(void))block waitUntilDone:(BOOL)waitUntilDone;
-+ (void)executeInMainThread:(void (^)(void))block afterDelay:(CGFloat)delay;
++ (void)dispatchInMainThread:(void (^)(void))block;
++ (void)dispatchInMainThread:(void (^)(void))block sync:(BOOL)yesOrNo;
++ (void)dispatchInMainThread:(void (^)(void))block afterDelay:(CGFloat)delay;
 
 @end

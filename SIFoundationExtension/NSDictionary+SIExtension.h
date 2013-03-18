@@ -12,7 +12,7 @@
 
 - (NSString *)stringForKey:(id)key;
 - (NSNumber *)numberForKey:(id)key;
-- (NSMutableDictionary *)dictionaryForKey:(id)key;
-- (NSMutableArray *)arrayForKey:(id)key;
+- (NSDictionary *)dictionaryForKey:(id)key;
+- (NSArray *)arrayForKey:(id)key;
 
 @end

@@ -22,13 +22,13 @@
     return (obj == [NSNull null] || ![obj isKindOfClass:[NSNumber class]]) ? nil : obj;
 }
 
-- (NSMutableDictionary *)dictionaryForKey:(id)key
+- (NSDictionary *)dictionaryForKey:(id)key
 {
 	id obj = [self objectForKey:key];
     return (obj == [NSNull null] || ![obj isKindOfClass:[NSMutableDictionary class]]) ? nil : obj;
 }
 
-- (NSMutableArray *)arrayForKey:(id)key
+- (NSArray *)arrayForKey:(id)key
 {
 	id obj = [self objectForKey:key];
     return (obj == [NSNull null] || ![obj isKindOfClass:[NSMutableArray class]]) ? nil : obj;

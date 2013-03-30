@@ -27,6 +27,16 @@
     }
 }
 
+- (id)traverseSubviewsForClass:(Class)c
+{
+    for (UIView *view in self.subviews) {
+        UIView *subview = [view traverseSubviewsForClass:c];
+        if (subview) return subview;
+    }
+    
+    return [self isKindOfClass:c] ? self : nil;
+}
+
 - (void)moveTo:(CGPoint)pos
 {
 	CGRect _frame = self.frame;

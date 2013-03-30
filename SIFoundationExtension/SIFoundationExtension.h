@@ -23,6 +23,7 @@
 #import "NSString+SIExtension.h"
 #import "NSThread+SIExtension.h"
 #import "NSURL+SIExtension.h"
+#import "NSURLConnection+SIExtension.h"
 #import "NSUserDefaults+SIExtension.h"
 
 // CoreFoundation

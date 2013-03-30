@@ -10,6 +10,7 @@
 
 + (void)dispatchInNewThread:(void (^)(void))block;
 + (void)dispatchInNewThread:(void (^)(void))block withQueuePriority:(dispatch_queue_priority_t)priority;
++ (void)dispatchInNewThread:(void (^)(void))block withQueuePriority:(dispatch_queue_priority_t)queuePriority sync:(BOOL)sync;
 
 + (void)dispatchInMainThread:(void (^)(void))block;
 + (void)dispatchInMainThread:(void (^)(void))block sync:(BOOL)yesOrNo;

@@ -25,8 +25,10 @@ static void __baptizeCurrentThread()
     });
     
     NSThread *currentThread = [NSThread currentThread];
-    if( ![currentThread name] || [currentThread.name isEmpty] )
+    printf("[NSThread currentThread].name before = %s : after = ", [[currentThread name] cStringUsingEncoding:NSASCIIStringEncoding]);
+    if( ![currentThread name] || [currentThread.name isEmpty] ) // Some threads are not being named, check if we named them already.
         [currentThread setName:[NSString stringWithFormat:@"%@ (%03d)", bundleIdentifier, [currentThread isMainThread] ? 1 : __threadId++]];
+    printf("%s\n", [[currentThread name] cStringUsingEncoding:NSASCIIStringEncoding]);
     
     return;
 }
@@ -45,13 +47,27 @@ static void __baptizeCurrentThread()
 
 + (void)dispatchInNewThread:(void (^)(void))block withQueuePriority:(dispatch_queue_priority_t)queuePriority
 {
+    [NSThread dispatchInNewThread:block withQueuePriority:queuePriority sync:NO];
+}
+
++ (void)dispatchInNewThread:(void (^)(void))block withQueuePriority:(dispatch_queue_priority_t)queuePriority sync:(BOOL)sync
+{
     if( SI_GCD_AVAILABLE ) {
-        dispatch_async(dispatch_get_global_queue(queuePriority, 0), ^ {
-            __baptizeCurrentThread();
-            block();
-        });
-    } else
+        if (sync)
+            dispatch_sync(dispatch_get_global_queue(queuePriority, 0), ^ {
+                __baptizeCurrentThread();
+                block();
+            });
+        else
+            dispatch_async(dispatch_get_global_queue(queuePriority, 0), ^ {
+                __baptizeCurrentThread();
+                block();
+            });
+    } else {
+        if (!sync)
+            LogWarning(@"Requested to dispatch in new thread synchronously but GCD is not available and there is no performThread implementation.");
         block();
+    }
 }
 
 + (void)dispatchInMainThread:(void (^)(void))block
@@ -59,7 +75,7 @@ static void __baptizeCurrentThread()
     [self dispatchInMainThread:block sync:YES];
 }
 
-+ (void)dispatchInMainThread:(void (^)(void))block sync:(BOOL)yesOrNo
++ (void)dispatchInMainThread:(void (^)(void))block sync:(BOOL)sync
 {
     if( SI_GCD_AVAILABLE ) {
         

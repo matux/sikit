@@ -11,8 +11,8 @@
 
 #ifndef arc_retain
 #   if __has_feature(objc_arc)
-#       define arc_retain self
-#       define arc_dealloc self
+#       define arc_retain self  // retain is still valid under arc in @property declarations
+#       define arc_dealloc self // dealloc is a method name which cannot be redefined
 #       define release self
 #       define autorelease self
 #   else

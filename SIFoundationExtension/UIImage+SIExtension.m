@@ -12,11 +12,22 @@
 
 - (UIImage *)scaledImage:(CGSize)size
 {
+    return [self scaledImage:size withInterpolationQuality:kCGInterpolationDefault];
+}
+
+- (UIImage *)scaledImage:(CGSize)size withInterpolationQuality:(CGInterpolationQuality)interpolationQuality
+{
     UIGraphicsBeginImageContext(size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    // Set the quality level to use when rescaling
+    CGContextSetInterpolationQuality(context, interpolationQuality);
+    
+    // Draw and set the image
     [self drawInRect:CGRectMake(0, 0, size.width, size.height)];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
     
+    UIGraphicsEndImageContext();
     return image;
 }
 

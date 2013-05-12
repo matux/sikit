@@ -6,6 +6,9 @@
 //  Copyright 2010 Silicon Illusions, Inc. All rights reserved.
 //
 
+// MapKit
+#import "MKMapView+SIExtension.h"
+
 // NextStep
 #import "NSArray+SIExtension.h"
 #import "NSBundle+SIExtension.h"
@@ -20,6 +23,7 @@
 #import "NSString+SIExtension.h"
 #import "NSThread+SIExtension.h"
 #import "NSURL+SIExtension.h"
+#import "NSURLConnection+SIExtension.h"
 #import "NSUserDefaults+SIExtension.h"
 
 // CoreFoundation

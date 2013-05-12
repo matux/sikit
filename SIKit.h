@@ -1,14 +1,15 @@
 //
 //  SIKit.h
-//  Crunch
+//  SIKit
 //
 //  Created by Matias Pequeno on 9/7/12.
-//  Copyright (c) 2012 AvatarLA. All rights reserved.
+//  Copyright (c) 2012 Silicon Illusions, Inc. All rights reserved.
 //
 
-#ifndef __SIKit_H__
-#define __SIKit_H__
+#ifndef __SIKIT_H__
+#define __SIKIT_H__
 
+#import "SIARCUtil.h"
 #import "SIFoundationExtension.h"
 #import "SIUtil.h"
 #import "SIAppStoreUtil.h"
@@ -19,5 +20,6 @@
 #import "SIRateView.h"
 #import "SIGridView.h"
 #import "SISpinnerView.h"
+#import "SILineView.h"
 
-#endif // __SIKit_H__
+#endif // __SIKIT_H__

@@ -111,11 +111,15 @@
 
 - (BOOL)isInvisible
 {
-    int length = [[self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] - [self length];
-    length += [[self stringByTrimmingCharactersInSet:[NSCharacterSet controlCharacterSet]] length] - [self length];
-    length += [[self stringByTrimmingCharactersInSet:[NSCharacterSet illegalCharacterSet]] length] - [self length];
+    static NSMutableCharacterSet *invisibleCharacterSet;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        invisibleCharacterSet = [NSMutableCharacterSet whitespaceAndNewlineCharacterSet];
+        [invisibleCharacterSet formUnionWithCharacterSet:[NSCharacterSet controlCharacterSet]];
+        [invisibleCharacterSet formUnionWithCharacterSet:[NSCharacterSet illegalCharacterSet]];
+    });
     
-    return length;
+    return ![[self stringByTrimmingCharactersInSet:invisibleCharacterSet] length];
 }
 
 - (BOOL)containsString:(NSString *)string

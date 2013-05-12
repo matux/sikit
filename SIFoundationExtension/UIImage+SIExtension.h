@@ -11,6 +11,7 @@
 @interface UIImage (SIExtension)
 
 - (UIImage *)scaledImage:(CGSize)size;
+- (UIImage *)scaledImage:(CGSize)size withInterpolationQuality:(CGInterpolationQuality)interpolationQuality;
 - (UIImage *)croppedAndResizedImage:(CGSize)size;
 - (UIImage *)scaledAndRotatedImage;
 

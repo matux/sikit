@@ -10,6 +10,7 @@
 
 - (UIViewController *)firstAvailableViewController;
 - (id)traverseResponderChainForClass:(Class)c;
+- (id)traverseSubviewsForClass:(Class)c;
 
 - (void)moveTo:(CGPoint)pos;
 - (void)moveBy:(CGPoint)pos;

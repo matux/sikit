@@ -1,9 +1,9 @@
 //
 //  SILineView.h
-//  CanvassMate
+//  SIKit
 //
 //  Created by Matias Pequeno on 4/14/13.
-//  Copyright (c) 2013 CanvassMate LLC. All rights reserved.
+//  Copyright (c) 2013 Silicon Illusions, Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

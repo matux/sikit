@@ -20,6 +20,7 @@
 #import "SIRateView.h"
 #import "SIGridView.h"
 #import "SISpinnerView.h"
+#import "SITooltip.h"
 #import "SILineView.h"
 
 #endif // __SIKIT_H__

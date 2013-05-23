@@ -8,6 +8,8 @@
 
 #import "SITooltip.h"
 
+#define kDefaultFontSize    16.f
+
 @implementation SITooltip
 {
     UIImageView *_close;
@@ -24,6 +26,8 @@
 
 + (id)showTooltipWithText:(NSString *)text view:(UIView *)view rect:(UIView *)targetView offset:(CGPoint)offset arrowDirection:(TooltipArrowDirection)direction delegate:(id<SITooltipDelegate>)delegate
 {
+    LogDebug(@"Showing tooltip with text %@", text);
+    
     SITooltip *tooltip = [[SITooltip alloc] initWithArrowDirection:direction andText:text];
     
     CGRect frame;
@@ -81,9 +85,9 @@
         
         CGFloat alphaValue = 0.9;
         
-        CGFloat textHeight = [text sizeWithFont:[UIFont systemFontOfSize:18] constrainedToSize:CGSizeMake(245, 999)].height;
+        CGFloat textHeight = [text sizeWithFont:[UIFont systemFontOfSize:kDefaultFontSize] constrainedToSize:CGSizeMake(245, 999)].height;
         
-        NSString * imageName;
+        NSString *imageName;
         CGRect labelRect;
         CGPoint arrowOrigin;
         CGFloat bgOffset;
@@ -113,7 +117,7 @@
         
         labelRect.size = CGSizeMake(245, textHeight);
         
-        UIImage * bgImage = [[UIImage imageNamed:@"tooltip_body.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:7];
+        UIImage *bgImage = [[UIImage imageNamed:@"tooltip_body.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:7];
         
         _background = [[UIImageView alloc] initWithImage:bgImage];
         [_background setAlpha:alphaValue];
@@ -129,7 +133,7 @@
         _label = [[UILabel alloc] initWithFrame:labelRect];
         [_label setBackgroundColor:[UIColor clearColor]];
         [_label setNumberOfLines:0];
-        [_label setFont:[UIFont systemFontOfSize:18]];
+        [_label setFont:[UIFont systemFontOfSize:kDefaultFontSize]];
         [_label setTextColor:[UIColor whiteColor]];
         [_label setShadowColor:[UIColor darkGrayColor]];
         [_label setShadowOffset:CGSizeMake(0, -1)];
@@ -137,7 +141,7 @@
         [_label setAdjustsFontSizeToFitWidth:YES];
         [_label setText:text];
         
-        UIImage * closeImage = [UIImage imageNamed:@"icon_circle_x.png"];
+        UIImage *closeImage = [UIImage imageNamed:@"icon_circle_x.png"];
         
         _close = [[UIImageView alloc] initWithImage:closeImage];
         [_close setCenter:CGPointMake(_background.frame.size.width - 24, _label.center.y)];
@@ -147,12 +151,10 @@
         
         CGRect bounds = _background.bounds;
         
-        if (direction == kTooltipArrowDirectionUp) {
+        if (direction == kTooltipArrowDirectionUp)
             bounds.size.height += _background.frame.origin.y;
-        }
-        else {
+        else
             bounds.size.height = _arrow.frame.origin.y + _arrow.frame.size.height;
-        }
         
         self.bounds = bounds;
         

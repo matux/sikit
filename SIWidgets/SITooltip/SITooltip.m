@@ -8,7 +8,8 @@
 
 #import "SITooltip.h"
 
-#define kDefaultFontSize    16.f
+static CGFloat __defaultFontSize = 16.f;
+static CGFloat __fadeDuration = .25f;
 
 @implementation SITooltip
 {
@@ -29,6 +30,8 @@
     LogDebug(@"Showing tooltip with text %@", text);
     
     SITooltip *tooltip = [[SITooltip alloc] initWithArrowDirection:direction andText:text];
+    
+    [tooltip setDelegate:delegate];
     
     CGRect frame;
     frame.size = tooltip.frame.size;
@@ -72,11 +75,16 @@
     
     [tooltip adjustArrowToView:targetView];
     
-    [UIView animateWithDuration:0.25 animations:^{
+    [UIView animateWithDuration:__fadeDuration animations:^{
         tooltip.alpha = 1.f;
     }];
     
     return tooltip;
+}
+
++ (void)setFadeDuration:(CGFloat)duration
+{
+    __fadeDuration = duration;
 }
 
 - (id)initWithArrowDirection:(TooltipArrowDirection)direction andText:(NSString *)text
@@ -85,7 +93,7 @@
         
         CGFloat alphaValue = 0.9;
         
-        CGFloat textHeight = [text sizeWithFont:[UIFont systemFontOfSize:kDefaultFontSize] constrainedToSize:CGSizeMake(245, 999)].height;
+        CGFloat textHeight = [text sizeWithFont:[UIFont systemFontOfSize:__defaultFontSize] constrainedToSize:CGSizeMake(245, 999)].height;
         
         NSString *imageName;
         CGRect labelRect;
@@ -133,7 +141,7 @@
         _label = [[UILabel alloc] initWithFrame:labelRect];
         [_label setBackgroundColor:[UIColor clearColor]];
         [_label setNumberOfLines:0];
-        [_label setFont:[UIFont systemFontOfSize:kDefaultFontSize]];
+        [_label setFont:[UIFont systemFontOfSize:__defaultFontSize]];
         [_label setTextColor:[UIColor whiteColor]];
         [_label setShadowColor:[UIColor darkGrayColor]];
         [_label setShadowOffset:CGSizeMake(0, -1)];
@@ -185,10 +193,12 @@
 {
     __weak __block SITooltip *blockSelf = self;
     
-    [UIView animateWithDuration:0.25 animations:^{
+    [UIView animateWithDuration:__fadeDuration animations:^{
         blockSelf.alpha = 0.f;
     } completion:^(BOOL finished) {
         [blockSelf removeFromSuperview];
+        if ([_delegate respondsToSelector:@selector(tooltipTapped:)])
+            [_delegate tooltipTapped:blockSelf];
     }];
 }
 

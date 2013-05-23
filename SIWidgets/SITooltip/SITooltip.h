@@ -32,6 +32,8 @@ typedef enum : NSUInteger {
 + (id)showTooltipWithText:(NSString *)text view:(UIView *)view rect:(UIView *)targetView arrowDirection:(TooltipArrowDirection)direction delegate:(id<SITooltipDelegate>)delegate;
 + (id)showTooltipWithText:(NSString *)text view:(UIView *)view rect:(UIView *)targetView offset:(CGPoint)offset arrowDirection:(TooltipArrowDirection)direction delegate:(id<SITooltipDelegate>)delegate;
 
++ (void)setFadeDuration:(CGFloat)duration;
+
 - (void)dismiss;
 
 @end

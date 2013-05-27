@@ -38,7 +38,7 @@
      @param
         handler  A block which receives the results of the resource load.
 */
-+ (void)sendSynchronousRequest:(NSURLRequest *)request
-             completionHandler:(void (^)(NSURLResponse *, NSData *, NSError *))handler;
+//+ (void)sendSynchronousRequest:(NSURLRequest *)request
+//             completionHandler:(void (^)(NSURLResponse *, NSData *, NSError *))handler;
 
 @end

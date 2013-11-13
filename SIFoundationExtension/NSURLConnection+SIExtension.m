@@ -9,7 +9,7 @@
 #import "NSURLConnection+SIExtension.h"
 
 @implementation NSURLConnection (SIExtension)
-
+/*
 + (void)sendSynchronousRequest:(NSURLRequest *)request
              completionHandler:(void (^)(NSURLResponse *, NSData *, NSError *))handler
 {
@@ -22,5 +22,5 @@
     if (handler)
         handler(response, data, error);
 }
-
+*/
 @end
